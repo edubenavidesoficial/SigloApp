@@ -7,12 +7,15 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Header fijo
                 if !isLoggedIn {
                     HomeHeaderView()
                 }
 
-                // Contenido desplazable
+                Text("Bienvenido a El Siglo de Torreón")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+
                 ScrollView {
                     VStack(spacing: 16) {
                         if viewModel.isLoading {
@@ -38,9 +41,10 @@ struct HomeView: View {
                     .padding(.top)
                 }
             }
-            .onAppear {
-            }
             .navigationBarHidden(true)
+            .onAppear {
+                viewModel.cargarPortada()
+            }
         }
     }
 }

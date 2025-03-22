@@ -12,7 +12,7 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    func fetchItems() {
+    func cargarPortada() {
         isLoading = true
         errorMessage = nil
 

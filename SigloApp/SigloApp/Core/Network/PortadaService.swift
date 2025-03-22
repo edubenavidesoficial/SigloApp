@@ -15,7 +15,7 @@ final class PortadaService {
     private init() {}
 
     func obtenerPortada(completion: @escaping (Result<[SeccionPortada], Error>) -> Void) {
-        guard let url = URL(string: "https://www.elsiglodetorreon.com.mx/api/app/v1/portada") else {
+        guard let url = URL(string: "https://www.elsiglodetorreon.com.mx/api/app/v1/portada/") else {
             print("❌ URL inválida")
             completion(.failure(PortadaServiceError.invalidURL))
             return
@@ -26,8 +26,8 @@ final class PortadaService {
 
         // Agregar token si está disponible
         if let token = TokenService.shared.getStoredToken() {
-            print("✅ Token disponible (truncado): \(token.prefix(10))...")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            print("✅ Token disponible: \(token.prefix(10))...")
+            request.setValue("\(token)", forHTTPHeaderField: "Authorization")
         } else {
             print("⚠️ Token no disponible")
         }

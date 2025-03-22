@@ -54,6 +54,7 @@
 		C0ECA2352D81B0DB00CAB3A0 /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECA2342D81B0DB00CAB3A0 /* SavedView.swift */; };
 		C0ECA2372D81B0F500CAB3A0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECA2362D81B0F500CAB3A0 /* ProfileView.swift */; };
 		C0EE2F042D8F0EC7009119D3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C0EE2F032D8F0EC7009119D3 /* Alamofire */; };
+		C0EE2F062D8F1BA8009119D3 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EE2F052D8F1BA8009119D3 /* Errors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		C0ECA2322D81B0B400CAB3A0 /* ImpresoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpresoView.swift; sourceTree = "<group>"; };
 		C0ECA2342D81B0DB00CAB3A0 /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
 		C0ECA2362D81B0F500CAB3A0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		C0EE2F052D8F1BA8009119D3 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,6 +480,7 @@
 			children = (
 				C08067B52D8D10A400B17D41 /* SessionManager.swift */,
 				C08067C62D8EF86C00B17D41 /* TokenInterceptor.swift */,
+				C0EE2F052D8F1BA8009119D3 /* Errors.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -662,6 +665,7 @@
 				C0C05A4E2D84CD6700D363F1 /* NotaDetalleView.swift in Sources */,
 				C0C05A4A2D84B0E800D363F1 /* SeccionPortada.swift in Sources */,
 				C08067BB2D8D927400B17D41 /* PrintViewModel.swift in Sources */,
+				C0EE2F062D8F1BA8009119D3 /* Errors.swift in Sources */,
 				C075CC8A2D83E16600B95F69 /* HomeViewModel.swift in Sources */,
 				C0C05A412D84AE7100D363F1 /* LoginService.swift in Sources */,
 				C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */,

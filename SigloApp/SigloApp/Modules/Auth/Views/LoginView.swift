@@ -90,7 +90,7 @@ struct LoginView: View {
                 }
 
                 if isLoading {
-                    ProgressView("Ingresando...")
+                    ProgressView()
                         .padding()
                 }
 
@@ -176,8 +176,8 @@ struct LoginView: View {
             Alert(title: Text("Login"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
-
-    @MainActor func login() {
+    @MainActor
+    func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -185,22 +185,21 @@ struct LoginView: View {
         }
 
         isLoading = true
-        LoginService.login(username: username, password: password) { result in
-            DispatchQueue.main.async {
-                isLoading = false
-                switch result {
-                case .success(let token):
-                    print("✅ Token recibido: \(token)")
-                    TokenService.shared.saveToken(token)
-                    lastUsername = username
-                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                    alertMessage = "Inicio de sesión exitoso"
-                    isLoggedIn = true
-                case .failure(let error):
-                    alertMessage = "Error: \(error.localizedDescription)"
-                }
-                showAlert = true
+
+        Task {
+            do {
+                let token = try await LoginService.login(username: username, password: password)
+                print("✅ Token recibido: \(token)")
+                lastUsername = username
+                UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                isLoggedIn = true
+                alertMessage = "Inicio de sesión exitoso"
+            } catch {
+                alertMessage = "Error: \(error.localizedDescription)"
             }
+
+            isLoading = false
+            showAlert = true
         }
     }
 }

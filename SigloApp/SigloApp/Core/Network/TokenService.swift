@@ -27,10 +27,14 @@ final class TokenService {
     private init() {}
 
     @MainActor
-    func getToken(correoHash: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func getToken(correoHash: String) async throws -> String {
         let u = correoHash
         let d = UIDevice.current.identifierForVendor?.uuidString ?? "demo_id"
         let s = "firma_demo" // En producción debería generarse con OpenSSL o backend seguro
+
+        print("🔐 Solicitando token (async)...")
+        print("➡️ URL base: \(tokenBaseURL)")
+        print("📨 Parámetros: u=\(u), d=\(d), s=\(s)")
 
         var components = URLComponents(string: tokenBaseURL)!
         components.queryItems = [
@@ -40,36 +44,27 @@ final class TokenService {
         ]
 
         guard let finalURL = components.url else {
-            completion(.failure(TokenServiceError.invalidURL))
-            return
+            throw TokenServiceError.invalidURL
         }
 
         var request = URLRequest(url: finalURL)
         request.httpMethod = "GET"
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
+        let (data, _) = try await URLSession.shared.data(for: request)
 
-                guard let data = data else {
-                    completion(.failure(TokenServiceError.noData))
-                    return
-                }
+        guard let data = data as Data? else {
+            throw TokenServiceError.noData
+        }
 
-                do {
-                    let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
-                    self.saveToken(decoded.token)
-                    print("✅ Token guardado: \(decoded.token)")
-                    completion(.success(decoded.token))
-                } catch {
-                    print("❌ Error parseando JSON: \(error)")
-                    completion(.failure(TokenServiceError.decodingError(error)))
-                }
-            }
-        }.resume()
+        do {
+            let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
+            self.saveToken(decoded.token)
+            print("✅ Token guardado: \(decoded.token)")
+            return decoded.token
+        } catch {
+            print("❌ Error parseando JSON: \(error)")
+            throw TokenServiceError.decodingError(error)
+        }
     }
 
     // Guardar token
