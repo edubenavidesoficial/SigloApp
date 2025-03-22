@@ -1,15 +1,27 @@
 import SwiftUI
 
 struct LoginView: View {
+    @MainActor
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @AppStorage("lastUsername") var lastUsername: String = ""
+
     @State private var username: String = "clientesactivos4@gmail.com"
-    @State private var password: String = "@‌PRUEBAMARIO2024%$"
+    @State private var password: String = "@PRUEBAMARIO2024%$"
     @State private var showPassword: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = "Alerta!"
+    @State private var isLoading: Bool = false
+
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case username
+        case password
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HeaderView()
+            HomeHeaderView()
 
             ScrollView(.vertical, showsIndicators: false) {
                 HStack {
@@ -33,22 +45,32 @@ struct LoginView: View {
 
                 VStack(spacing: 10) {
                     TextField("Usuario", text: $username)
+                        .focused($focusedField, equals: .username)
+                        .submitLabel(.next)
+                        .onSubmit {
+                            focusedField = .password
+                        }
                         .foregroundColor(.black)
                         .padding()
-                        .frame(maxWidth: .infinity)
                         .background(Color.clear)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.black, lineWidth: 0.5)
                         )
-                        .cornerRadius(10)
                         .autocapitalization(.none)
 
                     ZStack(alignment: .trailing) {
-                        if showPassword {
-                            TextField("Contraseña", text: $password)
-                        } else {
-                            SecureField("Contraseña", text: $password)
+                        Group {
+                            if showPassword {
+                                TextField("Contraseña", text: $password)
+                            } else {
+                                SecureField("Contraseña", text: $password)
+                            }
+                        }
+                        .focused($focusedField, equals: .password)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            login()
                         }
 
                         Button(action: {
@@ -60,13 +82,16 @@ struct LoginView: View {
                     }
                     .foregroundColor(.black)
                     .padding()
-                    .frame(maxWidth: .infinity)
                     .background(Color.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.black, lineWidth: 0.5)
                     )
-                    .cornerRadius(10)
+                }
+
+                if isLoading {
+                    ProgressView("Ingresando...")
+                        .padding()
                 }
 
                 Button(action: {
@@ -127,25 +152,14 @@ struct LoginView: View {
                     .padding(.horizontal)
 
                 HStack(spacing: 20) {
-                    Image("logo.youtube")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Image("logo.facebook")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Image("logo.twitter")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Image("logo.instagram")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Image("logo.tiktok")
-                        .resizable()
-                        .frame(width: 20, height: 20)
+                    Image("logo.youtube").resizable().frame(width: 20, height: 20)
+                    Image("logo.facebook").resizable().frame(width: 20, height: 20)
+                    Image("logo.twitter").resizable().frame(width: 20, height: 20)
+                    Image("logo.instagram").resizable().frame(width: 20, height: 20)
+                    Image("logo.tiktok").resizable().frame(width: 20, height: 20)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .multilineTextAlignment(.center)
 
                 Text("CÍA. EDITORA DE LA LAGUNA S.A. DE C.V.")
                     .font(.caption2)
@@ -163,29 +177,29 @@ struct LoginView: View {
         }
     }
 
-    func login() {
+    @MainActor func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
             return
         }
 
-        LoginService.login(correo: username, password: password) { result in
+        isLoading = true
+        LoginService.login(username: username, password: password) { result in
             DispatchQueue.main.async {
+                isLoading = false
                 switch result {
-                case .success(let data):
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        print("✅ Login exitoso: \(json)")
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                        alertMessage = "Inicio de sesión exitoso"
-                    } else {
-                        alertMessage = "Error al procesar respuesta del servidor."
-                    }
-                    showAlert = true
+                case .success(let token):
+                    print("✅ Token recibido: \(token)")
+                    TokenService.shared.saveToken(token)
+                    lastUsername = username
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                    alertMessage = "Inicio de sesión exitoso"
+                    isLoggedIn = true
                 case .failure(let error):
-                    alertMessage = "Error de conexión: \(error.localizedDescription)"
-                    showAlert = true
+                    alertMessage = "Error: \(error.localizedDescription)"
                 }
+                showAlert = true
             }
         }
     }

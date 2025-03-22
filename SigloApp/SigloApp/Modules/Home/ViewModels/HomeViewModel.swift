@@ -7,17 +7,28 @@
 
 import Foundation
 
-final class HomeViewModel: ObservableObject {
-    @Published var items: [Noticia] = []
+class HomeViewModel: ObservableObject {
+    @Published var secciones: [SeccionPortada] = []
+    @Published var isLoading = false
+    @Published var errorMessage: String?
 
     func fetchItems() {
-        // Simula una llamada a red
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.items = [
-                Noticia(id: 1, title: "Título 1", description: "Descripción de la noticia 1"),
-                Noticia(id: 2, title: "Título 2", description: "Descripción de la noticia 2"),
-                Noticia(id: 3, title: "Título 3", description: "Descripción de la noticia 3")
-            ]
+        isLoading = true
+        errorMessage = nil
+
+        PortadaService.shared.obtenerPortada { [weak self] result in
+            guard let self = self else { return }
+
+            self.isLoading = false
+
+            switch result {
+            case .success(let secciones):
+                self.secciones = secciones
+                print("✅ Secciones cargadas: \(secciones.count)")
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+                print("❌ Error al cargar secciones: \(error)")
+            }
         }
     }
 }

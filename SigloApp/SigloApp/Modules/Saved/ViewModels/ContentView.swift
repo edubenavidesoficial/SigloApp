@@ -1,35 +1,33 @@
-//
-//  CONTE.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/14/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @StateObject var viewModel = ArticleViewModel()
 
     var body: some View {
-        VStack {
-            // Tab selector
-            Picker("Selecciona pestaña", selection: $viewModel.selectedTab) {
-                ForEach(TabType.allCases, id: \.self) { tab in
-                    Text(tab.rawValue).tag(tab)
+        if isLoggedIn {
+            // Vista principal si está logueado
+            VStack {
+                Picker("Selecciona pestaña", selection: $viewModel.selectedTab) {
+                    ForEach(TabType.allCases, id: \.self) { tab in
+                        Text(tab.rawValue).tag(tab)
+                    }
                 }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
 
-            // Lista de artículos según el tab
-            List(viewModel.articlesForCurrentTab()) { article in
-                switch viewModel.selectedTab {
-                case .noticias, .clasificados:
-                    NewsRow(article: article)
-                case .sigloTV:
-                    SigloTVRow(video: article)
+                List(viewModel.articlesForCurrentTab()) { article in
+                    switch viewModel.selectedTab {
+                    case .noticias, .clasificados:
+                        NewsRow(article: article)
+                    case .sigloTV:
+                        SigloTVRow(video: article)
+                    }
                 }
             }
+        } else {
+            // Mostrar login si no está logueado
+            LoginView()
         }
     }
 }

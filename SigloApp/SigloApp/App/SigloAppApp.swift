@@ -8,7 +8,7 @@ import SwiftUI
 
 @main
 struct SigloAppApp: App {
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
 
     var body: some Scene {
         WindowGroup {

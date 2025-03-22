@@ -1,30 +1,80 @@
 import Foundation
 
-class PortadaService {
-    static let shared = PortadaService()
+// MARK: - Error personalizado
+enum PortadaServiceError: Error {
+    case invalidURL
+    case invalidResponse
+    case emptyData
+    case missingPayload(String)
+    case decodingError(Error)
+}
 
+// MARK: - Servicio de portada
+final class PortadaService {
+    static let shared = PortadaService()
     private init() {}
 
     func obtenerPortada(completion: @escaping (Result<[SeccionPortada], Error>) -> Void) {
-        guard let url = URL(string: "https://www.elsiglodetorreon.com.mx/api/app/v1/portada/s") else {
-            completion(.failure(NSError(domain: "URL inválida", code: 0)))
+        guard let url = URL(string: "https://www.elsiglodetorreon.com.mx/api/app/v1/portada") else {
+            print("❌ URL inválida")
+            completion(.failure(PortadaServiceError.invalidURL))
             return
         }
 
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
 
-            guard let data = data else {
-                completion(.failure(NSError(domain: "Datos vacíos", code: 0)))
-                return
-            }
+        // Agregar token si está disponible
+        if let token = TokenService.shared.getStoredToken() {
+            print("✅ Token disponible (truncado): \(token.prefix(10))...")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            print("⚠️ Token no disponible")
+        }
 
-            do {
-                let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                if let payload = json?["payload"] as? [String: Any] {
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("❌ Error en la solicitud: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("❌ Respuesta no válida")
+                    completion(.failure(PortadaServiceError.invalidResponse))
+                    return
+                }
+
+                print("📡 Código de estado: \(httpResponse.statusCode)")
+
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    let message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
+                    print("❌ Error HTTP: \(httpResponse.statusCode) - \(message)")
+                    completion(.failure(PortadaServiceError.invalidResponse))
+                    return
+                }
+
+                guard let data = data else {
+                    print("❌ Datos vacíos")
+                    completion(.failure(PortadaServiceError.emptyData))
+                    return
+                }
+
+                // DEBUG opcional
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📦 JSON recibido:\n\(jsonString.prefix(500))...")
+                }
+
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    guard let payload = json?["payload"] as? [String: Any] else {
+                        let mensaje = json?["message"] as? String ?? "Falta el campo 'payload'"
+                        print("⚠️ Error en respuesta: \(mensaje)")
+                        completion(.failure(PortadaServiceError.missingPayload(mensaje)))
+                        return
+                    }
+
                     var nuevasSecciones: [SeccionPortada] = []
 
                     for (_, value) in payload {
@@ -34,19 +84,18 @@ class PortadaService {
 
                             let jsonNotas = try JSONSerialization.data(withJSONObject: notasArray)
                             let notas = try JSONDecoder().decode([Nota].self, from: jsonNotas)
-                            let seccion = SeccionPortada(seccion: nombreSeccion, notas: notas)
-                            nuevasSecciones.append(seccion)
+
+                           // nuevasSecciones.append(SeccionPortada(seccion: nombreSeccion, notas: nota))
                         }
                     }
 
                     completion(.success(nuevasSecciones))
-                } else {
-                    completion(.failure(NSError(domain: "Formato inesperado", code: 0)))
-                }
-            } catch {
-                completion(.failure(error))
-            }
 
+                } catch {
+                    print("❌ Error al parsear JSON: \(error)")
+                    completion(.failure(PortadaServiceError.decodingError(error)))
+                }
+            }
         }.resume()
     }
 }

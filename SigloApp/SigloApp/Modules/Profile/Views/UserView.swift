@@ -52,7 +52,7 @@ struct UserView: View {
 
                     // Tarjeta e información de suscripción
                     HStack(alignment: .top, spacing: 16) {
-                        Image("card_mock") // Asegúrate de tener esta imagen en tus Assets
+                        Image("card")
                             .resizable()
                             .frame(width: 140, height: 90)
                             .cornerRadius(8)

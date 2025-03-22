@@ -19,7 +19,7 @@ class ArticleViewModel: ObservableObject {
             author: "Redacción",
             location: "México",
             time: "Hace 1h",
-            imageName: "ejemplo1",
+            imageName: "ejemplo",
             description: nil
         )
         // Puedes agregar más noticias...
@@ -32,7 +32,7 @@ class ArticleViewModel: ObservableObject {
             author: "SigloTV",
             location: "Torreón",
             time: "Hace 2h",
-            imageName: "ejemplo2",
+            imageName: "ejemplo",
             description: "Resumen del video o contenido importante."
         )
         // Puedes agregar más videos...
@@ -45,7 +45,7 @@ class ArticleViewModel: ObservableObject {
             author: "Clasificados",
             location: "Saltillo",
             time: "Hace 3h",
-            imageName: "ejemplo3",
+            imageName: "ejemplo",
             description: nil
         )
         // Puedes agregar más clasificados...

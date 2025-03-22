@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "save.svg",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "save 1.svg",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "save 2.svg",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "guardado-2.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -1,16 +1,10 @@
-//
-//  PortadaView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/14/25.
-//
 import SwiftUI
 
 struct PortadaView: View {
     @StateObject private var viewModel = PortadaViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 if let error = viewModel.errorMessage {
                     VStack {
@@ -20,9 +14,13 @@ struct PortadaView: View {
                         Text(error)
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
+                            .padding()
+                        Button("Reintentar") {
+                            viewModel.obtenerPortada()
+                        }
+                        .padding()
                         Spacer()
                     }
-                    .padding()
                 } else if viewModel.secciones.isEmpty {
                     VStack {
                         Spacer()
@@ -34,7 +32,7 @@ struct PortadaView: View {
                         ForEach(viewModel.secciones) { seccion in
                             Section(header: Text(seccion.seccion)) {
                                 ForEach(seccion.notas) { nota in
-                                    NavigationLink(destination: NotaDetalleView(nota: nota)) {
+                                    NavigationLink(value: nota) {
                                         VStack(alignment: .leading) {
                                             Text(nota.titulo)
                                                 .font(.headline)
@@ -49,11 +47,15 @@ struct PortadaView: View {
                             }
                         }
                     }
+                    .navigationDestination(for: Nota.self) { nota in
+                        NotaDetalleView(nota: nota)
+                    }
                 }
             }
             .onAppear {
                 viewModel.obtenerPortada()
             }
+            .navigationTitle("Portada")
         }
     }
 }

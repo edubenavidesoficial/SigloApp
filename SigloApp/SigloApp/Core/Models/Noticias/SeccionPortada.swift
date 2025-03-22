@@ -7,9 +7,8 @@
 
 import Foundation
 
-struct SeccionPortada: Identifiable {
+struct SeccionPortada: Identifiable, Hashable {
     var id: String { seccion }
     let seccion: String
-    let notas: [Nota]
+    let notas: [Nota]  // ← Aquí el cambio: de "nota" a "notas"
 }
-
