@@ -25,7 +25,8 @@ final class TokenService {
     private let userDefaultsTokenKey = "apiToken"
 
     private init() {}
-
+    
+    // Agregar esta función dentro de TokenService
     @MainActor
     func getToken(correoHash: String) async throws -> String {
         let u = correoHash

@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-
+    @State private var token: String? = nil
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -44,6 +44,15 @@ struct HomeView: View {
             .navigationBarHidden(true)
             .onAppear {
                 viewModel.cargarPortada()
+            }
+            .task {
+                do {
+                    let generatedToken = try await TokenService.shared.getToken(correoHash: "")
+                     print("✅ Token generado: \(generatedToken)")
+                    token = generatedToken
+                } catch {
+                    print("❌ Error al generar token: \(error.localizedDescription)")
+                }
             }
         }
     }
