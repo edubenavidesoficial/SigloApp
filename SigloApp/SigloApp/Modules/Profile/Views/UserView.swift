@@ -54,7 +54,7 @@ struct UserView: View {
                     HStack(alignment: .top, spacing: 16) {
                         Image("card")
                             .resizable()
-                            .frame(width: 140, height: 90)
+                            .frame(width: 140, height: 180)
                             .cornerRadius(8)
 
                         VStack(alignment: .leading, spacing: 4) {
@@ -65,7 +65,7 @@ struct UserView: View {
                             Text("4951")
                                 .foregroundColor(.red)
                                 .fontWeight(.bold)
-                            
+                                                            
                             Text("Tarifa:")
                             Text("Suscripción Anual")
                             Text("Periodo: 15/01/2024 - 14/01/2025")
@@ -111,11 +111,11 @@ struct UserView: View {
 
                     // Redes sociales
                     HStack(spacing: 20) {
-                        Image(systemName: "play.rectangle") // YouTube
-                        Image(systemName: "f.square") // Facebook
-                        Image(systemName: "bird") // Twitter/X
-                        Image(systemName: "camera") // Instagram
-                        Image(systemName: "music.note") // TikTok
+                        Image("logo.youtube").resizable().frame(width: 20, height: 20)
+                        Image("logo.facebook").resizable().frame(width: 20, height: 18)
+                        Image("logo.twitter").resizable().frame(width: 20, height: 20)
+                        Image("logo.instagram").resizable().frame(width: 20, height: 20)
+                        Image("logo.tiktok").resizable().frame(width: 20, height: 20)
                     }
                     .font(.title3)
                     .padding(.top)

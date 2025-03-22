@@ -28,7 +28,8 @@ struct ProfileView: View {
                         VStack(alignment: .leading, spacing: 16) {
                             SectionHeader(title: "CUENTA")
                             NavigationRow(title: "Iniciar sesión", destination: LoginView())
-                            NavigationRow<EmptyView>(title: "Crear cuenta")
+                            NavigationRow(title: "Crear cuenta", destination: UserView())
+
                         }
 
                         // Sección: Preferencias
@@ -60,7 +61,7 @@ struct ProfileView: View {
                         // Redes sociales
                         HStack(spacing: 20) {
                             Image("logo.youtube").resizable().frame(width: 20, height: 20)
-                            Image("logo.facebook").resizable().frame(width: 20, height: 20)
+                            Image("logo.facebook").resizable().frame(width: 20, height: 18)
                             Image("logo.twitter").resizable().frame(width: 20, height: 20)
                             Image("logo.instagram").resizable().frame(width: 20, height: 20)
                             Image("logo.tiktok").resizable().frame(width: 20, height: 20)
