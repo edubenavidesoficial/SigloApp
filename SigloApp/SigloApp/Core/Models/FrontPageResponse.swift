@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct SeccionPortada: Identifiable, Hashable {
-    var id: String { seccion }
+struct SeccionPortada: Identifiable, Decodable, Hashable {
+    var id: String { seccion } // Usamos el nombre de la sección como identificador único
     let seccion: String
-    let notas: [Nota]  // ← Aquí el cambio: de "nota" a "notas"
+    let notas: [Nota]
 }
 
 struct Nota: Identifiable, Decodable, Hashable {
@@ -23,3 +23,5 @@ struct Nota: Identifiable, Decodable, Hashable {
     let fotos: [String]?
     let seccion: String
 }
+
+

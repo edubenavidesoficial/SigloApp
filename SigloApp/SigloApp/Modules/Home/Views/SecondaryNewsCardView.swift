@@ -36,7 +36,7 @@ struct SecondaryNewsCardView: View {
 
             Spacer()
 
-            if let imageName = news.fotos?.first {
+           /* if let imageName = news.fotos?.url {
                 AsyncImage(url: URL(string: imageName)) { image in
                     image
                         .resizable()
@@ -47,7 +47,7 @@ struct SecondaryNewsCardView: View {
                 .frame(width: 80, height: 60)
                 .cornerRadius(6)
                 .clipped()
-            }
+            }*/
         }
     }
 }

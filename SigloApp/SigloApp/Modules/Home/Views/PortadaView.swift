@@ -28,19 +28,17 @@ struct PortadaView: View {
                         Spacer()
                     }
                 } else {
-                    List {
-                        ForEach(viewModel.secciones) { seccion in
-                            Section(header: Text(seccion.seccion)) {
-                                ForEach(seccion.notas) { nota in
-                                    NavigationLink(value: nota) {
-                                        VStack(alignment: .leading) {
-                                            Text(nota.titulo)
-                                                .font(.headline)
-                                            if let balazo = nota.balazo {
-                                                Text(balazo)
-                                                    .font(.subheadline)
-                                                    .foregroundColor(.secondary)
-                                            }
+                    List(viewModel.secciones, id: \.self) { seccion in
+                        Section(header: Text(seccion.seccion)) {
+                            ForEach(seccion.notas, id: \.self) { nota in
+                                NavigationLink(value: nota) {
+                                    VStack(alignment: .leading) {
+                                        Text(nota.titulo)
+                                            .font(.headline)
+                                        if let balazo = nota.balazo {
+                                            Text(balazo)
+                                                .font(.subheadline)
+                                                .foregroundColor(.secondary)
                                         }
                                     }
                                 }

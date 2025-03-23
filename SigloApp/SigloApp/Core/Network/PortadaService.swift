@@ -26,7 +26,7 @@ final class PortadaService {
 
         // Agregar token si está disponible
         if let token = TokenService.shared.getStoredToken() {
-            print("✅ Token disponible: \(token.prefix(10))...")
+            print("✅ Token disponible: \(token)")
             request.setValue("\(token)", forHTTPHeaderField: "Authorization")
         } else {
             print("⚠️ Token no disponible")
@@ -67,30 +67,38 @@ final class PortadaService {
                 }
 
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    guard let payload = json?["payload"] as? [String: Any] else {
-                        let mensaje = json?["message"] as? String ?? "Falta el campo 'payload'"
-                        print("⚠️ Error en respuesta: \(mensaje)")
-                        completion(.failure(PortadaServiceError.missingPayload(mensaje)))
-                        return
-                    }
-
-                    var nuevasSecciones: [SeccionPortada] = []
-
-                    for (_, value) in payload {
-                        if let dict = value as? [String: Any],
-                           let nombreSeccion = dict["sección"] as? String,
-                           let notasArray = dict["notas"] as? [[String: Any]] {
-
-                            let jsonNotas = try JSONSerialization.data(withJSONObject: notasArray)
-                            let notas = try JSONDecoder().decode([Nota].self, from: jsonNotas)
-
-                           // nuevasSecciones.append(SeccionPortada(seccion: nombreSeccion, notas: nota))
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        // Verificamos si 'payload' está en el JSON
+                        guard let payload = json["payload"] as? [String: Any] else {
+                            let mensaje = json["message"] as? String ?? "Falta el campo 'payload'"
+                            print("⚠️ Error en respuesta: \(mensaje)")
+                            completion(.failure(PortadaServiceError.missingPayload(mensaje)))
+                            return
                         }
+
+                        var nuevasSecciones: [SeccionPortada] = []
+
+                        // Iteramos sobre las claves dentro de 'payload'
+                        for (_, value) in payload {
+                            if let dict = value as? [String: Any],
+                               let nombreSeccion = dict["seccion"] as? String,
+                               let notasArray = dict["notas"] as? [[String: Any]] {
+
+                                // Decodificamos las notas usando JSONDecoder
+                                let jsonNotas = try JSONSerialization.data(withJSONObject: notasArray)
+                                let notas = try JSONDecoder().decode([Nota].self, from: jsonNotas)
+
+                                nuevasSecciones.append(SeccionPortada(seccion: nombreSeccion, notas: notas))
+                            }
+                        }
+
+                        // Devolvemos las secciones como éxito
+                        print("✅ Secciones cargadas: \(nuevasSecciones.count)")  // Para depuración
+                        completion(.success(nuevasSecciones))
+                    } else {
+                        print("❌ Error: JSON no tiene la estructura esperada")
+                        completion(.failure(PortadaServiceError.decodingError(NSError(domain: "", code: 0, userInfo: nil))))
                     }
-
-                    completion(.success(nuevasSecciones))
-
                 } catch {
                     print("❌ Error al parsear JSON: \(error)")
                     completion(.failure(PortadaServiceError.decodingError(error)))

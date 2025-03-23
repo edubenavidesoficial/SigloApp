@@ -1,51 +1,44 @@
-//
-//  NotaDetalleView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/14/25.
-//
-
 import SwiftUI
 
 struct NotaDetalleView: View {
-    let nota: Nota
+    let nota: Nota // Recibimos el objeto nota para mostrar sus detalles
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 20) {
                 Text(nota.titulo)
-                    .font(.title)
+                    .font(.largeTitle)
                     .fontWeight(.bold)
-
-                if let contenido = nota.contenido, !contenido.isEmpty {
+                
+                if let balazo = nota.balazo {
+                    Text(balazo)
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+                
+                // Mostrar el contenido de la nota
+                if let contenido = nota.contenido {
                     ForEach(contenido, id: \.self) { parrafo in
                         Text(parrafo)
                             .font(.body)
-                    }
-                } else {
-                    Text("Sin contenido disponible")
-                        .foregroundColor(.gray)
-                        .italic()
-                }
-
-
-                if let fotos = nota.fotos {
-                    ForEach(fotos, id: \.self) { fotoUrl in
-                        AsyncImage(url: URL(string: fotoUrl)) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .cornerRadius(8)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                            .padding(.top, 5)
                     }
                 }
+
+                // Si hay fotos, las mostramos
+                /*if let foto = nota.fotos {
+                    AsyncImage(url: URL(string: foto.url)) { image in
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity, maxHeight: 300)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .padding(.top, 10)
+                }*/
             }
             .padding()
         }
-        .navigationTitle("Detalle")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Detalle de Nota")
     }
 }
-
