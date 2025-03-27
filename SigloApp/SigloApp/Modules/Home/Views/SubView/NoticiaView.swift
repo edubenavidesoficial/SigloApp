@@ -8,7 +8,7 @@ struct NoticiaView: View {
             if let foto = nota.fotos.first {
                 GeometryReader { geometry in
                     FotoView(foto: foto)
-                        .scaledToFill() // Hace que la imagen llene el contenedor
+                        .scaledToFill() 
                         .frame(width: geometry.size.width, height: geometry.size.height) // Rellena todo el espacio
                         .clipped()
                         .overlay(

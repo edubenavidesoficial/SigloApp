@@ -11,43 +11,28 @@ struct HomeView: View {
                 if !isLoggedIn {
                     HomeHeaderView()
                 }
-
                 ScrollView {
-                    VStack(spacing: 16) {
+                    VStack(spacing: 0) {
                         if viewModel.isLoading {
                             ProgressView("Cargando noticias...")
-                        } else if let errorMessage = viewModel.errorMessage {
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
+                                              } else if let errorMessage = viewModel.errorMessage {
+                            Text("Error: \(errorMessage)").foregroundColor(.black)
                         } else {
-                            ForEach(viewModel.secciones, id: \.seccion) { seccion in
-                                Section(header: Text(seccion.seccion ?? "Siglo")
-                                    .font(.title2)
-                                    .bold()
-                                    .padding(.horizontal)) {
-                                        
-                                    // Aislar notas en una variable separada
-                                    let notas = seccion.notas ?? []  // Usa un array vacío si no hay notas
-                                    ForEach(notas, id: \.id) { nota in
-                                        VStack(alignment: .leading, spacing: 8) {
-                                            Text(nota.titulo)
-                                                .font(.headline)
-
-                                             // Usamos FotoView para mostrar las fotos
-                                            if !nota.fotos.isEmpty {
-                                                ForEach(nota.fotos, id: \.url_foto) { foto in
-                                                    FotoView(foto: foto)
-                                                }
+                            ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
+                                  let notas = seccion.notas ?? [] // Asegura que no sea nil
+                                        TabView {
+                                            ForEach(notas, id: \.id) { nota in
+                                                NoticiaView(nota: nota)
                                             }
-
                                         }
-                                        .padding(.vertical, 8)
-                                    }
-                                }
+                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                                        .frame(height: 450)
                             }
+                            SeccionesHomeView(viewModel: viewModel)
                         }
                     }
-                    .padding(.top)
+                    .offset(y: -8)
+
                 }
             }
             .navigationBarHidden(true)

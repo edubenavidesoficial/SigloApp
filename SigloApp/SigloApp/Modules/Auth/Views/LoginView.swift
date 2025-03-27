@@ -177,7 +177,7 @@ struct LoginView: View {
         }
     }
     @MainActor
-    func login() {
+    /*func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -201,5 +201,31 @@ struct LoginView: View {
             isLoading = false
             showAlert = true
         }
+    }*/
+    func login() {
+        guard !username.isEmpty, !password.isEmpty else {
+            alertMessage = "Por favor completa usuario y contraseña."
+            showAlert = true
+            return
+        }
+
+        isLoading = true
+
+        Task {
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // Simula una espera de 1 segundo
+
+            // Simulamos una respuesta exitosa
+            let simulatedToken = "FAKE-TOKEN-123456"
+            print("✅ Token recibido: \(simulatedToken)")
+            
+            lastUsername = username
+            UserDefaults.standard.set(true, forKey: "isLoggedIn")
+            isLoggedIn = true
+            
+            alertMessage = "Inicio de sesión exitoso"
+            isLoading = false
+            showAlert = true
+        }
     }
+
 }

@@ -1,10 +1,3 @@
-//
-//  HeaderView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/11/25.
-//
-
 import SwiftUI
 
 struct HeaderView: View {
@@ -12,9 +5,12 @@ struct HeaderView: View {
     var isLogin: Bool = false
     var action: (() -> Void)? = nil
 
+    @State private var showLogoutAlert = false
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
+                // Botón de retroceso o menú lateral
                 if showBack {
                     Button(action: {
                         action?()
@@ -24,9 +20,8 @@ struct HeaderView: View {
                             .frame(width: 30, height: 30)
                     }
                 } else {
-                    //debe aparecer si no esta logeado
                     Button(action: {
-                        // Menú lateral o acción
+                        // Acción para el menú lateral
                     }) {
                         Image(systemName: "line.horizontal.3")
                             .font(.title2)
@@ -35,6 +30,7 @@ struct HeaderView: View {
 
                 Spacer()
 
+                // Logo o título de la app
                 Image("titulo")
                     .resizable()
                     .scaledToFit()
@@ -42,20 +38,26 @@ struct HeaderView: View {
 
                 Spacer()
 
-                
+                // Opción de cerrar sesión si está logueado
                 if showBack {
                     Button(action: {
-                        action?()
+                        showLogoutAlert = true
                     }) {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundColor(.black)
                     }
+                    .confirmationDialog("¿Quieres cerrar sesión?", isPresented: $showLogoutAlert, titleVisibility: .visible) {
+                        Button("Cerrar sesión", role: .destructive) {
+                            logout()
+                        }
+                        Button("Cancelar", role: .cancel) {}
+                    }
                 } else {
-                    
+                    // Icono de búsqueda si no está logueado
                     Button(action: {
-                        // Buscar
+                        // Acción de búsqueda
                     }) {
                         Image(systemName: "magnifyingglass")
                             .font(.title2)
@@ -64,9 +66,15 @@ struct HeaderView: View {
             }
             .padding(.horizontal)
             .padding(.top, 15)
+
             Divider()
                 .frame(height: 0.5)
                 .background(Color.black)
         }
+    }
+
+    func logout() {
+        UserDefaults.standard.set(false, forKey: "isLoggedIn") // Marcar como deslogueado
+        print("🔴 Sesión cerrada")
     }
 }
