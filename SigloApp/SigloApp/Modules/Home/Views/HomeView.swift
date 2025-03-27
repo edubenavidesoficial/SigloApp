@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct HometwoView: View {
+struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var token: String? = nil
@@ -17,11 +17,6 @@ struct HometwoView: View {
                     HomeHeaderView()
                 }
 
-                Text("Bienvenido a El Siglo de Torreón")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-
                 ScrollView {
                     VStack(spacing: 16) {
                         if viewModel.isLoading {
@@ -31,15 +26,10 @@ struct HometwoView: View {
                                 .foregroundColor(.red)
                         } else {
                             ForEach(viewModel.secciones, id: \.seccion) { seccion in
-                                Section(header: Text(seccion.seccion)
+                                Section(header: Text(seccion.seccion ?? "Sin título")
                                     .font(.title2)
                                     .bold()
                                     .padding(.horizontal)) {
-
-                                    ForEach(seccion.notas) { nota in
-                                        SecondaryNewsCardView(news: nota)
-                                            .padding(.horizontal)
-                                    }
                                 }
                             }
                         }

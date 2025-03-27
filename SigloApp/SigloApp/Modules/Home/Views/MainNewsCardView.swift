@@ -11,11 +11,7 @@ struct MainNewsCardView: View {
         VStack(alignment: .leading, spacing: 8) {
             TabView {
                 // Otras pestañas...
-                
-                PortadaView()
-                    .tabItem {
-                        Label("Portada", systemImage: "newspaper")
-                    }
+             
             }
 
             Image("noticia_principal") // Puedes cargar desde URL más adelante

@@ -67,38 +67,28 @@ final class PortadaService {
                 }
 
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        // Verificamos si 'payload' está en el JSON
-                        guard let payload = json["payload"] as? [String: Any] else {
-                            let mensaje = json["message"] as? String ?? "Falta el campo 'payload'"
-                            print("⚠️ Error en respuesta: \(mensaje)")
-                            completion(.failure(PortadaServiceError.missingPayload(mensaje)))
-                            return
-                        }
+                    // Decodificamos la respuesta completa
+                    let decoder = JSONDecoder()
+                    let decodedResponse = try decoder.decode(PortadaResponse.self, from: data)
 
-                        var nuevasSecciones: [SeccionPortada] = []
+                    // Iteramos sobre las secciones y verificamos si contienen 'notas'
+                    var seccionesConNotas: [SeccionPortada] = []
 
-                        // Iteramos sobre las claves dentro de 'payload'
-                        for (_, value) in payload {
-                            if let dict = value as? [String: Any],
-                               let nombreSeccion = dict["seccion"] as? String,
-                               let notasArray = dict["notas"] as? [[String: Any]] {
-
-                                // Decodificamos las notas usando JSONDecoder
-                                let jsonNotas = try JSONSerialization.data(withJSONObject: notasArray)
-                                let notas = try JSONDecoder().decode([Nota].self, from: jsonNotas)
-
-                                nuevasSecciones.append(SeccionPortada(seccion: nombreSeccion, notas: notas))
+                    for (key, seccion) in decodedResponse.payload {
+                        if let notas = seccion.notas {
+                            print("Sección \(key): \(seccion.seccion)")
+                            for nota in notas {
+                                print("Título de la nota: \(nota.titulo)")
                             }
+                            seccionesConNotas.append(seccion)
+                        } else {
+                            print("Sección \(key) no contiene 'notas'")
                         }
-
-                        // Devolvemos las secciones como éxito
-                        print("✅ Secciones cargadas: \(nuevasSecciones.count)")  // Para depuración
-                        completion(.success(nuevasSecciones))
-                    } else {
-                        print("❌ Error: JSON no tiene la estructura esperada")
-                        completion(.failure(PortadaServiceError.decodingError(NSError(domain: "", code: 0, userInfo: nil))))
                     }
+
+                    // Llamamos a completion con las secciones que contienen notas
+                    completion(.success(seccionesConNotas))
+
                 } catch {
                     print("❌ Error al parsear JSON: \(error)")
                     completion(.failure(PortadaServiceError.decodingError(error)))

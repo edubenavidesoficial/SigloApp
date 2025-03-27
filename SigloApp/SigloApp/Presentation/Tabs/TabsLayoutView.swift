@@ -15,7 +15,7 @@ struct TabsLayoutView: View {
             }
 
             TabView {
-                PortadaView()
+                HomeView()
                     .tabItem {
                         Image("ico_siglo")
                         Text("PORTADA")

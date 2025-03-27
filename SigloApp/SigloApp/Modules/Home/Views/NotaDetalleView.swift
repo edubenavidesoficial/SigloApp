@@ -9,21 +9,7 @@ struct NotaDetalleView: View {
                 Text(nota.titulo)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                
-                if let balazo = nota.balazo {
-                    Text(balazo)
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                }
-                
-                // Mostrar el contenido de la nota
-                if let contenido = nota.contenido {
-                    ForEach(contenido, id: \.self) { parrafo in
-                        Text(parrafo)
-                            .font(.body)
-                            .padding(.top, 5)
-                    }
-                }
+               
 
                 // Si hay fotos, las mostramos
                 /*if let foto = nota.fotos {
