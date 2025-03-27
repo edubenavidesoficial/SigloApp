@@ -1,15 +1,10 @@
-//
-//  HometwoView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/26/25.
-//
 import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var token: String? = nil
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -31,23 +26,22 @@ struct HomeView: View {
                                     .bold()
                                     .padding(.horizontal)) {
                                         
-                                    // Verificamos si la sección tiene notas
-                                    if let notas = seccion.notas, !notas.isEmpty {
-                                        ForEach(notas, id: \.id) { nota in
-                                            VStack(alignment: .leading, spacing: 8) {
-                                                Text(nota.titulo)
-                                                    .font(.headline)
-                                                    .foregroundColor(.primary)
-                                                Text(nota.fecha_formato)
-                                                    .font(.subheadline)
-                                                    .foregroundColor(.secondary)
+                                    // Aislar notas en una variable separada
+                                    let notas = seccion.notas ?? []  // Usa un array vacío si no hay notas
+                                    ForEach(notas, id: \.id) { nota in
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            Text(nota.titulo)
+                                                .font(.headline)
+
+                                             // Usamos FotoView para mostrar las fotos
+                                            if !nota.fotos.isEmpty {
+                                                ForEach(nota.fotos, id: \.url_foto) { foto in
+                                                    FotoView(foto: foto)
+                                                }
                                             }
-                                            .padding(.vertical, 5)
+
                                         }
-                                    } else {
-                                        Text("No hay notas en esta sección")
-                                            .foregroundColor(.gray)
-                                            .italic()
+                                        .padding(.vertical, 8)
                                     }
                                 }
                             }
@@ -63,7 +57,7 @@ struct HomeView: View {
             .task {
                 do {
                     let generatedToken = try await TokenService.shared.getToken(correoHash: "")
-                     print("✅ Token generado: \(generatedToken)")
+                    print("✅ Token generado: \(generatedToken)")
                     token = generatedToken
                 } catch {
                     print("❌ Error al generar token: \(error.localizedDescription)")

@@ -76,10 +76,8 @@ final class PortadaService {
 
                     for (key, seccion) in decodedResponse.payload {
                         if let notas = seccion.notas {
-                            print("Sección \(key): \(seccion.seccion)")
-                            for nota in notas {
-                                print("Título de la nota: \(nota.titulo)")
-                            }
+                            print("Sección \(key): \(String(describing: seccion.seccion))")
+                            for _ in notas {}
                             seccionesConNotas.append(seccion)
                         } else {
                             print("Sección \(key) no contiene 'notas'")

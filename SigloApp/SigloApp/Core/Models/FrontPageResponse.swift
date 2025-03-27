@@ -15,6 +15,12 @@ struct SeccionPortada: Decodable {
     let notas: [Nota]? // 'notas' es opcional, ya que puede no existir en algunas secciones
 }
 
+// Modelo para la foto
+struct Foto: Decodable, Sendable {
+    let url_foto: String
+    let pie_foto: String?
+}
+
 // Modelo para la nota
 struct Nota: Decodable, Sendable {
     let id: Int
@@ -28,4 +34,6 @@ struct Nota: Decodable, Sendable {
     let autor: String
     let ciudad: String
     let contenido: [String]
+    let fotos: [Foto]  // 🔥 Agregamos la propiedad fotos
 }
+
