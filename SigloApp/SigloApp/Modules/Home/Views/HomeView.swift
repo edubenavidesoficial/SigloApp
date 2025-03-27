@@ -1,6 +1,12 @@
+//
+//  HometwoView.swift
+//  SigloApp
+//
+//  Created by Macbook Pro 17 i5R on 3/26/25.
+//
 import SwiftUI
 
-struct HomeView: View {
+struct HometwoView: View {
     @StateObject private var viewModel = HomeViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var token: String? = nil
