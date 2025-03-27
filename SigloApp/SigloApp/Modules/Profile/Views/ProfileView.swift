@@ -28,7 +28,7 @@ struct ProfileView: View {
                         VStack(alignment: .leading, spacing: 16) {
                             SectionHeader(title: "CUENTA")
                             NavigationRow(title: "Iniciar sesión", destination: LoginView())
-                            NavigationRow(title: "Crear cuenta", destination: UserView())
+                            NavigationRow<EmptyView>(title: "Crear cuenta")
 
                         }
 

@@ -168,6 +168,8 @@ struct LoginView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 10)
             }
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true) 
             .padding()
         }
         .background(Color.white)
