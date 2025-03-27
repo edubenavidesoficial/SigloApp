@@ -9,7 +9,7 @@ struct FotoView: View {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
-                        ProgressView() // Muestra un cargador mientras se carga la imagen
+                        ProgressView()
                     case .success(let image):
                         image.resizable()
                             .scaledToFit()
