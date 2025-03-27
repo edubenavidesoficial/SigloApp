@@ -26,10 +26,29 @@ struct HomeView: View {
                                 .foregroundColor(.red)
                         } else {
                             ForEach(viewModel.secciones, id: \.seccion) { seccion in
-                                Section(header: Text(seccion.seccion ?? "Sin título")
+                                Section(header: Text(seccion.seccion ?? "Siglo")
                                     .font(.title2)
                                     .bold()
                                     .padding(.horizontal)) {
+                                        
+                                    // Verificamos si la sección tiene notas
+                                    if let notas = seccion.notas, !notas.isEmpty {
+                                        ForEach(notas, id: \.id) { nota in
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text(nota.titulo)
+                                                    .font(.headline)
+                                                    .foregroundColor(.primary)
+                                                Text(nota.fecha_formato)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                            .padding(.vertical, 5)
+                                        }
+                                    } else {
+                                        Text("No hay notas en esta sección")
+                                            .foregroundColor(.gray)
+                                            .italic()
+                                    }
                                 }
                             }
                         }
