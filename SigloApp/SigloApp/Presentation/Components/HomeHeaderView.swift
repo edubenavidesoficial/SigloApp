@@ -1,19 +1,14 @@
-//
-//  HomeHeaderView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/13/25.
-//
-
 import SwiftUI
 
 struct HomeHeaderView: View {
+    @State private var showMenu = false  // Controla la visibilidad del menú
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 // Botón de menú
                 Button(action: {
-                    // Acción del menú
+                    showMenu.toggle() // Abrir el menú lateral
                 }) {
                     Image(systemName: "line.horizontal.3")
                         .font(.title2)
@@ -46,6 +41,10 @@ struct HomeHeaderView: View {
                 .frame(height: 0.5)
                 .background(Color.black)
         }
+        .sheet(isPresented: $showMenu) {  // no quiero que abra el modal como una hoja desde abajo quiero que abradesde el lado isquierdo
+            SideMenuView()
+        }
+        
     }
 }
 

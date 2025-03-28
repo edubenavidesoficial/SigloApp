@@ -14,7 +14,7 @@ struct HomeView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         if viewModel.isLoading {
-                            ProgressView("Cargando noticias...")
+                            ProgressView("Cargando...")
                                               } else if let errorMessage = viewModel.errorMessage {
                             Text("Error: \(errorMessage)").foregroundColor(.black)
                         } else {

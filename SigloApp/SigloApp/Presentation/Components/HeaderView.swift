@@ -22,7 +22,10 @@ struct HeaderView: View {
                 } else {
                     Button(action: {
                         // Acción para el menú lateral
-                    }) {
+                    }
+                           
+                    
+                    ) {
                         Image(systemName: "line.horizontal.3")
                             .font(.title2)
                     }

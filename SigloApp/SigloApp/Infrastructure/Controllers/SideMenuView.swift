@@ -3,11 +3,22 @@ import SwiftUI
 struct SideMenuView: View {
     var body: some View {
         VStack(alignment: .leading) {
-            Image(systemName: "person.circle")
+            // Imagen superior (Ejemplo)
+            Image("ejemplo")
                 .resizable()
-                .frame(width: 50, height: 50)
-                .padding(.top, 20)
+                .scaledToFill()
+                .frame(height: 150)
+                .clipped()
+                .padding(.top, 10)
 
+            // Logo de "El Siglo"
+            Image("titulo")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 30)
+                .padding(.horizontal)
+
+            // Lista de opciones
             List {
                 MenuRow(title: "La Laguna", icon: "sun.max")
                 MenuRow(title: "Meta", icon: "sportscourt")
@@ -21,25 +32,57 @@ struct SideMenuView: View {
                 MenuRow(title: "Clasificados", icon: "doc.text")
                 MenuRow(title: "Esquelas", icon: "person.text.rectangle")
             }
+            .listStyle(PlainListStyle())
+
+            Spacer()
+
+            // Botones "Anúnciate" y "Suscríbete"
+            VStack {
+                Button(action: {
+                    print("Anúnciate presionado")
+                }) {
+                    Text("Anúnciate")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(width: 200, height: 40)
+                        .background(Color.red)
+                        .cornerRadius(20)
+                        .padding(.bottom, 5)
+                }
+
+                Button(action: {
+                    print("Suscríbete presionado")
+                }) {
+                    Text("Suscríbete")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(width: 200, height: 40)
+                        .background(Color.red)
+                        .cornerRadius(20)
+                }
+            }
+            .padding(.bottom, 20)
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: 250)
         .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.vertical)
+        .frame(maxHeight: .infinity )
+        .background(Color.gray.opacity(0.2))
     }
 }
 
 struct MenuRow: View {
     var title: String
     var icon: String
-    
+
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .frame(width: 30, height: 30)
+                .frame(width: 25, height: 25)
             Text(title)
                 .font(.headline)
             Spacer()
         }
-        .padding()
+        .padding(.vertical, 5)
     }
 }
