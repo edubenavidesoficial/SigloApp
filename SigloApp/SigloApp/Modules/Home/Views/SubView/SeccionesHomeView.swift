@@ -11,16 +11,37 @@ struct SeccionesHomeView: View {
                     ForEach(notas, id: \.id) { nota in
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 6) {
-                                
+
                                 // Línea roja antes del texto
                                 HStack {
                                     Rectangle()
                                         .fill(Color.red)
-                                        .frame(width: 4, height: 14) // Ajusta el tamaño según necesidad
+                                        .frame(width: 4, height: 14)
 
                                     Text(nota.localizador)
                                         .font(.caption)
                                         .foregroundColor(.red)
+
+                                    Spacer()
+
+                                    // Botón de menú con los tres puntos
+                                    Menu {
+                                        Button(action: {
+                                            compartirNota(nota)
+                                        }) {
+                                            Label("Compartir", systemImage: "square.and.arrow.up")
+                                        }
+
+                                        Button(action: {
+                                            guardarNota(nota)
+                                        }) {
+                                            Label("Guardar", systemImage: "bookmark")
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .foregroundColor(.gray)
+                                            .padding(.trailing, 8)
+                                    }
                                 }
 
                                 // Título en negrita
@@ -47,9 +68,10 @@ struct SeccionesHomeView: View {
                             ZStack(alignment: .bottomTrailing) {
                                 if let foto = nota.fotos.first {
                                     FotoView(foto: foto)
-                                        .scaledToFill() // La imagen llenará completamente el cuadrado
-                                        .clipped() // Recorta cualquier exceso
-                                        .cornerRadius(8) // Bordes redondeados
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100) // Tamaño cuadrado
+                                        .clipped()
+                                        .cornerRadius(8)
                                 }
 
                                 Label("07:35 hrs", systemImage: "clock")
@@ -57,8 +79,6 @@ struct SeccionesHomeView: View {
                                     .font(.caption)
                                     .padding(4)
                             }
-
-
                         }
                         .padding()
                     }
@@ -67,5 +87,17 @@ struct SeccionesHomeView: View {
                 .frame(height: 160)
             }
         }
+    }
+
+    // Función para compartir la nota
+    func compartirNota(_ nota: Nota) {
+        print("Compartir: \(nota.titulo)")
+        // Aquí puedes implementar el sistema de compartir con UIActivityViewController en UIKit
+    }
+
+    // Función para guardar la nota
+    func guardarNota(_ nota: Nota) {
+        print("Guardar: \(nota.titulo)")
+        // Aquí puedes guardar la nota en favoritos o en una base de datos
     }
 }
