@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var articleViewModel = ArticleViewModel() // Inicializa ArticleViewModel
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var token: String? = nil
 
@@ -15,24 +16,24 @@ struct HomeView: View {
                     VStack(spacing: 0) {
                         if viewModel.isLoading {
                             ProgressView("Cargando...")
-                                              } else if let errorMessage = viewModel.errorMessage {
+                        } else if let errorMessage = viewModel.errorMessage {
                             Text("Error: \(errorMessage)").foregroundColor(.black)
                         } else {
                             ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
-                                  let notas = seccion.notas ?? [] // Asegura que no sea nil
-                                        TabView {
-                                            ForEach(notas, id: \.id) { nota in
-                                                NoticiaView(nota: nota)
-                                            }
-                                        }
-                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                                        .frame(height: 450)
+                                let notas = seccion.notas ?? [] // Asegura que no sea nil
+                                TabView {
+                                    ForEach(notas, id: \.id) { nota in
+                                        NoticiaView(nota: nota)
+                                    }
+                                }
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                                .frame(height: 450)
                             }
-                            SeccionesHomeView(viewModel: viewModel)
+                            // Pasa ambos viewModels a SeccionesHomeView
+                            SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
                         }
                     }
                     .offset(y: -8)
-
                 }
             }
             .navigationBarHidden(true)
@@ -51,3 +52,4 @@ struct HomeView: View {
         }
     }
 }
+

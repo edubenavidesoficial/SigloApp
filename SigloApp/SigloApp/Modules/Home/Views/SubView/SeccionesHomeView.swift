@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var articleViewModel: ArticleViewModel
 
     var body: some View {
         ForEach(viewModel.secciones.filter { $0.seccion == "México, EUA y Mundo" }, id: \.seccion) { seccion in
@@ -11,7 +12,6 @@ struct SeccionesHomeView: View {
                     ForEach(notas, id: \.id) { nota in
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 6) {
-
                                 // Línea roja antes del texto
                                 HStack {
                                     Rectangle()
@@ -87,17 +87,38 @@ struct SeccionesHomeView: View {
                 .frame(height: 160)
             }
         }
+
+        // Mostrar los artículos guardados
+        VStack {
+            Text("Artículos Guardados")
+                .font(.headline)
+            ForEach(articleViewModel.savedArticles, id: \.title) { article in
+                Text(article.title)
+                    .padding()
+            }
+        }
     }
 
-    // Función para compartir la nota
     func compartirNota(_ nota: Nota) {
         print("Compartir: \(nota.titulo)")
-        // Aquí puedes implementar el sistema de compartir con UIActivityViewController en UIKit
+        // Aquí puedes implementar el sistema de compartir
     }
 
-    // Función para guardar la nota
     func guardarNota(_ nota: Nota) {
         print("Guardar: \(nota.titulo)")
-        // Aquí puedes guardar la nota en favoritos o en una base de datos
+
+        // Crear y guardar el artículo
+        let savedArticle = SavedArticle(
+            category: "Nacional",
+            title: nota.titulo,
+            author: nota.autor,
+            location: "Desconocido",
+            time: "Hace 1h",
+            imageName: "ejemplo",
+            description: nil
+        )
+
+        // Guardar el artículo en el ArticleViewModel
+        articleViewModel.saveArticle(savedArticle)
     }
 }

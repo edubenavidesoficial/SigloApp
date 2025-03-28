@@ -1,10 +1,3 @@
-//
-//  News.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/14/25.
-//
-
 import SwiftUI
 
 struct NewsRow: View {
@@ -55,5 +48,6 @@ struct NewsRow: View {
                 }
             }
         }
+        .padding() // Agregar padding para separar el contenido
     }
 }

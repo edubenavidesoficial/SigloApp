@@ -1,6 +1,3 @@
-// ArticleViewModel.swift
-// SigloApp
-
 import Foundation
 
 enum TabType: String, CaseIterable {
@@ -11,18 +8,10 @@ enum TabType: String, CaseIterable {
 
 class ArticleViewModel: ObservableObject {
     @Published var selectedTab: TabType = .noticias
+    @Published var savedArticles: [SavedArticle] = []
 
     var noticias: [SavedArticle] = [
-        SavedArticle(
-            category: "Nacional",
-            title: "Título noticia",
-            author: "Redacción",
-            location: "México",
-            time: "Hace 1h",
-            imageName: "ejemplo",
-            description: nil
-        )
-        // Puedes agregar más noticias...
+        // Puedes agregar algunas noticias predeterminadas si lo deseas
     ]
 
     var sigloTV: [SavedArticle] = [
@@ -35,7 +24,6 @@ class ArticleViewModel: ObservableObject {
             imageName: "ejemplo",
             description: "Resumen del video o contenido importante."
         )
-        // Puedes agregar más videos...
     ]
 
     var clasificados: [SavedArticle] = [
@@ -48,7 +36,6 @@ class ArticleViewModel: ObservableObject {
             imageName: "ejemplo",
             description: nil
         )
-        // Puedes agregar más clasificados...
     ]
 
     func articlesForCurrentTab() -> [SavedArticle] {
@@ -60,5 +47,9 @@ class ArticleViewModel: ObservableObject {
         case .clasificados:
             return clasificados
         }
+    }
+    // Función para agregar una nota guardada
+    func saveArticle(_ article: SavedArticle) {
+        savedArticles.append(article)
     }
 }
