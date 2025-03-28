@@ -13,8 +13,8 @@ struct FotoView: View {
                     case .success(let image):
                         image.resizable()
                             .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(8)
+                            .cornerRadius(13)
+                            
                     case .failure:
                         Image(systemName: "photo")
                             .resizable()

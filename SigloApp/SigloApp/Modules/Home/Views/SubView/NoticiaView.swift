@@ -26,15 +26,30 @@ struct NoticiaView: View {
                 Spacer()
 
                 VStack(alignment: .leading, spacing: 4) {
+                    
+                    HStack {
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(width: 4, height: 14) // Ajusta el tamaño según necesidad
+
+                        Text(nota.localizador)
+                            .font(.caption)
+                            .foregroundColor(.white)
+                    }
+                   
                     Text(nota.titulo)
                         .font(.headline)
                         .foregroundColor(.white)
                         .shadow(radius: 2)
-
-                    Text(nota.titulo)
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.8))
-                        .shadow(radius: 1)
+                    HStack {
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(width: 4, height: 50)
+                        Text(nota.titulo)
+                            .font(.subheadline)
+                            .foregroundColor(.white.opacity(0.8))
+                            .shadow(radius: 1)
+                    }
                 }
                 .padding()
 
