@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct NewsRow: View {
-    let article: SavedArticle
+    var article: SavedArticle
+
+    //let article: SavedArticle
 
     var body: some View {
+        Text(article.title)
+            .padding()
         HStack(alignment: .top, spacing: 12) {
             // Imagen con ícono de bookmark
             ZStack(alignment: .topTrailing) {

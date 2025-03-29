@@ -3,16 +3,22 @@ import SwiftUI
 struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @ObservedObject var articleViewModel: ArticleViewModel
+    @StateObject var articleActionHelper: ArticleActionHelper // Usamos ArticleActionHelper
+
+    init(viewModel: HomeViewModel, articleViewModel: ArticleViewModel) {
+        self.viewModel = viewModel
+        self.articleViewModel = articleViewModel
+        _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleViewModel)) // Inicializamos el helper
+    }
     
     var body: some View {
-        ForEach(viewModel.secciones.filter { $0.seccion == "México, EUA y Mundo" }, id: \.seccion) { seccion in
-            Section {
-                let notas = seccion.notas ?? []
-             //   TabView {
+        VStack {
+            ForEach(viewModel.secciones.filter { $0.seccion == "México, EUA y Mundo" }, id: \.seccion) { seccion in
+                Section {
+                    let notas = seccion.notas ?? []
                     ForEach(notas, id: \.id) { nota in
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 6) {
-                                // Línea roja antes del texto
                                 HStack {
                                     Rectangle()
                                         .fill(Color.red)
@@ -24,16 +30,15 @@ struct SeccionesHomeView: View {
 
                                     Spacer()
 
-                                    // Botón de menú con los tres puntos
                                     Menu {
                                         Button(action: {
-                                            compartirNota(nota)
+                                            articleActionHelper.compartirNota(nota) // Usamos la función compartirNota del helper
                                         }) {
                                             Label("Compartir", systemImage: "square.and.arrow.up")
                                         }
 
                                         Button(action: {
-                                            guardarNota(nota)
+                                            articleActionHelper.guardarNota(nota) // Usamos la función guardarNota del helper
                                         }) {
                                             Label("Guardar", systemImage: "bookmark")
                                         }
@@ -44,18 +49,15 @@ struct SeccionesHomeView: View {
                                     }
                                 }
 
-                                // Título en negrita
                                 Text(nota.titulo)
                                     .font(.headline)
                                     .foregroundColor(.primary)
                                     .lineLimit(2)
 
-                                // Autor en gris
                                 Text(nota.autor)
                                     .font(.caption)
                                     .foregroundColor(.gray)
 
-                                // Sección en rojo
                                 HStack(spacing: 8) {
                                     Text(seccion.seccion ?? "Siglo")
                                         .foregroundColor(.red)
@@ -69,7 +71,7 @@ struct SeccionesHomeView: View {
                                 if let foto = nota.fotos.first {
                                     FotoView(foto: foto)
                                         .scaledToFill()
-                                        .frame(width: 100, height: 100) // Tamaño cuadrado
+                                        .frame(width: 100, height: 100)
                                         .clipped()
                                         .cornerRadius(8)
                                 }
@@ -79,49 +81,16 @@ struct SeccionesHomeView: View {
                                     .font(.caption)
                                     .padding(4)
                             }
-                            
                         }
                         .padding()
                     }
-                //}
-
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                .frame(height: 160)
+                }
             }
-        }
-
-        // Mostrar los artículos guardados
-        VStack {
-            Text("Artículos Guardados")
-                .font(.headline)
+            
             ForEach(articleViewModel.savedArticles, id: \.title) { article in
-                Text(article.title)
-                    .padding()
+                NewsRow(article: article)  // Pasamos un solo artículo
             }
+
         }
     }
-
-    func compartirNota(_ nota: Nota) {
-        print("Compartir: \(nota.titulo)")
-        // Aquí puedes implementar el sistema de compartir
-    }
-
-    func guardarNota(_ nota: Nota) {
-        print("Guardando nota: \(nota.titulo)")  // Verifica que estás intentando guardar la nota
-
-        // Crear y guardar el artículo
-        let savedArticle = SavedArticle(
-            category: "Nacional",
-            title: nota.titulo,
-            author: nota.autor,
-            location: "Desconocido",
-            time: "Hace 1h",
-            imageName: "ejemplo",
-            description: nil
-        )
-
-        // Guardar el artículo en el ArticleViewModel
-        articleViewModel.saveArticle(savedArticle)
-    }
-
 }

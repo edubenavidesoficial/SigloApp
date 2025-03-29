@@ -1,54 +1,58 @@
-//
-//  ArticleRow.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/14/25.
-//
-
 import SwiftUI
 
 struct SavedView: View {
-    @StateObject var viewModel = ArticleViewModel()
+    @ObservedObject var articleActionHelper: ArticleActionHelper
+    @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var articleViewModel = ArticleViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            // Header fijo
-            if isLoggedIn {
-                // Puedes mostrar info de usuario aquí si está logueado
-            } else {
-                HomeHeaderView()
-            }
-            HStack {
-                ForEach(TabType.allCases, id: \.self) { tab in
-                    Text(tab.rawValue)
-                        .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
-                        .foregroundColor(viewModel.selectedTab == tab ? .red : .black)
-                        .onTapGesture {
-                            viewModel.selectedTab = tab
-                        }
-                    if tab != TabType.allCases.last {
-                        Spacer()
-                    }
-                }
-            }
-            .padding()
-            .background(Color.white)
-            
-            Divider()
+    @State private var token: String? = nil
 
-            ScrollView {
-                VStack(spacing: 24) {
-                    ForEach(viewModel.articlesForCurrentTab()) { article in
-                        ArticleRow(article: article)
-                    }
+    init(articleActionHelper: ArticleActionHelper) {
+        self.articleActionHelper = articleActionHelper
+    }
+
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                if !isLoggedIn {
+                    HomeHeaderView()
                 }
-                .padding(.horizontal)
-                .padding(.top, 10)
+                ScrollView {
+                    VStack(spacing: 0) {
+                        if viewModel.isLoading {
+                            ProgressView("Cargando...")
+                        } else if let errorMessage = viewModel.errorMessage {
+                            Text("Error: \(errorMessage)").foregroundColor(.black)
+                        } else {
+                            ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
+                                let notas = seccion.notas ?? []
+                                TabView {
+                                    ForEach(notas, id: \.id) { nota in
+                                        NoticiaView(nota: nota)
+                                    }
+                                }
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                                .frame(height: 450)
+                            }
+                            SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
+                        }
+                    }
+                    .offset(y: -8)
+                }
             }
-            .background(Color.white)
+            .navigationBarHidden(true)
+            .onAppear {
+                viewModel.cargarPortada()
+            }
+            .task {
+                do {
+                    let generatedToken = try await TokenService.shared.getToken(correoHash: "")
+                    print("✅ Token generado: \(generatedToken)")
+                    token = generatedToken
+                } catch {
+                    print("❌ Error al generar token: \(error.localizedDescription)")
+                }
+            }
         }
-        .navigationTitle("El Siglo de Torreón")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

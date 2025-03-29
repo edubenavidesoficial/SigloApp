@@ -41,7 +41,7 @@ struct HomeHeaderView: View {
                 .frame(height: 0.5)
                 .background(Color.black)
         }
-        .sheet(isPresented: $showMenu) {  // no quiero que abra el modal como una hoja desde abajo quiero que abradesde el lado isquierdo
+        .sheet(isPresented: $showMenu) {
             SideMenuView()
         }
         

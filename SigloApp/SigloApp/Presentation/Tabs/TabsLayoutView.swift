@@ -1,45 +1,41 @@
-//
-//  TabsLayoutView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/11/25.
-//
 import SwiftUI
 
 struct TabsLayoutView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var articleViewModel: ArticleViewModel  // ViewModel principal
+    @StateObject private var articleActionHelper: ArticleActionHelper // Helper con StateObject para gestión de artículos
+
+    init(articleViewModel: ArticleViewModel) {
+        self.articleViewModel = articleViewModel
+        _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleViewModel))
+    }
+
     var body: some View {
-        VStack {
-            HeaderView() {
-                presentationMode.wrappedValue.dismiss()
-            }
+        TabView {
+            HomeView()
+                .tabItem {
+                    Image("ico_siglo")
+                    Text("PORTADA")
+                }
 
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Image("ico_siglo")
-                        Text("PORTADA")
-                    }
+            ImpresoView()
+                .tabItem {
+                    Image("ico_print")
+                    Text("IMPRESO")
+                }
 
-                ImpresoView()
-                    .tabItem {
-                        Image("ico_print")
-                        Text("IMPRESO")
-                    }
+            SavedView(articleActionHelper: articleActionHelper)
+                .tabItem {
+                    Image("ico_save")
+                    Text("GUARDADO")
+                }
 
-                SavedView()
-                    .tabItem {
-                        Image("ico_save")
-                        Text("GUARDADO")
-                    }
-
-                UserView()
-                    .tabItem {
-                        Image("ico_user")
-                        Text("PERFIL")
-                    }
-            }
-            .accentColor(.brown)
+            UserView()
+                .tabItem {
+                    Image("ico_user")
+                    Text("PERFIL")
+                }
         }
+        .accentColor(.brown)
     }
 }
+

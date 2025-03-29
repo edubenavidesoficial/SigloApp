@@ -1,21 +1,16 @@
-//
-//  SigloAppApp.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/9/25.
-//
 import SwiftUI
 
 @main
 struct SigloAppApp: App {
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @StateObject private var articleViewModel = ArticleViewModel()  // Inicializamos el viewModel a nivel de la app
 
     var body: some Scene {
         WindowGroup {
             if isLoggedIn {
-                TabsLayoutView()
+                TabsLayoutView(articleViewModel: articleViewModel)  // Pasamos el viewModel
             } else {
-                TabsHomeLayoutView()
+                TabsHomeLayoutView(articleViewModel: articleViewModel)  // También lo pasamos aquí
             }
         }
     }

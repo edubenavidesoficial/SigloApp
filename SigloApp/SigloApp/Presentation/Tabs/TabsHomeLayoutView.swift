@@ -1,16 +1,16 @@
-//
-//  TabsLayoutView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/11/25.
-//
 import SwiftUI
 
 struct TabsHomeLayoutView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var articleViewModel: ArticleViewModel  // El ViewModel que observamos
+    @StateObject private var articleActionHelper: ArticleActionHelper // Usamos StateObject aquí para mantener el ciclo
+  
+    init(articleViewModel: ArticleViewModel) {
+        self.articleViewModel = articleViewModel
+        _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleViewModel))
+    }
+
     var body: some View {
         VStack {
-
             TabView {
                 HomeView()
                     .tabItem {
@@ -24,7 +24,8 @@ struct TabsHomeLayoutView: View {
                         Text("IMPRESO")
                     }
 
-                SavedView()
+                // Pasar el helper a SavedView
+                SavedView(articleActionHelper: articleActionHelper)
                     .tabItem {
                         Image("ico_save")
                         Text("GUARDADO")

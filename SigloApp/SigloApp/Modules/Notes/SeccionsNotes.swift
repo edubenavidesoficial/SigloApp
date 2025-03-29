@@ -59,14 +59,6 @@ struct SeccionsNotesView: View {
                                             .foregroundColor(.red)
                                             .font(.caption)
                                     }
-                                    // Contenido de la nota (texto largo)
-                                    ScrollView {
-                                        Text(nota.contenido ?? "Contenido no disponible.")
-                                            .font(.body)
-                                            .foregroundColor(.primary)
-                                            .padding(.vertical, 8)
-                                            .lineLimit(nil) // Esto permite que el texto se muestre completo, sin límite de líneas
-                                    }
                                     
                                 }
 
