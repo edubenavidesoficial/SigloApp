@@ -3,8 +3,6 @@ import SwiftUI
 struct NewsRow: View {
     var article: SavedArticle
 
-    //let article: SavedArticle
-
     var body: some View {
         Text(article.title)
             .padding()

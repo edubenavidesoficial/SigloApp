@@ -27,6 +27,6 @@ class ArticleActionHelper: ObservableObject {  // Conforma al protocolo Observab
         )
 
         // Guardamos el artículo usando el articleViewModel
-        articleViewModel.saveArticle(savedArticle)
+      articleViewModel.saveArticle(savedArticle)
     }
 }

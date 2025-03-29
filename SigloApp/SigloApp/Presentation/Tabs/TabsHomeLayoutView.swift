@@ -1,13 +1,7 @@
 import SwiftUI
 
 struct TabsHomeLayoutView: View {
-    @ObservedObject var articleViewModel: ArticleViewModel  // El ViewModel que observamos
-    @StateObject private var articleActionHelper: ArticleActionHelper // Usamos StateObject aquí para mantener el ciclo
-  
-    init(articleViewModel: ArticleViewModel) {
-        self.articleViewModel = articleViewModel
-        _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleViewModel))
-    }
+    @ObservedObject var articleViewModel: ArticleViewModel  // ViewModel que se observa
 
     var body: some View {
         VStack {
@@ -24,8 +18,8 @@ struct TabsHomeLayoutView: View {
                         Text("IMPRESO")
                     }
 
-                // Pasar el helper a SavedView
-                SavedView(articleActionHelper: articleActionHelper)
+                // Solo pasamos `articleViewModel`, eliminando `articleActionHelper`
+                SavedView(articleViewModel: articleViewModel)
                     .tabItem {
                         Image("ico_save")
                         Text("GUARDADO")

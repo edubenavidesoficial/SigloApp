@@ -23,7 +23,7 @@ struct TabsLayoutView: View {
                     Text("IMPRESO")
                 }
 
-            SavedView(articleActionHelper: articleActionHelper)
+            SavedView(articleViewModel: articleViewModel)
                 .tabItem {
                     Image("ico_save")
                     Text("GUARDADO")
