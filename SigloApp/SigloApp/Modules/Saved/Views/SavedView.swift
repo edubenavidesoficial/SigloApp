@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SavedView: View {
-    @ObservedObject var articleViewModel: ArticleViewModel
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     
     var body: some View {
@@ -13,7 +13,6 @@ struct SavedView: View {
                 } else {
                     HomeHeaderView()
                 }
-
                 // Barra de pestañas
                 HStack {
                     ForEach(TabType.allCases, id: \.self) { tab in
@@ -32,11 +31,15 @@ struct SavedView: View {
                 .background(Color.white)
                 
                 Divider()
+                
                 // Mostrar los artículos según la pestaña seleccionada
                 List(articleViewModel.articlesForCurrentTab(), id: \.title) { article in
                     NewsRow(article: article)
                 }
-                .listStyle(PlainListStyle()) // Estilo limpio para la lista
+                .onAppear {
+                    print("🟢 Noticias en SavedView: \(articleViewModel.noticias.map { $0.title })")
+                }
+                .listStyle(PlainListStyle())
             }
             .background(Color.white)
         }

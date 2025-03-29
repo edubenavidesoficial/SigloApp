@@ -1,37 +1,35 @@
 import SwiftUI
 
 struct TabsHomeLayoutView: View {
-    @ObservedObject var articleViewModel: ArticleViewModel  // ViewModel que se observa
+    @ObservedObject var articleViewModel: ArticleViewModel
 
     var body: some View {
-        VStack {
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Image("ico_siglo")
-                        Text("PORTADA")
-                    }
-
-                ImpresoView()
-                    .tabItem {
-                        Image("ico_print")
-                        Text("IMPRESO")
-                    }
-
-                // Solo pasamos `articleViewModel`, eliminando `articleActionHelper`
-                SavedView(articleViewModel: articleViewModel)
-                    .tabItem {
-                        Image("ico_save")
-                        Text("GUARDADO")
-                    }
-
-                ProfileView()
-                    .tabItem {
-                        Image("ico_user")
-                        Text("PERFIL")
-                    }
-            }
-            .accentColor(.brown)
+        TabView {
+            HomeView(articleViewModel: articleViewModel)
+                .tabItem {
+                    Image("ico_siglo")
+                    Text("PORTADA")
+                }
+            
+            ImpresoView()
+                .tabItem {
+                    Image("ico_print")
+                    Text("IMPRESO")
+                }
+            
+            SavedView()
+                .tabItem {
+                    Image("ico_save")
+                    Text("GUARDADO")
+                }
+                .environmentObject(articleViewModel)
+            
+            ProfileView()
+                .tabItem {
+                    Image("ico_user")
+                    Text("PERFIL")
+                }
         }
+        .accentColor(.brown)
     }
 }

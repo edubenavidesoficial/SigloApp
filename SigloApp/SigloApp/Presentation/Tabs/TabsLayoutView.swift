@@ -11,7 +11,7 @@ struct TabsLayoutView: View {
 
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(articleViewModel: articleViewModel)
                 .tabItem {
                     Image("ico_siglo")
                     Text("PORTADA")
@@ -23,11 +23,12 @@ struct TabsLayoutView: View {
                     Text("IMPRESO")
                 }
 
-            SavedView(articleViewModel: articleViewModel)
+            SavedView()
                 .tabItem {
                     Image("ico_save")
                     Text("GUARDADO")
                 }
+                .environmentObject(articleViewModel)
 
             UserView()
                 .tabItem {
