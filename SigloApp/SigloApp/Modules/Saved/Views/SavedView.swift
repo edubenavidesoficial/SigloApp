@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SavedView: View {
     @StateObject var viewModel = ArticleViewModel()
-    @ObservedObject var articleViewModel: ArticleViewModel
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     
     var body: some View {
@@ -42,14 +41,6 @@ struct SavedView: View {
                 VStack(spacing: 24) {
                     ForEach(viewModel.articlesForCurrentTab()) { article in
                         ArticleRow(article: article)
-                    }
-                }
-                VStack {
-                    // Otras vistas aquí...
-
-                    // Mostrar las notas guardadas
-                    List(articleViewModel.savedArticles, id: \.title) { article in
-                        NewsRow(article: article)
                     }
                 }
                 .padding(.horizontal)

@@ -3,12 +3,12 @@ import SwiftUI
 struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @ObservedObject var articleViewModel: ArticleViewModel
-
+    
     var body: some View {
         ForEach(viewModel.secciones.filter { $0.seccion == "México, EUA y Mundo" }, id: \.seccion) { seccion in
             Section {
                 let notas = seccion.notas ?? []
-                TabView {
+             //   TabView {
                     ForEach(notas, id: \.id) { nota in
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 6) {
@@ -79,10 +79,12 @@ struct SeccionesHomeView: View {
                                     .font(.caption)
                                     .padding(4)
                             }
+                            
                         }
                         .padding()
                     }
-                }
+                //}
+
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                 .frame(height: 160)
             }
@@ -105,7 +107,7 @@ struct SeccionesHomeView: View {
     }
 
     func guardarNota(_ nota: Nota) {
-        print("Guardar: \(nota.titulo)")
+        print("Guardando nota: \(nota.titulo)")  // Verifica que estás intentando guardar la nota
 
         // Crear y guardar el artículo
         let savedArticle = SavedArticle(
@@ -121,4 +123,5 @@ struct SeccionesHomeView: View {
         // Guardar el artículo en el ArticleViewModel
         articleViewModel.saveArticle(savedArticle)
     }
+
 }

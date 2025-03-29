@@ -8,7 +8,6 @@ import SwiftUI
 
 struct TabsHomeLayoutView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var articleViewModel = ArticleViewModel()
     var body: some View {
         VStack {
 
@@ -25,7 +24,7 @@ struct TabsHomeLayoutView: View {
                         Text("IMPRESO")
                     }
 
-                SavedView(articleViewModel: articleViewModel)
+                SavedView()
                     .tabItem {
                         Image("ico_save")
                         Text("GUARDADO")

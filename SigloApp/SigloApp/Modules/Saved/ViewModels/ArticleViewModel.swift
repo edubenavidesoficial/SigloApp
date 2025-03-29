@@ -9,10 +9,14 @@ enum TabType: String, CaseIterable {
 class ArticleViewModel: ObservableObject {
     @Published var selectedTab: TabType = .noticias
     @Published var savedArticles: [SavedArticle] = []
+    
+    // Función para agregar una nota guardada
+    func saveArticle(_ article: SavedArticle) {
+        savedArticles.append(article)
+        print("Artículo guardado: \(article.title)")  // Agregar impresión para verificar
+        print("Total de artículos guardados: \(savedArticles.count)")  // Verificar la cantidad de artículos guardados
+    }
 
-    var noticias: [SavedArticle] = [
-        // Puedes agregar algunas noticias predeterminadas si lo deseas
-    ]
 
     var sigloTV: [SavedArticle] = [
         SavedArticle(
@@ -41,15 +45,17 @@ class ArticleViewModel: ObservableObject {
     func articlesForCurrentTab() -> [SavedArticle] {
         switch selectedTab {
         case .noticias:
-            return noticias
+            print("Artículos en noticias: \(savedArticles.count)")  // Imprimir cuántos artículos hay en noticias
+            return savedArticles
         case .sigloTV:
+            print("Artículos en sigloTV: \(sigloTV.count)")  // Imprimir cuántos artículos hay en sigloTV
             return sigloTV
         case .clasificados:
+            print("Artículos en clasificados: \(clasificados.count)")  // Imprimir cuántos artículos hay en clasificados
             return clasificados
         }
     }
-    // Función para agregar una nota guardada
-    func saveArticle(_ article: SavedArticle) {
-        savedArticles.append(article)
-    }
+
 }
+
+
