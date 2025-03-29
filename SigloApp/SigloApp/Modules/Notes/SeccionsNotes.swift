@@ -11,7 +11,7 @@ struct SeccionsNotesView: View {
                 Section {
                     let notas = seccion.notas ?? []
                     
-                   // TabView {
+                    TabView {
                         ForEach(notas, id: \.id) { nota in
                             HStack(alignment: .top, spacing: 12) {
                                 VStack(alignment: .leading, spacing: 6) {
@@ -84,7 +84,7 @@ struct SeccionsNotesView: View {
                             }
                             .padding()
                         }
-                    //}
+                    }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     .frame(height: 180)
                 }
