@@ -9,8 +9,10 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if !isLoggedIn {
+                if isLoggedIn {
                     HomeHeaderView()
+                } else {
+                     HomeView()
                 }
                 ScrollView {
                     VStack(spacing: 0) {

@@ -8,9 +8,10 @@ struct ImpresoView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Mostrar Header solo si no está logueado
-                if !isLoggedIn {
+                if isLoggedIn {
                     HomeHeaderView()
+                } else {
+                     HomeView()
                 }
 
                 // Picker de pestañas
@@ -32,7 +33,6 @@ struct ImpresoView: View {
 
                 Divider()
             }
-            .navigationBarHidden(true)
         }
     }
 }

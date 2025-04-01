@@ -35,6 +35,6 @@ struct PrintCarouselView: View {
             }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-        .frame(height: 500)
+        .frame(height: 470)
     }
 }

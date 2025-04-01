@@ -21,7 +21,6 @@ struct LoginView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HomeHeaderView()
 
             ScrollView(.vertical, showsIndicators: false) {
                 HStack {

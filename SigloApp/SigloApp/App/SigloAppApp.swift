@@ -8,9 +8,9 @@ struct SigloAppApp: App {
     var body: some Scene {
         WindowGroup {
             if isLoggedIn {
-                TabsLayoutView(articleViewModel: articleViewModel)  // Pasamos el viewModel
+                TabsLayoutView(articleViewModel: articleViewModel)
             } else {
-                TabsHomeLayoutView(articleViewModel: articleViewModel)  // También lo pasamos aquí
+                TabsHomeLayoutView(articleViewModel: articleViewModel)
             }
         }
     }

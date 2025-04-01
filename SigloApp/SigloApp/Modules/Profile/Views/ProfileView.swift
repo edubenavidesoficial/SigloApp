@@ -14,13 +14,11 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Header fijo
                 if isLoggedIn {
-                    // Puedes mostrar info de usuario aquí si está logueado
-                } else {
                     HomeHeaderView()
+                } else {
+                     HomeView()
                 }
-
                 ScrollView {
                     VStack(alignment: .leading, spacing: 30) {
                         

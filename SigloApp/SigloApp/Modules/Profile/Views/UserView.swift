@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct UserView: View {
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 20) {
-                    
+                VStack(spacing: 0) {
+                    if isLoggedIn {
+                        HomeHeaderView()
+                    } else {
+                         HomeView()
+                    }
                     // Encabezado
-                    VStack(spacing: 8) {
+                    VStack(spacing: 0) {
                         Image("user")
                             .resizable()
                             .frame(width: 80, height: 80)
@@ -126,7 +132,6 @@ struct UserView: View {
                         .foregroundColor(.gray)
                         .padding(.bottom, 30)
                 }
-                .padding(.top)
             }
         }
     }
