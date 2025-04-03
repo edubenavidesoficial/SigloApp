@@ -39,8 +39,8 @@ class PrintViewModel: ObservableObject {
                     
 
                 case .failure(let error):
-                    print("❌ Error: \(error.localizedDescription)")
-                    self?.errorMessage = "Error al obtener datos: \(error.localizedDescription)"
+                    print("❌ Error al obtener datos: \(error.localizedDescription)")
+                    self?.errorMessage = nil // Evita que se muestre en la UI
                 }
             }
         }

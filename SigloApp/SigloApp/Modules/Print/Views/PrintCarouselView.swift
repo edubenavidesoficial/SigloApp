@@ -1,7 +1,5 @@
 import SwiftUI
 
-import SwiftUI
-
 struct PrintCarouselView: View {
     @ObservedObject var viewModel: PrintViewModel
 
@@ -41,6 +39,7 @@ struct PrintCarouselView: View {
                             .font(.caption2)
                     }
                     .padding(.top, 4)
+                    .padding(.leading, 8) // Se añadió un poco de espacio entre la fecha y el ícono
                 }
             }
         }

@@ -9,7 +9,6 @@ struct ImpresoView: View {
         NavigationView {
             VStack(spacing: 0) {
                 HeaderView(isLoggedIn: isLoggedIn)
-
                 Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
                     ForEach(TabTypetwo.allCases, id: \.self) { tab in
                         Text(tab.rawValue).tag(tab)
@@ -28,6 +27,8 @@ struct ImpresoView: View {
 
                 Divider()
             }
+        }
+        .onAppear { viewModel.fetchNewspaper() // Se recarga cada vez que se entra a la vista
         }
     }
 }
