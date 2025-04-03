@@ -8,12 +8,7 @@ struct ImpresoView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if isLoggedIn {
-                    HomeHeaderView()
-                } else {
-                     HomeView()
-                }
-
+                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                 // Picker de pestañas
                 Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
                     ForEach(TabTypetwo.allCases, id: \.self) { tab in

@@ -14,11 +14,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if isLoggedIn {
-                    HomeHeaderView()
-                } else {
-                     HomeView()
-                }
+                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                 ScrollView {
                     VStack(alignment: .leading, spacing: 30) {
                         

@@ -7,11 +7,7 @@ struct SavedView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if isLoggedIn {
-                    HomeHeaderView()
-                } else {
-                     HomeView()
-                }
+                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                 HStack {
                     ForEach(TabType.allCases, id: \.self) { tab in
                         Text(tab.rawValue)

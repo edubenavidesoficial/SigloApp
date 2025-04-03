@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct UserView: View {
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-    
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+      
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    if isLoggedIn {
-                        HomeHeaderView()
-                    } else {
-                         HomeView()
-                    }
+                    HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                     // Encabezado
                     VStack(spacing: 0) {
                         Image("user")

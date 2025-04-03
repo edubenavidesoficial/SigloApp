@@ -3,19 +3,15 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @StateObject var articleViewModel = ArticleViewModel() // Única instancia para toda la HomeView
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false // Estado de sesión persistente
     @State private var token: String? = nil
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if isLoggedIn {
-                    HomeHeaderView()
-                } else {
-                     HomeView()
-                }
                 ScrollView {
                     VStack(spacing: 0) {
+                        HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                         if viewModel.isLoading {
                             ProgressView("Cargando...")
                         } else if let errorMessage = viewModel.errorMessage {
