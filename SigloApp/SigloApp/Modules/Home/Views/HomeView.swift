@@ -25,7 +25,7 @@ struct HomeView: View {
                                         NoticiaView(nota: nota)
                                     }
                                 }
-                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                                 .frame(height: 450)
                             }
                             // Pasar ambos viewModels a SeccionesHomeView

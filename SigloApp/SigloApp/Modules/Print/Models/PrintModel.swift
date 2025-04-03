@@ -10,6 +10,6 @@ import Foundation
 struct PrintModel: Identifiable {
     let id = UUID()
     let title: String
-    let imageName: String // Nombre de imagen local o URL
+    let imageName: String
     let date: String
 }

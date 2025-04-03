@@ -21,7 +21,7 @@ final class TokenService {
     // Podrías usar inyección de dependencias en lugar de singleton si deseas testear
     static let shared = TokenService()
 
-    private let tokenBaseURL = "https://www.elsiglodetorreon.com.mx/api/app/v1/token/"
+    private let tokenBaseURL = "\(API.baseURL)token/"
     private let userDefaultsTokenKey = "apiToken"
 
     private init() {}

@@ -1,9 +1,4 @@
-//
-//  PrintCa.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/21/25.
-//
+import SwiftUI
 
 import SwiftUI
 
@@ -14,27 +9,42 @@ struct PrintCarouselView: View {
         TabView {
             ForEach(viewModel.articlesForCurrentTab()) { article in
                 VStack {
-                    Image(article.imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .cornerRadius(12)
-                        
+                    // Verifica si la imagen es remota o local
+                    AsyncImage(url: URL(string: article.imageName)) { phase in
+                        if let image = phase.image {
+                            image.resizable()
+                                 .scaledToFit()
+                                 .cornerRadius(12)
+                                 .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5) // Sombreado en la imagen
+                        } else if phase.error != nil {
+                            // Imagen predeterminada si hay un error
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .cornerRadius(12)
+                                .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5) // Sombreado en la imagen
+                        } else {
+                            ProgressView() // Indicador de carga
+                                .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+                        }
+                    }
 
-                    HStack() {
+                    HStack {
                         Text(article.date)
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.gray)
 
-                        Image(systemName: "arrow.down.circle.fill") // Ícono de descarga
+                            .padding(.leading, 2)
+                        // Icono de descarga
+                        Image(systemName: "arrow.down.circle.fill")
                             .foregroundColor(.black)
-                            .font(.caption)
+                            .font(.caption2)
                     }
                     .padding(.top, 4)
                 }
-
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-        .frame(height: 470)
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Eliminar los indicadores de página
+        .frame(height: 470) // Limita la altura total del carrusel
     }
 }

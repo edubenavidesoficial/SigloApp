@@ -20,9 +20,10 @@ class ArticleActionHelper: ObservableObject {  // Conforma al protocolo Observab
             category: "Nacional",
             title: nota.titulo,
             author: nota.autor,
-            location: "Desconocido",
+            location: nota.localizador,
             time: "Hace 1h",
             imageName: "ejemplo",
+            //imageName: nota.fotos.first?.url_foto ?? "ejemplo",
             description: nil
         )
 

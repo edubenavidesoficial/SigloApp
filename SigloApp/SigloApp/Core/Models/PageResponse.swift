@@ -37,3 +37,47 @@ struct Nota: Decodable, Sendable {
     let fotos: [Foto]  // 🔥 Agregamos la propiedad fotos
 }
 
+// MARK: - Modelos de Datos PRINT
+struct NewspaperResponse: Codable {
+    let requestDate: String
+    let response: String
+    let payload: [NewspaperPayload]
+}
+
+struct NewspaperPayload: Codable {
+    let fecha: String
+    let portadas: [Portada]
+}
+
+struct Portada: Codable {
+    var letra: String
+    var cover: String
+    var titulo: String
+    var pagina: Int
+    var paginas: [String]? // Se hace opcional
+}
+
+
+struct NewspaperEdition: Codable {
+    let fecha: String
+    let portadas: [NewspaperCover]
+    let paginas: [String]
+}
+
+struct NewspaperCover: Codable {
+    let letra: String
+    let cover: String
+    let titulo: String
+    let pagina: Int
+}
+
+// MARK: - Manejo de Errores
+enum NetworkError: Error {
+    case invalidURL
+    case noData
+    case invalidResponse
+    case emptyData
+    case missingPayload(String)
+    case decodingError(Error)
+    
+}

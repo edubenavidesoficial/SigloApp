@@ -8,8 +8,8 @@ struct ImpresoView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
-                // Picker de pestañas
+                HeaderView(isLoggedIn: isLoggedIn)
+
                 Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
                     ForEach(TabTypetwo.allCases, id: \.self) { tab in
                         Text(tab.rawValue).tag(tab)
@@ -18,13 +18,13 @@ struct ImpresoView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                // Carrusel
                 PrintCarouselView(viewModel: viewModel)
-
-                // Contenido adicional opcional
-                ScrollView {
-                    // Aquí puedes agregar más vistas si deseas
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage).foregroundColor(.red)
                 }
+
+                ScrollView { }
 
                 Divider()
             }

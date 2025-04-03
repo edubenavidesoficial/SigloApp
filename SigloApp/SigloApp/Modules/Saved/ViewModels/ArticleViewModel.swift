@@ -34,10 +34,10 @@ class ArticleViewModel: ObservableObject {
             let notaGuardada = SavedArticle(
                 category: "Sin datos ahora",
                 title: "\(article.title)",
-                author: "Sin datos ahora",
-                location: "Torreón",
+                author: "\(article.author)",
+                location: "\(article.location)",
                 time: "Hace 2h",
-                imageName: "ejemplo",
+                imageName: "\(article.imageName)",
                 description: "Resumen del video o contenido importante."
             )
             

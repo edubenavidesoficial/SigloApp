@@ -10,9 +10,7 @@ struct NotesView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if !isLoggedIn {
-                    HomeHeaderView()
-                }
+                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
                 ScrollView {
                     VStack(spacing: 0) {
                         if viewModel.isLoading {

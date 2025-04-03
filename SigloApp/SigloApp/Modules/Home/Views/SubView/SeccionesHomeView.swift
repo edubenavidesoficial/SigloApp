@@ -86,11 +86,6 @@ struct SeccionesHomeView: View {
                     }
                 }
             }
-            
-            ForEach(articleViewModel.savedArticles, id: \.title) { article in
-                NewsRow(article: article)  // Pasamos un solo artículo
-            }
-
         }
     }
 }

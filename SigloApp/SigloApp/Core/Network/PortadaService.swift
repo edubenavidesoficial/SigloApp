@@ -15,7 +15,7 @@ final class PortadaService {
     private init() {}
 
     func obtenerPortada(completion: @escaping (Result<[SeccionPortada], Error>) -> Void) {
-        guard let url = URL(string: "https://www.elsiglodetorreon.com.mx/api/app/v1/portada/") else {
+        guard let url = URL(string: "\(API.baseURL)portada/") else {
             print("❌ URL inválida")
             completion(.failure(PortadaServiceError.invalidURL))
             return

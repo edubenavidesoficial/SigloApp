@@ -8,18 +8,45 @@ enum TabTypetwo: String, CaseIterable {
 
 class PrintViewModel: ObservableObject {
     @Published var selectedTab: TabTypetwo = .hemeroteca
-
-    // Simulamos artículos para cada categoría
-    @Published var hemeroteca: [PrintModel] = [
-        PrintModel(title: "Exige INE no frenar elecciones", imageName: "hemeroteca_071024", date: "07/10/2024"),
-        PrintModel(title: "Israel cumple un año en guerra", imageName: "hemeroteca_071024", date: "07/10/2024")
-    ]
-
+    @Published var hemeroteca: [PrintModel] = []
     @Published var suplementos: [PrintModel] = [
         PrintModel(title: "Especial deportivo semanal", imageName: "hemeroteca_071024", date: "06/10/2024"),
         PrintModel(title: "Cultura y arte en La Laguna", imageName: "hemeroteca_071024", date: "06/10/2024")
     ]
+    @Published var errorMessage: String?
 
+    private let printService = PrintService.shared  // Instancia compartida
+
+    init() {
+        fetchNewspaper() // Llamada automática al inicializar el ViewModel
+    }
+
+    /// Función para obtener los datos del periódico
+    func fetchNewspaper() {
+        printService.obtenerPortada { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let payloads):
+                    //print("✅ Respuesta de la API: \(payloads)") // Depuración
+
+                    self?.hemeroteca = payloads.first?.portadas.map { portada in
+                        PrintModel(
+                            title: portada.titulo,
+                            imageName: portada.cover,  // Aquí es donde debes asegurarte de que 'cover' sea una URL válida o una cadena que pueda usarse para cargar la imagen.
+                            date: payloads.first?.fecha ?? "Desconocido"
+                        )
+                    } ?? []
+                    
+
+                case .failure(let error):
+                    print("❌ Error: \(error.localizedDescription)")
+                    self?.errorMessage = "Error al obtener datos: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+
+    /// Obtiene los artículos según la pestaña seleccionada
     func articlesForCurrentTab() -> [PrintModel] {
         switch selectedTab {
         case .hemeroteca:
@@ -29,4 +56,3 @@ class PrintViewModel: ObservableObject {
         }
     }
 }
-

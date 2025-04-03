@@ -53,7 +53,7 @@ final class LoginService {
 
     // Función privada para realizar el login con el token
     private static func loginWithToken(correoHash: String, passwordHash: String, token: String) async throws -> UserPayload {
-        let urlString = "https://www.elsiglodetorreon.com.mx/api/app/v1/login/s/\(correoHash)/\(passwordHash)"
+        let urlString = "\(API.baseURL)login/s/\(correoHash)/\(passwordHash)"
         print("🌐 URL generada: \(urlString)")
         
         guard let url = URL(string: urlString) else {
