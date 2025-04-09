@@ -1,6 +1,7 @@
 import SwiftUI
-
 struct SideMenuView: View {
+    @Binding var selectedOption: MenuOption?
+    @Binding var isMenuOpen: Bool
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
@@ -21,17 +22,17 @@ struct SideMenuView: View {
 
                 // Lista de opciones
                 List {
-                    menuItem(title: "La Laguna", icon: "sun.max")
-                    menuItem(title: "Contenido Patrocinado", icon: "sportscourt")
-                    menuItem(title: "Foquitos", icon: "face.smiling")
-                    menuItem(title: "Economía", icon: "dollarsign.square")
-                    menuItem(title: "México, EUA y Mundo", icon: "flag")
-                    menuItem(title: "El Mundo", icon: "globe")
-                    menuItem(title: "Entretenimiento", icon: "theatermasks")
-                    menuItem(title: "Editorial", icon: "book.closed")
-                    menuItem(title: "Laguna Shop", icon: "cart")
-                    menuItem(title: "Clasificados", icon: "doc.text")
-                    menuItem(title: "Esquelas", icon: "person.text.rectangle")
+                    menuItem(option: .laLaguna)
+                    menuItem(option: .patrocinado)
+                    menuItem(option: .foquitos)
+                    menuItem(option: .economia)
+                    menuItem(option: .mexico)
+                    menuItem(option: .mundo)
+                    menuItem(option: .entretenimiento)
+                    menuItem(option: .editorial)
+                    menuItem(option: .shop)
+                    menuItem(option: .clasificados)
+                    menuItem(option: .esquelas)
                 }
                 .listStyle(PlainListStyle())
 
@@ -76,7 +77,38 @@ struct SideMenuView: View {
                 .padding(.bottom, 5)
         }
     }
+    func menuItem(option: MenuOption) -> some View {
+        Button(action: {
+            selectedOption = option
+            isMenuOpen = false
+        }) {
+            MenuRow(title: option.title, icon: "arrow.forward") // Usa íconos que quieras
+        }
+    }
 }
+
+enum MenuOption: Identifiable {
+    case laLaguna, patrocinado, foquitos, economia, mexico, mundo, entretenimiento, editorial, shop, clasificados, esquelas
+
+    var id: String { title }
+    
+    var title: String {
+        switch self {
+        case .laLaguna: return "La Laguna"
+        case .patrocinado: return "Contenido Patrocinado"
+        case .foquitos: return "Foquitos"
+        case .economia: return "Economía"
+        case .mexico: return "México, EUA y Mundo"
+        case .mundo: return "El Mundo"
+        case .entretenimiento: return "Entretenimiento"
+        case .editorial: return "Editorial"
+        case .shop: return "Laguna Shop"
+        case .clasificados: return "Clasificados"
+        case .esquelas: return "Esquelas"
+        }
+    }
+}
+
 
 // Vista para cada fila del menú
 struct MenuRow: View {

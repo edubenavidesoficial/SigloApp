@@ -2,13 +2,19 @@ import SwiftUI
 
 struct SuplementosView: View {
     @StateObject var viewModel = PrintViewModel()
-    @State private var pushNotificationsEnabled = true
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @State private var pushNotificationsEnabled = true
+    @State private var isMenuOpen: Bool = false
+    @State private var selectedOption: MenuOption? = nil
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                HeaderView(isLoggedIn: isLoggedIn)
+                HeaderView(
+                    selectedOption: $selectedOption,
+                    isMenuOpen: $isMenuOpen,
+                    isLoggedIn: isLoggedIn
+                )
                 Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
                     ForEach(TabTypetwo.allCases, id: \.self) { tab in
                         Text(tab.rawValue).tag(tab)

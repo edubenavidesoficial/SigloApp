@@ -3,12 +3,18 @@ import SwiftUI
 struct CompletView: View {
     @StateObject private var viewModel = HomeViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @State private var isMenuOpen: Bool = false
+    @State private var selectedOption: MenuOption? = nil
     @State private var token: String? = nil
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
+                HeaderView(
+                    selectedOption: $selectedOption,
+                    isMenuOpen: $isMenuOpen,
+                    isLoggedIn: isLoggedIn
+                )
                 ScrollView {
                     VStack(spacing: 16) {
                         if viewModel.isLoading {

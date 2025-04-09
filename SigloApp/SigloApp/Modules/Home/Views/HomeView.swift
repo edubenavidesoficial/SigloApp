@@ -2,40 +2,53 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-    @StateObject var articleViewModel = ArticleViewModel() // Única instancia para toda la HomeView
-    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false // Estado de sesión persistente
+    @StateObject var articleViewModel = ArticleViewModel()
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @State private var isMenuOpen: Bool = false
+    @State private var selectedOption: MenuOption? = nil
     @State private var token: String? = nil
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                ScrollView {
+            ZStack {
+                if let selected = selectedOption {
+                    NotesView(title: selected.title)
+                    .transition(.move(edge: .trailing))
+                }
+                else {
                     VStack(spacing: 0) {
-                        HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
-                        
-                        if viewModel.isLoading {
-                            ProgressView("Cargando...")
-                        } else if let errorMessage = viewModel.errorMessage {
-                            // Mostrar ErrorView con un tipo de error dinámico
-                            ErrorView(errorType: getErrorType(from: errorMessage)) {
-                                viewModel.cargarPortada() // Reintentar carga al presionar el botón
-                            }
-                        } else {
-                            ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
-                                let notas = seccion.notas ?? [] // Asegurarse de que no sea nil
-                                TabView {
-                                    ForEach(notas, id: \.id) { nota in
-                                        NoticiaView(nota: nota)
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                HeaderView(
+                                    selectedOption: $selectedOption,
+                                    isMenuOpen: $isMenuOpen,
+                                    isLoggedIn: isLoggedIn
+                                )
+
+                                if viewModel.isLoading {
+                                    ProgressView("Cargando...")
+                                } else if let errorMessage = viewModel.errorMessage {
+                                    ErrorView(errorType: getErrorType(from: errorMessage)) {
+                                        viewModel.cargarPortada()
                                     }
+                                } else {
+                                    ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
+                                        let notas = seccion.notas ?? []
+                                        TabView {
+                                            ForEach(notas, id: \.id) { nota in
+                                                NoticiaView(nota: nota)
+                                            }
+                                        }
+                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                                        .frame(height: 450)
+                                    }
+                                    SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
+                                    
                                 }
-                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                                .frame(height: 450)
                             }
-                            // Pasar ambos viewModels a SeccionesHomeView
-                            SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
+                            .offset(y: -8)
                         }
                     }
-                    .offset(y: -8)
                 }
             }
             .navigationBarHidden(true)
