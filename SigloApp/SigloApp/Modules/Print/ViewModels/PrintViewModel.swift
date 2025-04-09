@@ -4,14 +4,15 @@ import SwiftUI
 enum TabTypetwo: String, CaseIterable {
     case hemeroteca = "HEMEROTECA EL SIGLO DE TORREÓN"
     case suplementos = "SUPLEMENTOS"
+    case descargas = "MIS DESCARGAS"
 }
 
 class PrintViewModel: ObservableObject {
     @Published var selectedTab: TabTypetwo = .hemeroteca
     @Published var hemeroteca: [PrintModel] = []
     @Published var suplementos: [PrintModel] = [
-        PrintModel(title: "Especial deportivo semanal", imageName: "hemeroteca_071024", date: "06/10/2024"),
-        PrintModel(title: "Cultura y arte en La Laguna", imageName: "hemeroteca_071024", date: "06/10/2024")
+        PrintModel(title: "Especial deportivo semanal", imageName: "ejemplo", date: "06/10/2024"),
+        PrintModel(title: "Cultura y arte en La Laguna", imageName: "ejemplo", date: "06/10/2024")
     ]
     @Published var errorMessage: String?
 
@@ -52,6 +53,8 @@ class PrintViewModel: ObservableObject {
         case .hemeroteca:
             return hemeroteca
         case .suplementos:
+            return suplementos
+        case .descargas:
             return suplementos
         }
     }

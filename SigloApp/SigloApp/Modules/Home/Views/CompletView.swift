@@ -9,14 +9,13 @@ struct CompletView: View {
         NavigationView {
             VStack(spacing: 0) {
                 HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
-
                 ScrollView {
                     VStack(spacing: 16) {
                         if viewModel.isLoading {
                             ProgressView("Cargando noticias...")
                         } else if let errorMessage = viewModel.errorMessage {
                             Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
+                                .foregroundColor(.black)
                         } else {
                             ForEach(viewModel.secciones, id: \.seccion) { seccion in
                                 Section(header: Text(seccion.seccion ?? "Siglo")

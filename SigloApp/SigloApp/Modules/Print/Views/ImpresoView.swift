@@ -9,13 +9,36 @@ struct ImpresoView: View {
         NavigationView {
             VStack(spacing: 0) {
                 HeaderView(isLoggedIn: isLoggedIn)
-                Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
-                    ForEach(TabTypetwo.allCases, id: \.self) { tab in
-                        Text(tab.rawValue).tag(tab)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 20) {
+                        ForEach(TabTypetwo.allCases, id: \.self) { tab in
+                            VStack(spacing: 4) {
+                                Text(tab.rawValue)
+                                
+                                    .font(.title) // o .title, .headline, .largeTitle, etc.
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
+                                    .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
+                                    .foregroundColor(viewModel.selectedTab == tab ? .black : .black)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            viewModel.selectedTab = tab
+                                        }
+                                    }
+
+                                Rectangle()
+                                    .fill(viewModel.selectedTab == tab ? Color.red : Color.clear)
+                                    .frame(height: 2)
+                            }
+                            .padding(.horizontal, 8)
+                        }
                     }
+                    .padding(.horizontal)
                 }
-                .pickerStyle(SegmentedPickerStyle())
                 .padding()
+                .background(Color.white)
+                
+                Divider()
 
                 PrintCarouselView(viewModel: viewModel)
                 

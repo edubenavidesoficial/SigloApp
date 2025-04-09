@@ -1,8 +1,34 @@
-//
-//  SuplementosView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 4/4/25.
-//
+import SwiftUI
 
-import Foundation
+struct SuplementosView: View {
+    @StateObject var viewModel = PrintViewModel()
+    @State private var pushNotificationsEnabled = true
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                HeaderView(isLoggedIn: isLoggedIn)
+                Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
+                    ForEach(TabTypetwo.allCases, id: \.self) { tab in
+                        Text(tab.rawValue).tag(tab)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+
+                PrintCarouselView(viewModel: viewModel)
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage).foregroundColor(.red)
+                }
+
+                ScrollView { }
+
+                Divider()
+            }
+        }
+        .onAppear { viewModel.fetchNewspaper() // Se recarga cada vez que se entra a la vista
+        }
+    }
+}

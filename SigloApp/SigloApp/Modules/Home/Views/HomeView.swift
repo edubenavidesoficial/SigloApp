@@ -12,11 +12,14 @@ struct HomeView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         HeaderView(isLoggedIn: isLoggedIn) // Se actualiza dinámicamente
+                        
                         if viewModel.isLoading {
                             ProgressView("Cargando...")
                         } else if let errorMessage = viewModel.errorMessage {
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.black)
+                            // Mostrar ErrorView con un tipo de error dinámico
+                            ErrorView(errorType: getErrorType(from: errorMessage)) {
+                                viewModel.cargarPortada() // Reintentar carga al presionar el botón
+                            }
                         } else {
                             ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
                                 let notas = seccion.notas ?? [] // Asegurarse de que no sea nil
@@ -48,6 +51,19 @@ struct HomeView: View {
                     print("❌ Error al generar token: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+
+    /// Método para mapear un mensaje de error a un tipo de ErrorType
+    private func getErrorType(from message: String) -> ErrorType {
+        if message.contains("404") {
+            return .notFound
+        } else if message.contains("mantenimiento") {
+            return .maintenance
+        } else if message.contains("conexión") {
+            return .connection
+        } else {
+            return .unexpected
         }
     }
 }

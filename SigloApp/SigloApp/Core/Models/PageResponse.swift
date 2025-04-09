@@ -81,3 +81,20 @@ enum NetworkError: Error {
     case decodingError(Error)
     
 }
+
+struct SuplementoResponse: Codable {
+    let requestDate: String
+    let response: String
+    let payload: [SuplementoPayload]
+    let processingTime: String
+}
+
+struct SuplementoPayload: Codable {
+    let id: Int
+    let titulo: String
+    let ruta: String
+    let fecha: String
+    let portada: String
+    let sitioWeb: String
+    let portadaWeb: Bool
+}
