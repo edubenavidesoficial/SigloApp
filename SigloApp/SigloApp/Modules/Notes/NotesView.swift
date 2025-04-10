@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct NotesView: View {
+    var title: String
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var articleViewModel = ArticleViewModel() // Inicializa ArticleViewModel
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
-    @State private var selectedOption: MenuOption? = nil
+    @Binding var selectedOption: MenuOption?
     @State private var token: String? = nil
-    var title: String
     
     var body: some View {
         NavigationView {
@@ -27,36 +27,11 @@ struct NotesView: View {
                         // Mostrar mensaje de error si hay uno
                         else if let errorMessage = viewModel.errorMessage {
                             Text("Error: \(errorMessage)").foregroundColor(.black)
-                            Button(action: {
-                                withAnimation {
-                                    selectedOption = nil
-                                }
-                            }) {
-                                Text("Regresar")
-                                    .fontWeight(.bold)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.red)
-                                    .cornerRadius(20)
-                            }
                         }
-                        // Si no hay secciones o notas, mostrar el botón de regresar
+                        // Si no hay secciones o notas, mostrar el mensaje correspondiente
                         else if viewModel.secciones.isEmpty {
                             Text("No se encontraron notas.")
                                 .foregroundColor(.black)
-                                .padding()
-                            Button(action: {
-                                withAnimation {
-                                    selectedOption = nil
-                                }
-                            }) {
-                                Text("Regresar")
-                                    .fontWeight(.bold)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.red)
-                                    .cornerRadius(20)
-                            }
                         }
                         // Mostrar las secciones y notas si están disponibles
                         else {

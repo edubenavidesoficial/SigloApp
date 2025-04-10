@@ -12,7 +12,7 @@ struct HomeView: View {
         NavigationView {
             ZStack {
                 if let selected = selectedOption {
-                    NotesView(title: selected.title)
+                    NotesView(title: selected.title, selectedOption: $selectedOption)
                     .transition(.move(edge: .trailing))
                 }
                 else {

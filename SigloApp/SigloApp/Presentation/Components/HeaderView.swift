@@ -15,13 +15,14 @@ struct HeaderView: View {
             // Contenido principal
             VStack(spacing: 0) {
                 HStack {
-                    // Botón de menú
                     Button(action: {
-                        withAnimation {
-                            isMenuOpen.toggle()
-                        }
+                            if selectedOption != nil {
+                                selectedOption = nil // Volver atrás
+                            } else {
+                                isMenuOpen.toggle()
+                            }
                     }) {
-                        Image(systemName: "line.horizontal.3")
+                        Image(systemName: selectedOption != nil ? "chevron.left" : "line.horizontal.3")
                             .imageScale(.large)
                     }
 
@@ -84,20 +85,16 @@ struct HeaderView: View {
                     }
                     .zIndex(1)
             }
+
             // Menú lateral
             if isMenuOpen {
-                            SideMenuView(selectedOption: $selectedOption, isMenuOpen: $isMenuOpen)
-                                .frame(width: 250)
-                                .transition(.move(edge: .leading))
-                                .zIndex(2)
-                        }
+                SideMenuView(selectedOption: $selectedOption, isMenuOpen: $isMenuOpen)
+                    .frame(width: 250)
+                    .transition(.move(edge: .leading))
+                    .zIndex(2)
+            }
 
-                        // Vista de destino a pantalla completa
-                        if let option = selectedOption {
-                            NotesView(title: option.title)
-                                .zIndex(3)
-                                .transition(.move(edge: .trailing))
-                        }
+            // Este código ahora es gestionado por el NavigationView principal
         }
     }
 

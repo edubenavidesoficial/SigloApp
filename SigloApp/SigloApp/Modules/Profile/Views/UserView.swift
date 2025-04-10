@@ -15,7 +15,7 @@ struct UserView: View {
                         isLoggedIn: isLoggedIn
                     )
                     if let selected = selectedOption {
-                        NotesView(title: selected.title)
+                        NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
                     }
                     else {

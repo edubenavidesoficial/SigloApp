@@ -6,19 +6,23 @@ struct SideMenuView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 // Imagen superior (Ejemplo)
-                Image("ejemplo")
+                Image("menu")
                     .resizable()
                     .scaledToFill()
                     .frame(height: 150)
                     .clipped()
                     .padding(.top, 10)
 
-                // Logo de "El Siglo"
-                Image("titulo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 30)
-                    .padding(.horizontal)
+                HStack(spacing: 20) {
+                    Spacer() // Para agregar espacio a la izquierda
+                    Image("logo.youtube").resizable().frame(width: 20, height: 20)
+                    Image("logo.facebook").resizable().frame(width: 20, height: 18)
+                    Image("logo.twitter").resizable().frame(width: 20, height: 20)
+                    Image("logo.instagram").resizable().frame(width: 20, height: 20)
+                    Image("logo.tiktok").resizable().frame(width: 20, height: 20)
+                    Spacer() // Para agregar espacio a la derecha
+                }
+                .padding(.vertical, 5)
 
                 // Lista de opciones
                 List {
@@ -48,7 +52,7 @@ struct SideMenuView: View {
                         print("Suscríbete presionado")
                     }
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 .frame(maxWidth: .infinity)
             }
             .background(Color.white)
@@ -59,8 +63,8 @@ struct SideMenuView: View {
     }
 
     // Función para crear cada elemento del menú
-    func menuItem(title: String, icon: String) -> some View {
-        NavigationLink(destination: NotesView(title: title)) {
+    func menuItem(title: String, icon: String, selectedOption: Binding<MenuOption?>) -> some View {
+        NavigationLink(destination: NotesView(title: title, selectedOption: selectedOption)) {
             MenuRow(title: title, icon: icon)
         }
     }
@@ -73,18 +77,25 @@ struct SideMenuView: View {
                 .foregroundColor(.white)
                 .frame(width: 200, height: 40)
                 .background(Color.red)
-                .cornerRadius(20)
                 .padding(.bottom, 5)
         }
     }
+    // Función para crear cada elemento del menú
     func menuItem(option: MenuOption) -> some View {
         Button(action: {
             selectedOption = option
             isMenuOpen = false
         }) {
-            MenuRow(title: option.title, icon: "arrow.forward") // Usa íconos que quieras
+            HStack {
+                Text(option.title)
+                    .font(.headline)
+                Spacer()
+                Image(systemName: "arrow.right")
+            }
+            .padding(.vertical, 5)
         }
     }
+
 }
 
 enum MenuOption: Identifiable {
