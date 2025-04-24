@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import CryptoKit
 
 // MARK: - Modelo para decodificar la respuesta del token
 struct TokenResponse: Codable {
@@ -18,20 +19,32 @@ enum TokenServiceError: Error {
 
 // MARK: - Servicio de Token
 final class TokenService {
-    // Podrías usar inyección de dependencias en lugar de singleton si deseas testear
     static let shared = TokenService()
 
     private let tokenBaseURL = "\(API.baseURL)token/"
     private let userDefaultsTokenKey = "apiToken"
 
     private init() {}
-    
-    // Agregar esta función dentro de TokenService
+
+    // Generador de firma usando HMAC-SHA256 con clave secreta en base64
+    private func generateSignature(correoHash: String, deviceID: String) -> String {
+        let secretKeyBase64 = "OOs9XwOSIVuP/Xb76M13GsShMGNHrowx2oOVMKGc/1o=" // ¡NO en la app para producción!
+        let message = "\(correoHash)|\(deviceID)"
+        
+        guard let keyData = Data(base64Encoded: secretKeyBase64) else {
+            fatalError("❌ Clave secreta inválida")
+        }
+        
+        let key = SymmetricKey(data: keyData)
+        let signature = HMAC<SHA256>.authenticationCode(for: Data(message.utf8), using: key)
+        return Data(signature).base64EncodedString()
+    }
+
     @MainActor
     func getToken(correoHash: String) async throws -> String {
         let u = correoHash
         let d = UIDevice.current.identifierForVendor?.uuidString ?? "demo_id"
-        let s = "firma_demo" // En producción debería generarse con OpenSSL o backend seguro
+        let s = generateSignature(correoHash: u, deviceID: d)
 
         print("🔐 Solicitando token (async)...")
         print("➡️ URL base: \(tokenBaseURL)")

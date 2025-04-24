@@ -31,7 +31,7 @@ struct UserView: View {
                             Text("Última conexión:")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                            Text("Viernes 18 de octubre 2024 a las 12:15PM")
+                            Text("Viernes 11  de abril 2025 a las 12:15PM")
                                 .font(.subheadline)
                         }
                         .multilineTextAlignment(.center)
