@@ -4,10 +4,6 @@ import CryptoKit
 struct WelcomeView: View {
     @State private var navigateToHome = false
     @AppStorage("authToken") private var authToken: String = ""
-    
-    // Definir correoHash y passwordHash
-    let correoHash = "fd342f795271570137b05f4dc763fb08" // Correo demo hasheado
-    let passwordHash = "5f4dcc3b5aa765d61d8327deb882cf99" // Contraseña demo hasheada (por ejemplo: "password")
 
     var body: some View {
         NavigationStack {
@@ -22,37 +18,31 @@ struct WelcomeView: View {
             }
             .onAppear {
                 Task {
-                    do {
-                        print("Iniciando proceso de login...")
-                        // Realiza el login y usa el valor de retorno
-                        let user = try await LoginService.login(username: correoHash, password: passwordHash)
-                        
-                        // Ahora puedes usar `user` si es necesario
-                        print("Login exitoso para el usuario: \(user.nombre) \(user.apellidos)")
-                        
-                        // Guardar el token en el almacenamiento
-                        if let token = TokenService.shared.getStoredToken() {
-                            authToken = token
-                            print("🔐 Token obtenido y guardado: \(token)")
-                        } else {
-                            print("❌ No se obtuvo el token")
-                        }
-
-                    } catch {
-                        print("❌ Error obteniendo el token o realizando el login: \(error)")
-                    }
-
-                }
-
-                // Navegar a HomeView después de 8 segundos
-                DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-                    print("Navegando a HomeView...")
-                    self.navigateToHome = true
+                    await loginAndNavigate()
                 }
             }
             .navigationDestination(isPresented: $navigateToHome) {
                 HomeView()
             }
         }
+    }
+
+    func loginAndNavigate() async {
+        do {
+            _ = try await LoginService.login(username: "clientesactivos4@gmail.com", password: "@PRUEBAMARIO2024%$")
+            if let token = TokenService.shared.getStoredToken() {
+                authToken = token
+                print("🔐 Token obtenido y guardado: \(token)")
+            } else {
+                print("❌ No se obtuvo el token")
+            }
+
+        } catch {
+            print("❌ Error obteniendo: \(error)")
+        }
+
+        // Esperar 8 segundos antes de navegar
+        try? await Task.sleep(nanoseconds: 8_000_000_000)
+        navigateToHome = true
     }
 }
