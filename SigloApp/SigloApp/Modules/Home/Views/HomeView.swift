@@ -27,7 +27,6 @@ struct HomeView: View {
                                 )
 
                                 if viewModel.isLoading && viewModel.secciones.isEmpty {
-                                    ProgressView("Cargando...")
                                 } else if let errorMessage = viewModel.errorMessage {
                                     ErrorView(errorType: getErrorType(from: errorMessage)) {
                                         viewModel.cargarPortada()
