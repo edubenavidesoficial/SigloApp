@@ -29,7 +29,7 @@ struct WelcomeView: View {
 
     func loginAndNavigate() async {
         do {
-            _ = try await LoginService.login(username: "clientesactivos4@gmail.com", password: "@PRUEBAMARIO2024%$")
+            _ = try await LoginService.login(username: "", password: "")
             if let token = TokenService.shared.getStoredToken() {
                 authToken = token
                 print("🔐 Token obtenido y guardado: \(token)")
