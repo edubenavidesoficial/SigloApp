@@ -157,7 +157,7 @@ struct NotaImageView: View {
             }
 
             Label("07:35 hrs", systemImage: "clock")
-                .foregroundColor(.secondary)
+                .foregroundColor(.white)
                 .font(.caption)
                 .padding(4)
         }
