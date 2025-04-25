@@ -15,16 +15,22 @@ enum TokenServiceError: Error {
     case invalidURL
     case noData
     case decodingError(Error)
+    case networkError(Error)
 }
 
-// MARK: - Servicio de Token
 final class TokenService {
     static let shared = TokenService()
 
     private let tokenBaseURL = "\(API.baseURL)token/"
     private let userDefaultsTokenKey = "apiToken"
+    private let userDefaultsCorreoHashKey = "correoHash"  // Agregar clave para correoHash
 
     private init() {}
+
+    // Método para obtener el correo hash almacenado
+    func getStoredCorreoHash() -> String? {
+        return UserDefaults.standard.string(forKey: userDefaultsCorreoHashKey)
+    }
 
     // Generador de firma usando HMAC-SHA256 con clave secreta en base64
     private func generateSignature(correoHash: String, deviceID: String) -> String {

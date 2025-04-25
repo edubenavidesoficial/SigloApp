@@ -7,15 +7,16 @@ struct HomeView: View {
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
     @State private var token: String? = nil
+    @State private var didLoad: Bool = false
+    @State private var showTokenError = false
 
     var body: some View {
         NavigationView {
             ZStack {
                 if let selected = selectedOption {
                     NotesView(title: selected.title, selectedOption: $selectedOption)
-                    .transition(.move(edge: .trailing))
-                }
-                else {
+                        .transition(.move(edge: .trailing))
+                } else {
                     VStack(spacing: 0) {
                         ScrollView {
                             VStack(spacing: 0) {
@@ -25,7 +26,7 @@ struct HomeView: View {
                                     isLoggedIn: isLoggedIn
                                 )
 
-                                if viewModel.isLoading {
+                                if viewModel.isLoading && viewModel.secciones.isEmpty {
                                     ProgressView("Cargando...")
                                 } else if let errorMessage = viewModel.errorMessage {
                                     ErrorView(errorType: getErrorType(from: errorMessage)) {
@@ -42,8 +43,26 @@ struct HomeView: View {
                                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                                         .frame(height: 450)
                                     }
+
                                     SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
-                                    
+
+                                    // Indicador de carga al final
+                                    if viewModel.isLoading {
+                                        ProgressView("Cargando más...")
+                                            .padding()
+                                    }
+
+                                    // Detector para cargar más al llegar al final
+                                    GeometryReader { geometry in
+                                        Color.clear
+                                            .onAppear {
+                                                let screenHeight = UIScreen.main.bounds.height
+                                                if geometry.frame(in: .global).maxY < screenHeight + 100 {
+                                                    viewModel.cargarPortada()
+                                                }
+                                            }
+                                    }
+                                    .frame(height: 50)
                                 }
                             }
                             .offset(y: -8)
@@ -53,15 +72,24 @@ struct HomeView: View {
             }
             .navigationBarHidden(true)
             .onAppear {
-                viewModel.cargarPortada()
+                if !didLoad {
+                    viewModel.cargarPortada()
+                    didLoad = true
+                }
             }
             .task {
-                do {
-                    let generatedToken = try await TokenService.shared.getToken(correoHash: "")
-                    print("✅ Token generado: \(generatedToken)")
-                    token = generatedToken
-                } catch {
-                    print("❌ Error al generar token: \(error.localizedDescription)")
+                if !didLoad {
+                    do {
+                        let correoHash = TokenService.shared.getStoredCorreoHash() ?? ""
+                        let generatedToken = try await TokenService.shared.getToken(correoHash: correoHash)
+                        print("✅ Token generado: \(generatedToken)")
+                        token = generatedToken
+                        viewModel.cargarPortada()
+                        didLoad = true
+                    } catch {
+                        print("❌ Error al generar token: \(error.localizedDescription)")
+                        showTokenError = true
+                    }
                 }
             }
         }
