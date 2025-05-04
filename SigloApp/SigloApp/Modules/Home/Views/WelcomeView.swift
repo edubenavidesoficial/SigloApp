@@ -1,28 +1,20 @@
 import SwiftUI
-import CryptoKit
 
 struct WelcomeView: View {
-    @State private var navigateToHome = false
-    @AppStorage("authToken") private var authToken: String = ""
+    @Binding var navigateToPromo: Bool
+    @Binding var authToken: String
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.white
-                    .edgesIgnoringSafeArea(.all)
-
-                Image("inicio")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            }
-            .onAppear {
-                Task {
-                    await loginAndNavigate()
-                }
-            }
-            .navigationDestination(isPresented: $navigateToHome) {
-                HomeView()
+        ZStack {
+            Color.white.ignoresSafeArea()
+            Image("inicio")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+        }
+        .onAppear {
+            Task {
+                await loginAndNavigate()
             }
         }
     }
@@ -36,13 +28,12 @@ struct WelcomeView: View {
             } else {
                 print("❌ No se obtuvo el token")
             }
-
         } catch {
             print("❌ Error obteniendo: \(error)")
         }
 
-        // Esperar 8 segundos antes de navegar
+        // Esto se usará si quieres cambiar a promo antes del delay central
         try? await Task.sleep(nanoseconds: 8_000_000_000)
-        navigateToHome = true
+        navigateToPromo = true
     }
 }

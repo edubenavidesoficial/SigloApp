@@ -31,7 +31,7 @@ struct ImpresoView: View {
                                             .lineLimit(1)
                                             .minimumScaleFactor(0.5)
                                             .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
-                                            .foregroundColor(viewModel.selectedTab == tab ? .black : .black)
+                                            .foregroundColor(.primary)
                                             .onTapGesture {
                                                 withAnimation {
                                                     viewModel.selectedTab = tab
@@ -48,7 +48,7 @@ struct ImpresoView: View {
                             .padding(.horizontal)
                         }
                         .padding()
-                        .background(Color.white)
+                        .background(Color(.systemBackground))
                         
                         Divider()
                         

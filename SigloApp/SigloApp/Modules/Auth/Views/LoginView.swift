@@ -178,7 +178,7 @@ struct LoginView: View {
         }
     }
     @MainActor
-    func login() {
+    /*func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -202,8 +202,8 @@ struct LoginView: View {
             isLoading = false
             showAlert = true
         }
-    }
-    /*func login() {
+    }*/
+    func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -227,6 +227,6 @@ struct LoginView: View {
             isLoading = false
             showAlert = true
         }
-    }*/
+    }
 
 }

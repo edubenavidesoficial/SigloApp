@@ -1,10 +1,3 @@
-//
-//  ProfileView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 3/12/25.
-//
-
 import SwiftUI
 
 struct ProfileView: View {
@@ -12,7 +5,6 @@ struct ProfileView: View {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
-    
     
     var body: some View {
         NavigationView {
@@ -34,8 +26,11 @@ struct ProfileView: View {
                             VStack(alignment: .leading, spacing: 16) {
                                 SectionHeader(title: "CUENTA")
                                 NavigationRow(title: "Iniciar sesión", destination: LoginView())
-                                NavigationRow<EmptyView>(title: "Crear cuenta")
-                                
+                                NavigationRow(title: "Crear cuenta", destination:
+                                    WebView(url: URL(string: "https://www.elsiglodetorreon.com.mx/login/")!)
+                                        .navigationTitle("Crear cuenta")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                )
                             }
                             
                             // Sección: Preferencias
@@ -47,12 +42,8 @@ struct ProfileView: View {
                                     description: "Configura si quieres recibir alerta de El Siglo de Torreón",
                                     isOn: $pushNotificationsEnabled
                                 )
-                                
-                                NavigationRow<EmptyView>(
-                                    title: "Apariencia",
-                                    trailing: AnyView(Text("AUTOMÁTICO").foregroundColor(.gray))
-                                )
-                                NavigationRow<EmptyView>(title: "Menú superior")
+                                NavigationRow(title: "Apariencia", destination: ThemeView())
+                                NavigationRow(title: "Menú superior", destination: MenuTopView())
                             }
                             
                             // Sección: General
@@ -64,7 +55,7 @@ struct ProfileView: View {
                                 NavigationRow<EmptyView>(title: "Califica nuestra APP")
                             }
                             
-                            // Redes sociales
+                            // Redes sociales.
                             HStack(spacing: 20) {
                                 Image("logo.youtube").resizable().frame(width: 20, height: 20)
                                 Image("logo.facebook").resizable().frame(width: 20, height: 18)
@@ -78,7 +69,7 @@ struct ProfileView: View {
                             
                             Text("CÍA. EDITORA DE LA LAGUNA S.A. DE C.V.")
                                 .font(.caption2)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary) // Cambia de color con el tema
                                 .frame(maxWidth: .infinity)
                                 .multilineTextAlignment(.center)
                                 .padding(.bottom, 10)
@@ -91,8 +82,7 @@ struct ProfileView: View {
                 }
                 .navigationBarHidden(true)
             }
+            .background(Color(.systemBackground)) // Fondo que cambia según el tema
         }
-        
     }
 }
-

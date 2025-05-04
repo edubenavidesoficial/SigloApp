@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct FixView: View {
     @State private var navigateToPromo = false
     @State private var navigateToHome = false
     @AppStorage("authToken") private var authToken: String = ""
