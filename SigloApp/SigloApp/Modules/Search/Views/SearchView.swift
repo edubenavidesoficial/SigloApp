@@ -65,9 +65,3 @@ struct SearchView: View {
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
     }
 }
-
-#Preview {
-    NavigationStack {
-        SearchView()
-    }
-}
