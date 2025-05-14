@@ -3,6 +3,8 @@ import SwiftUI
 struct ProfileView: View {
     @State private var pushNotificationsEnabled = true
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @State private var showRatingSheet = false
+    @State private var rating: Int = 0
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
     
@@ -49,11 +51,76 @@ struct ProfileView: View {
                             // Sección: General
                             VStack(alignment: .leading, spacing: 16) {
                                 SectionHeader(title: "GENERAL")
-                                NavigationRow<EmptyView>(title: "Condiciones del Servicio")
-                                NavigationRow<EmptyView>(title: "Política de Privacidad")
-                                NavigationRow<EmptyView>(title: "Reportar un problema")
-                                NavigationRow<EmptyView>(title: "Califica nuestra APP")
+                                
+                                NavigationRow(title: "Condiciones del Servicio", destination:
+                                    WebView(url: URL(string: "https://www.elsiglodetorreon.com.mx/archivos/terminos/")!)
+                                        .navigationTitle("Condiciones del Servicio")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                )
+                                
+                                NavigationRow(title: "Política de Privacidad", destination:
+                                    WebView(url: URL(string: "https://www.elsiglodetorreon.com.mx/archivos/privacidad/")!)
+                                        .navigationTitle("Política de Privacidad")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                )
+                                
+                                NavigationRow(title: "Reportar un problema", destination:
+                                    WebView(url: URL(string: "https://www.elsiglodetorreon.com.mx/contacto/")!)
+                                        .navigationTitle("Reportar un problema")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                )
+                                
+                                Button(action: {
+                                    showRatingSheet = true
+                                }) {
+                                    HStack {
+                                        Text("Califica nuestra APP")
+                                            .foregroundColor(.primary)
+                                        Spacer(minLength: 3)
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding(.vertical, 2)
+                                    .contentShape(Rectangle())
+                                }
+
                             }
+
+                            .sheet(isPresented: $showRatingSheet) {
+                                VStack(spacing: 20) {
+                                    Text("Califica nuestra APP")
+                                        .font(.headline)
+
+                                    // Mostrar estrellas
+                                    HStack {
+                                        ForEach(1...5, id: \.self) { index in
+                                            Image(systemName: index <= rating ? "star.fill" : "star")
+                                                .resizable()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(.yellow)
+                                                .onTapGesture {
+                                                    rating = index
+                                                }
+                                        }
+                                    }
+
+                                    HStack(spacing: 30) {
+                                        Button("Cancelar") {
+                                            showRatingSheet = false
+                                        }
+                                        .foregroundColor(.red)
+
+                                        Button("Enviar") {
+                                            // Aquí podrías enviar la calificación al servidor
+                                            print("Rating enviado: \(rating) estrellas")
+                                            showRatingSheet = false
+                                        }
+                                        .foregroundColor(.blue)
+                                    }
+                                }
+                                .padding()
+                            }
+
                             
                             // Redes sociales.
                             HStack(spacing: 20) {
