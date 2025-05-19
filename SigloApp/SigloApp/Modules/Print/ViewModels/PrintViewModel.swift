@@ -10,10 +10,7 @@ enum TabTypetwo: String, CaseIterable {
 class PrintViewModel: ObservableObject {
     @Published var selectedTab: TabTypetwo = .hemeroteca
     @Published var hemeroteca: [PrintModel] = []
-    @Published var suplementos: [PrintModel] = [
-        PrintModel(title: "Especial deportivo semanal", imageName: "ejemplo", date: "06/10/2024"),
-        PrintModel(title: "Cultura y arte en La Laguna", imageName: "ejemplo", date: "06/10/2024")
-    ]
+    @Published var suplementos: [SuplementsModel] = []
     @Published var errorMessage: String?
 
     private let printService = PrintService.shared  // Instancia compartida
@@ -47,15 +44,12 @@ class PrintViewModel: ObservableObject {
         }
     }
 
-    /// Obtiene los artículos según la pestaña seleccionada
-    func articlesForCurrentTab() -> [PrintModel] {
+    func printArticlesForCurrentTab() -> [PrintModel] {
         switch selectedTab {
         case .hemeroteca:
             return hemeroteca
-        case .suplementos:
-            return suplementos
-        case .descargas:
-            return suplementos
+        default:
+            return []
         }
     }
 }

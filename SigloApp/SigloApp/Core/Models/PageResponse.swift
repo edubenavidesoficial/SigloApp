@@ -82,11 +82,17 @@ enum NetworkError: Error {
     
 }
 
+// MARK: - Respuesta general del API
 struct SuplementoResponse: Codable {
     let requestDate: String
     let response: String
     let payload: [SuplementoPayload]
-    let processingTime: String
+
+    enum CodingKeys: String, CodingKey {
+        case requestDate = "request_date"
+        case response
+        case payload
+    }
 }
 
 struct SuplementoPayload: Codable {
@@ -97,4 +103,14 @@ struct SuplementoPayload: Codable {
     let portada: String
     let sitioWeb: String
     let portadaWeb: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case titulo
+        case ruta
+        case fecha
+        case portada
+        case sitioWeb = "sitio_web"
+        case portadaWeb = "portada_web"
+    }
 }

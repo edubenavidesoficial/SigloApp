@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */; };
+		C008A8EE2DD52F7100E74F88 /* SuplementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */; };
+		C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */; };
 		C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05094C72D7E87CB00938043 /* SigloAppApp.swift */; };
 		C05094CC2D7E87CF00938043 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CB2D7E87CF00938043 /* Assets.xcassets */; };
 		C05094CF2D7E87CF00938043 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CE2D7E87CF00938043 /* Preview Assets.xcassets */; };
@@ -49,7 +52,7 @@
 		C0833DFC2DBC3C57009C784C /* fixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0833DFB2DBC3C57009C784C /* fixView.swift */; };
 		C0833DFF2DBC3FB5009C784C /* WebWiew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0833DFE2DBC3FB5009C784C /* WebWiew.swift */; };
 		C0833E012DBC4074009C784C /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0833E002DBC4074009C784C /* ThemeView.swift */; };
-		C0AA0D802DA08179005C23FD /* SuplementosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D7F2DA08178005C23FD /* SuplementosView.swift */; };
+		C0AA0D802DA08179005C23FD /* SuplementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D7F2DA08178005C23FD /* SuplementsView.swift */; };
 		C0AA0D822DA0820F005C23FD /* SuplementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D812DA0820F005C23FD /* SuplementsService.swift */; };
 		C0AA0D842DA08374005C23FD /* SuplementsCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D832DA08374005C23FD /* SuplementsCarouselView.swift */; };
 		C0ABDB3D2D80638E00ABFA77 /* PortadaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ABDB3C2D80638E00ABFA77 /* PortadaService.swift */; };
@@ -99,6 +102,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsModel.swift; sourceTree = "<group>"; };
+		C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsViewModel.swift; sourceTree = "<group>"; };
+		C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescargasView.swift; sourceTree = "<group>"; };
 		C05094C42D7E87CB00938043 /* SigloApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SigloApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05094C72D7E87CB00938043 /* SigloAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigloAppApp.swift; sourceTree = "<group>"; };
 		C05094CB2D7E87CF00938043 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -144,7 +150,7 @@
 		C0833DFB2DBC3C57009C784C /* fixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fixView.swift; sourceTree = "<group>"; };
 		C0833DFE2DBC3FB5009C784C /* WebWiew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebWiew.swift; sourceTree = "<group>"; };
 		C0833E002DBC4074009C784C /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
-		C0AA0D7F2DA08178005C23FD /* SuplementosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementosView.swift; sourceTree = "<group>"; };
+		C0AA0D7F2DA08178005C23FD /* SuplementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsView.swift; sourceTree = "<group>"; };
 		C0AA0D812DA0820F005C23FD /* SuplementsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsService.swift; sourceTree = "<group>"; };
 		C0AA0D832DA08374005C23FD /* SuplementsCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsCarouselView.swift; sourceTree = "<group>"; };
 		C0ABDB3C2D80638E00ABFA77 /* PortadaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortadaService.swift; sourceTree = "<group>"; };
@@ -374,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				C08067BA2D8D927400B17D41 /* PrintViewModel.swift */,
+				C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -382,6 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				C08067BD2D8D95EA00B17D41 /* PrintModel.swift */,
+				C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -392,7 +400,8 @@
 				C0ECA2322D81B0B400CAB3A0 /* ImpresoView.swift */,
 				C08067BF2D8D964B00B17D41 /* PrintCarouselView.swift */,
 				C0AA0D832DA08374005C23FD /* SuplementsCarouselView.swift */,
-				C0AA0D7F2DA08178005C23FD /* SuplementosView.swift */,
+				C0AA0D7F2DA08178005C23FD /* SuplementsView.swift */,
+				C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -675,8 +684,10 @@
 				C05094D42D7E87CF00938043 /* SigloApp.xcdatamodeld in Sources */,
 				C08067B62D8D10A500B17D41 /* SessionManager.swift in Sources */,
 				C0833E012DBC4074009C784C /* ThemeView.swift in Sources */,
+				C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */,
 				C0512F522D95E1A9008CD40D /* NoticiaView.swift in Sources */,
 				C0ECA2372D81B0F500CAB3A0 /* ProfileView.swift in Sources */,
+				C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */,
 				C075CC9B2D83FE4200B95F69 /* ToggleRow.swift in Sources */,
 				C0602B752D812239009D53DC /* HeaderView.swift in Sources */,
 				C0ABDB3D2D80638E00ABFA77 /* PortadaService.swift in Sources */,
@@ -698,8 +709,9 @@
 				C0ECA2352D81B0DB00CAB3A0 /* SavedView.swift in Sources */,
 				C0ECA2332D81B0B400CAB3A0 /* ImpresoView.swift in Sources */,
 				C0833DF62DBB2603009C784C /* WelcomeView.swift in Sources */,
+				C008A8EE2DD52F7100E74F88 /* SuplementsViewModel.swift in Sources */,
 				C075CCAC2D84547F00B95F69 /* SavedArticle.swift in Sources */,
-				C0AA0D802DA08179005C23FD /* SuplementosView.swift in Sources */,
+				C0AA0D802DA08179005C23FD /* SuplementsView.swift in Sources */,
 				C075CC992D83FDFA00B95F69 /* NavigationRow..swift in Sources */,
 				C0833DFC2DBC3C57009C784C /* fixView.swift in Sources */,
 				C075CCB12D84564300B95F69 /* ArticleRow.swift in Sources */,

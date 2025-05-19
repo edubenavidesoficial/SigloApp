@@ -1,28 +1,27 @@
 import SwiftUI
 
 struct SuplementsCarouselView: View {
-    @ObservedObject var viewModel: PrintViewModel
+    @ObservedObject var viewModel: SuplementsViewModel
 
     var body: some View {
         TabView {
-            ForEach(viewModel.articlesForCurrentTab()) { article in
+            ForEach(viewModel.suplementsForCurrentTab()) { article in
                 VStack {
-                    // Verifica si la imagen es remota o local
                     AsyncImage(url: URL(string: article.imageName)) { phase in
                         if let image = phase.image {
                             image.resizable()
                                  .scaledToFit()
                                  .cornerRadius(12)
-                                 .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5) // Sombreado en la imagen
+                                 .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5)
                         } else if phase.error != nil {
-                            // Imagen predeterminada si hay un error
-                            Image(systemName: "exclamationmark.triangle.fill")
+                            Image("logo")
                                 .resizable()
                                 .scaledToFit()
                                 .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5) // Sombreado en la imagen
+                                .frame(height: 100)
+                                .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5)
                         } else {
-                            ProgressView() // Indicador de carga
+                            ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: .gray))
                         }
                     }
@@ -31,19 +30,42 @@ struct SuplementsCarouselView: View {
                         Text(article.date)
                             .font(.caption2)
                             .foregroundColor(.gray)
-
                             .padding(.leading, 2)
-                        // Icono de descarga
                         Image(systemName: "arrow.down.circle.fill")
                             .foregroundColor(.black)
                             .font(.caption2)
                     }
                     .padding(.top, 4)
-                    .padding(.leading, 8) // Se añadió un poco de espacio entre la fecha y el ícono
+                    .padding(.leading, 8)
                 }
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Eliminar los indicadores de página
-        .frame(height: 470) // Limita la altura total del carrusel
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .frame(height: 470)
+        VStack {
+            Text("Total: \(viewModel.suplementsForCurrentTab().count)")
+                .foregroundColor(.blue)
+                .padding()
+
+            TabView {
+                ForEach(viewModel.suplementsForCurrentTab()) { article in
+                    VStack {
+                        AsyncImage(url: URL(string: article.imageName)) { phase in
+                            if let image = phase.image {
+                                image.resizable()
+                                     .scaledToFit()
+                            } else if phase.error != nil {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        Text(article.title)
+                        Text(article.date)
+                    }
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        }
     }
 }

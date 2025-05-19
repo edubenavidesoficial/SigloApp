@@ -1,40 +1,26 @@
 import SwiftUI
 
-struct SuplementosView: View {
-    @StateObject var viewModel = PrintViewModel()
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-    @State private var pushNotificationsEnabled = true
-    @State private var isMenuOpen: Bool = false
-    @State private var selectedOption: MenuOption? = nil
-
+struct SuplementsView: View {
+    @StateObject var viewModel = SuplementsViewModel()
+    
     var body: some View {
-        NavigationView {
+        ScrollView {
             VStack(spacing: 0) {
-                HeaderView(
-                    selectedOption: $selectedOption,
-                    isMenuOpen: $isMenuOpen,
-                    isLoggedIn: isLoggedIn
-                )
-                Picker("Selecciona una pestaña", selection: $viewModel.selectedTab) {
-                    ForEach(TabTypetwo.allCases, id: \.self) { tab in
-                        Text(tab.rawValue).tag(tab)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-
-                PrintCarouselView(viewModel: viewModel)
+                Divider()
+                
+                SuplementsCarouselView(viewModel: viewModel)
                 
                 if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage).foregroundColor(.red)
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
                 }
-
-                ScrollView { }
 
                 Divider()
             }
         }
-        .onAppear { viewModel.fetchNewspaper() // Se recarga cada vez que se entra a la vista
+        .onAppear {
+            viewModel.fetchSuplementos()
         }
     }
 }
