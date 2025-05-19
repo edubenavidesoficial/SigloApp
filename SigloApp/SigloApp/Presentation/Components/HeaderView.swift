@@ -9,6 +9,7 @@ struct HeaderView: View {
 
     @State private var showMenu = false
     @State private var showLogoutAlert = false
+    @State private var isSearchViewPresented = false // Para presentar la SearchView
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -16,11 +17,11 @@ struct HeaderView: View {
             VStack(spacing: 0) {
                 HStack {
                     Button(action: {
-                            if selectedOption != nil {
-                                selectedOption = nil // Volver atrás
-                            } else {
-                                isMenuOpen.toggle()
-                            }
+                        if selectedOption != nil {
+                            selectedOption = nil // Volver atrás
+                        } else {
+                            isMenuOpen.toggle()
+                        }
                     }) {
                         Image(systemName: selectedOption != nil ? "chevron.left" : "line.horizontal.3")
                             .imageScale(.large)
@@ -57,11 +58,14 @@ struct HeaderView: View {
                     } else {
                         // Si no está logueado, muestra el icono de búsqueda
                         Button(action: {
-                            // Acción de búsqueda
+                            isSearchViewPresented = true
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .font(.title2)
                                 .foregroundColor(.black)
+                        }
+                        .sheet(isPresented: $isSearchViewPresented) {
+                            SearchView()
                         }
                     }
                 }

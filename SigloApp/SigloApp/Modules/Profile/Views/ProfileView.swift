@@ -46,6 +46,7 @@ struct ProfileView: View {
                                 )
                                 NavigationRow(title: "Apariencia", destination: ThemeView())
                                 NavigationRow(title: "Menú superior", destination: MenuTopView())
+                                NavigationRow(title: "Tamano de letra", destination: FontSizeView())
                             }
                             
                             // Sección: General

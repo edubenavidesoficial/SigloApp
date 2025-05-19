@@ -99,7 +99,8 @@ struct UserView: View {
                                 .padding()
                             }
                             Divider()
-                            NavigationLink(destination: Text("Mis comentarios")) {
+                           
+                            NavigationLink(destination: CommentsView()) {
                                 HStack {
                                     Text("Mis comentarios")
                                     Spacer()
