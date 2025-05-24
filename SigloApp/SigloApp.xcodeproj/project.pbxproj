@@ -59,6 +59,12 @@
 		C0ABDB432D80643400ABFA77 /* TabsLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ABDB422D80643400ABFA77 /* TabsLayoutView.swift */; };
 		C0ADC14B2DDBF34E00BBE470 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC14A2DDBF34E00BBE470 /* CommentsView.swift */; };
 		C0ADC14D2DDBF37D00BBE470 /* FontSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC14C2DDBF37D00BBE470 /* FontSizeView.swift */; };
+		C0ADC14F2DDC211700BBE470 /* FrontMenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC14E2DDC211700BBE470 /* FrontMenuService.swift */; };
+		C0ADC1512DDC21CD00BBE470 /* FrontContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC1502DDC21CD00BBE470 /* FrontContentService.swift */; };
+		C0ADC1532DDC27C900BBE470 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC1522DDC27C900BBE470 /* SearchService.swift */; };
+		C0ADC1562DDC287000BBE470 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC1552DDC287000BBE470 /* SearchViewModel.swift */; };
+		C0ADC1592DDE9BAB00BBE470 /* PrintViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC1582DDE9BAB00BBE470 /* PrintViewerView.swift */; };
+		C0ADC15B2DDECA1A00BBE470 /* TabVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ADC15A2DDECA1A00BBE470 /* TabVisibility.swift */; };
 		C0C05A3F2D84A63500D363F1 /* FotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C05A3E2D84A63500D363F1 /* FotoView.swift */; };
 		C0C05A412D84AE7100D363F1 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C05A402D84AE7100D363F1 /* LoginService.swift */; };
 		C0DF4FB02D978A420065D1F0 /* ArticleActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DF4FAF2D978A420065D1F0 /* ArticleActionHelper.swift */; };
@@ -159,6 +165,12 @@
 		C0ABDB422D80643400ABFA77 /* TabsLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsLayoutView.swift; sourceTree = "<group>"; };
 		C0ADC14A2DDBF34E00BBE470 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C0ADC14C2DDBF37D00BBE470 /* FontSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizeView.swift; sourceTree = "<group>"; };
+		C0ADC14E2DDC211700BBE470 /* FrontMenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontMenuService.swift; sourceTree = "<group>"; };
+		C0ADC1502DDC21CD00BBE470 /* FrontContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontContentService.swift; sourceTree = "<group>"; };
+		C0ADC1522DDC27C900BBE470 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		C0ADC1552DDC287000BBE470 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		C0ADC1582DDE9BAB00BBE470 /* PrintViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintViewerView.swift; sourceTree = "<group>"; };
+		C0ADC15A2DDECA1A00BBE470 /* TabVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabVisibility.swift; sourceTree = "<group>"; };
 		C0C05A3E2D84A63500D363F1 /* FotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FotoView.swift; sourceTree = "<group>"; };
 		C0C05A402D84AE7100D363F1 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		C0DF4FAF2D978A420065D1F0 /* ArticleActionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleActionHelper.swift; sourceTree = "<group>"; };
@@ -319,6 +331,7 @@
 		C075CCA02D84008A00B95F69 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				C0ADC1542DDC285400BBE470 /* ViewModels */,
 				C075CCA12D84009E00B95F69 /* Views */,
 			);
 			path = Search;
@@ -373,6 +386,7 @@
 		C08067B72D8D923300B17D41 /* Print */ = {
 			isa = PBXGroup;
 			children = (
+				C0ADC1572DDE9B9500BBE470 /* Visor */,
 				C08067C12D8D966900B17D41 /* Views */,
 				C08067BC2D8D95C300B17D41 /* Models */,
 				C08067B82D8D923E00B17D41 /* ViewModels */,
@@ -498,6 +512,9 @@
 				C08067C42D8DDF8900B17D41 /* TokenService.swift */,
 				C0F8E6912D9E2D600070DA62 /* PrintService.swift */,
 				C0AA0D812DA0820F005C23FD /* SuplementsService.swift */,
+				C0ADC14E2DDC211700BBE470 /* FrontMenuService.swift */,
+				C0ADC1502DDC21CD00BBE470 /* FrontContentService.swift */,
+				C0ADC1522DDC27C900BBE470 /* SearchService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -524,6 +541,7 @@
 			children = (
 				C0ABDB422D80643400ABFA77 /* TabsLayoutView.swift */,
 				C075CC8D2D83E2C300B95F69 /* TabsHomeLayoutView.swift */,
+				C0ADC15A2DDECA1A00BBE470 /* TabVisibility.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -548,6 +566,22 @@
 				C0F8E6952D9E544D0070DA62 /* ErrorView.swift */,
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		C0ADC1542DDC285400BBE470 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C0ADC1552DDC287000BBE470 /* SearchViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C0ADC1572DDE9B9500BBE470 /* Visor */ = {
+			isa = PBXGroup;
+			children = (
+				C0ADC1582DDE9BAB00BBE470 /* PrintViewerView.swift */,
+			);
+			path = Visor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -689,11 +723,13 @@
 			files = (
 				C05094D42D7E87CF00938043 /* SigloApp.xcdatamodeld in Sources */,
 				C08067B62D8D10A500B17D41 /* SessionManager.swift in Sources */,
+				C0ADC15B2DDECA1A00BBE470 /* TabVisibility.swift in Sources */,
 				C0833E012DBC4074009C784C /* ThemeView.swift in Sources */,
 				C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */,
 				C0512F522D95E1A9008CD40D /* NoticiaView.swift in Sources */,
 				C0ECA2372D81B0F500CAB3A0 /* ProfileView.swift in Sources */,
 				C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */,
+				C0ADC14F2DDC211700BBE470 /* FrontMenuService.swift in Sources */,
 				C075CC9B2D83FE4200B95F69 /* ToggleRow.swift in Sources */,
 				C0602B752D812239009D53DC /* HeaderView.swift in Sources */,
 				C0ABDB3D2D80638E00ABFA77 /* PortadaService.swift in Sources */,
@@ -710,6 +746,7 @@
 				C075CCA72D840E8300B95F69 /* UserView.swift in Sources */,
 				C0833DF82DBBB3EA009C784C /* MenuTopView.swift in Sources */,
 				C075CC942D83E7C400B95F69 /* LoginView.swift in Sources */,
+				C0ADC1562DDC287000BBE470 /* SearchViewModel.swift in Sources */,
 				C075CCA32D8400B800B95F69 /* SearchView.swift in Sources */,
 				C0C05A3F2D84A63500D363F1 /* FotoView.swift in Sources */,
 				C0ECA2352D81B0DB00CAB3A0 /* SavedView.swift in Sources */,
@@ -727,6 +764,7 @@
 				C075CCB52D8458EE00B95F69 /* SigloTVRow.swift in Sources */,
 				C08067BE2D8D95EA00B17D41 /* PrintModel.swift in Sources */,
 				C08067BB2D8D927400B17D41 /* PrintViewModel.swift in Sources */,
+				C0ADC1512DDC21CD00BBE470 /* FrontContentService.swift in Sources */,
 				C0EE2F062D8F1BA8009119D3 /* Errors.swift in Sources */,
 				C0512F572D96013D008CD40D /* GlobalView.swift in Sources */,
 				C075CC8A2D83E16600B95F69 /* HomeViewModel.swift in Sources */,
@@ -735,6 +773,7 @@
 				C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */,
 				C075CCB92D845ACE00B95F69 /* ContentView.swift in Sources */,
 				C075CCB32D8458A600B95F69 /* NewsRow.swift in Sources */,
+				C0ADC1592DDE9BAB00BBE470 /* PrintViewerView.swift in Sources */,
 				C0833DFF2DBC3FB5009C784C /* WebWiew.swift in Sources */,
 				C0512F502D95CFC4008CD40D /* CompletView.swift in Sources */,
 				C0AA0D842DA08374005C23FD /* SuplementsCarouselView.swift in Sources */,
@@ -742,6 +781,7 @@
 				C0F8E6922D9E2D600070DA62 /* PrintService.swift in Sources */,
 				C08067C52D8DDF8900B17D41 /* TokenService.swift in Sources */,
 				C0512F622D976E78008CD40D /* SeccionsNotes.swift in Sources */,
+				C0ADC1532DDC27C900BBE470 /* SearchService.swift in Sources */,
 				C0512F602D9767F5008CD40D /* NotesView.swift in Sources */,
 				C0512F552D95FB77008CD40D /* SeccionesHomeView.swift in Sources */,
 				C0F8E6962D9E544D0070DA62 /* ErrorView.swift in Sources */,

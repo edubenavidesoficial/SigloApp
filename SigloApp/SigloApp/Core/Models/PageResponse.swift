@@ -5,14 +5,15 @@ struct PortadaResponse: Decodable {
     let request_date: String
     let response: String
     let version: String
-    let payload: [String: SeccionPortada] // El payload es un diccionario con diferentes claves de secciones
+    let payload: [String: SeccionPortada]
 }
+
 
 // Modelo para la sección de la portada
 struct SeccionPortada: Decodable {
     let seccion: String?
     let mostrar_titulo: Int
-    let notas: [Nota]? // 'notas' es opcional, ya que puede no existir en algunas secciones
+    let notas: [Nota]?
 }
 
 // Modelo para la foto
@@ -34,7 +35,7 @@ struct Nota: Decodable, Sendable {
     let autor: String
     let ciudad: String
     let contenido: [String]
-    let fotos: [Foto]  // 🔥 Agregamos la propiedad fotos
+    let fotos: [Foto]
 }
 
 // MARK: - Modelos de Datos PRINT
@@ -113,4 +114,45 @@ struct SuplementoPayload: Codable {
         case sitioWeb = "sitio_web"
         case portadaWeb = "portada_web"
     }
+}
+
+// MARK: - Modelo de Portada
+struct PortadaMenu: Decodable {
+    let id: Int
+    let titulo: String
+}
+
+// MARK: - Respuesta del servidor
+struct PortadaMenuResponse: Decodable {
+    let request_date: String
+    let response: String
+    let payload: [PortadaMenu]
+    let processing_time: String
+}
+
+struct Video: Codable {
+    let id: Int
+    let sid: Int
+    let titulo: String
+    let contenido: String?
+    let seccion: String
+    let url: String
+    let cover: String?
+    let url_web: String
+    let fecha: String
+    let fecha_formato: String
+    let tags: [String]
+    let tipo: String
+}
+
+
+struct BusquedaResponse: Codable {
+    let payload: [ArticuloPayload]
+}
+
+struct ArticuloPayload: Codable {
+    let id: Int
+    let titulo: String
+    let descripcion: String?
+    let fecha: String
 }

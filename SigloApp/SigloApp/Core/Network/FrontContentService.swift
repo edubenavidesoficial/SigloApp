@@ -1,8 +1,22 @@
-//
-//  FrontContent.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 5/19/25.
-//
-
 import Foundation
+
+func fetchPortada(id: Int, token: String) {
+    guard let url = URL(string: "\(API.baseURL)portadas/\(id)") else {
+        print("URL inválida")
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error en la solicitud: \(error)")
+            return
+        }
+    }
+
+    task.resume()
+}
+

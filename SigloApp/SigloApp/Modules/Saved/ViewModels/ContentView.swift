@@ -29,5 +29,8 @@ struct ContentView: View {
             // Mostrar login si no está logueado
             LoginView()
         }
+        NavigationView {
+            PrintCarouselView(viewModel: PrintViewModel())
+        }
     }
 }

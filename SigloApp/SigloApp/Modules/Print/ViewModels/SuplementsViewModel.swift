@@ -21,6 +21,7 @@ class SuplementsViewModel: ObservableObject {
                     let suplementos = payloads.map { payload in
                         SuplementsModel(
                             id: payload.id,
+                            ruta:payload.ruta,
                             title: payload.titulo,
                             imageName: payload.portada,
                             date: payload.fecha
@@ -36,6 +37,9 @@ class SuplementsViewModel: ObservableObject {
         }
     }
 
+    func suplementsFiltered(by ruta: String) -> [SuplementsModel] {
+        return suplementos.filter { $0.title.localizedCaseInsensitiveContains(ruta) }
+    }
 
     func suplementsForCurrentTab() -> [SuplementsModel] {
         switch selectedTab {

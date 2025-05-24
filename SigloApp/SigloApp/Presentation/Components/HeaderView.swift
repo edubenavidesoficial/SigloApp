@@ -64,9 +64,15 @@ struct HeaderView: View {
                                 .font(.title2)
                                 .foregroundColor(.black)
                         }
-                        .sheet(isPresented: $isSearchViewPresented) {
-                            SearchView()
-                        }
+
+                        // NavigationLink oculto que navega cuando isSearchViewPresented es true
+                        NavigationLink(
+                            destination: SearchView(),
+                            isActive: $isSearchViewPresented,
+                            label: {
+                                EmptyView() // No muestra nada
+                            })
+                            .hidden()
                     }
                 }
                 .padding(.horizontal)

@@ -1,8 +1,5 @@
-//
-//  vi.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 5/21/25.
-//
+import SwiftUI
 
-import Foundation
+class TabVisibility: ObservableObject {
+    @Published var isVisible: Bool = true
+}
