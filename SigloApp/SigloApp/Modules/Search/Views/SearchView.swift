@@ -84,8 +84,8 @@ struct SearchView: View {
                 ProgressView("Buscando...")
                     .padding()
             } else if let error = viewModel.errorMessage {
-                Text("❌ Error: \(error)")
-                    .foregroundColor(.red)
+                Text("Sin coincidencia de busqueda")
+                    .foregroundColor(.black)
                     .padding()
             } else if !viewModel.searchResults.isEmpty {
                 List(viewModel.searchResults, id: \.id) { articulo in
@@ -117,7 +117,7 @@ struct SearchView: View {
                             
                             Spacer() // Pushes content to the left and image to the right
 
-                            Image("logo") // Placeholder for the article image
+                            Image("LS") // Placeholder for the article image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 90, height: 90) // Adjust size as needed

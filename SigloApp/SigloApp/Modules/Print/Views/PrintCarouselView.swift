@@ -19,7 +19,7 @@ struct PrintCarouselView: View {
                                         .cornerRadius(12)
                                         .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5)
                                 } else if phase.error != nil {
-                                    Image("logo")
+                                    Image("LS")
                                         .resizable()
                                         .scaledToFit()
                                         .cornerRadius(12)

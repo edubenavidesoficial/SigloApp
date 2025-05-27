@@ -16,8 +16,7 @@ struct SeccionPortada: Decodable {
     let notas: [Nota]?
 }
 
-// Modelo para la foto
-struct Foto: Decodable, Sendable {
+struct Foto: Codable, Sendable {
     let url_foto: String
     let pie_foto: String?
 }
@@ -146,13 +145,102 @@ struct Video: Codable {
 }
 
 
-struct BusquedaResponse: Codable {
+struct BusquedaResponse: Codable{
+    let request_date: String
+    let response: String
     let payload: [ArticuloPayload]
+    let processing_time: String
 }
 
-struct ArticuloPayload: Codable {
+struct ArticuloPayload: Identifiable, Codable{
     let id: Int
-    let titulo: String
-    let descripcion: String?
+    let sid: Int
     let fecha: String
+    let fechamod: String
+    let fecha_formato: String
+    let titulo: String
+    let localizador: String
+    let balazo: String?
+    let autor: String
+    let ciudad: String?
+    let contenido: [ContenidoItem]
+    let seccion: String
+    let descripcion: String?
+    let nombre: String
+    let galeria: String?
+    let plantilla: Int
+    let votacion: String?
+    //let video: VideoInfoOrEmpty?
+    let youtube: String?
+    let facebook: String?
+    let filemanager: String?
+    let acceso: Int
+    
+    struct VideoInfoOrEmpty: Codable {
+        let contenido: String?
+        let cover: String?
+        let fecha: String?
+        let fecha_formato: String?
+        let id: Int?
+        let seccion: String?
+        let seccion_nombre: Int?       // queremos Int
+        let sid: Int?
+        let tags: [String]?
+        let tipo: String?
+        let titulo: String?
+        let url: String?
+        let url_web: String?
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            contenido = try container.decodeIfPresent(String.self, forKey: .contenido)
+            cover = try container.decodeIfPresent(String.self, forKey: .cover)
+            fecha = try container.decodeIfPresent(String.self, forKey: .fecha)
+            fecha_formato = try container.decodeIfPresent(String.self, forKey: .fecha_formato)
+            id = try container.decodeIfPresent(Int.self, forKey: .id)
+            seccion = try container.decodeIfPresent(String.self, forKey: .seccion)
+
+            // Aquí decodificamos seccion_nombre flexible
+            if let intValue = try? container.decode(Int.self, forKey: .seccion_nombre) {
+                seccion_nombre = intValue
+            } else if let stringValue = try? container.decode(String.self, forKey: .seccion_nombre), let intFromString = Int(stringValue) {
+                seccion_nombre = intFromString
+            } else {
+                seccion_nombre = nil
+            }
+
+            sid = try container.decodeIfPresent(Int.self, forKey: .sid)
+            tags = try container.decodeIfPresent([String].self, forKey: .tags)
+            tipo = try container.decodeIfPresent(String.self, forKey: .tipo)
+            titulo = try container.decodeIfPresent(String.self, forKey: .titulo)
+            url = try container.decodeIfPresent(String.self, forKey: .url)
+            url_web = try container.decodeIfPresent(String.self, forKey: .url_web)
+        }
+    }
+}
+
+struct ContenidoItem: Codable {
+    let id: Int?
+    let sid: Int?
+    let fecha: String?
+    let fechamod: String?
+    let fecha_formato: String?
+    let titulo: String
+    let localizador: String?
+    let balazo: String?
+    let autor: String?
+    let ciudad: String?
+    let contenido: [String]?
+    let contenidoHTML: String?
+    let seccion: String?
+    let fotos: [Foto]?
+    let nombre: String?
+    let galeria: String?
+    let plantilla: Int?
+    let votacion: String?
+    let video: [String: String]?
+    let youtube: String?
+    let facebook: String?
+    let filemanager: String?
+    let acceso: Int?
 }

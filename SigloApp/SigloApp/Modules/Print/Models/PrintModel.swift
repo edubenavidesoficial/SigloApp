@@ -1,6 +1,6 @@
 import Foundation
 
-struct PrintModel: Identifiable {
+struct PrintModel: Identifiable, Hashable {
     let id = UUID()
     let title: String
     let imageName: String

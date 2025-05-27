@@ -1,8 +1,19 @@
-//
-//  SearchFrontView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 5/25/25.
-//
+import SwiftUI
 
-import Foundation
+struct SearchFrontView: View {
+    @StateObject private var viewModel = SearchFrontViewModel()
+
+    var body: some View {
+        NavigationView {
+            List(viewModel.articulos) { section in
+                Text(section.titulo)
+                    .font(.headline)
+                    .padding(.vertical, 8)
+            }
+            .navigationTitle("Menú de Búsqueda")
+            .onAppear {
+                viewModel.cargarMenuBusqueda(query: "") // Asegúrate de que este parámetro sea correcto
+            }
+        }
+    }
+}

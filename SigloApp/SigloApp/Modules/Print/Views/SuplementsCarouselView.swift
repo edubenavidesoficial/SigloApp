@@ -22,7 +22,7 @@ struct SuplementsCarouselView: View {
                                          .cornerRadius(10)
                                          .shadow(radius: 4)
                                 } else if phase.error != nil {
-                                    Image("logo")
+                                    Image("LS")
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 150, height: 180)

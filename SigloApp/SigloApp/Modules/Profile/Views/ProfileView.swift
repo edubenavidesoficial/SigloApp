@@ -71,19 +71,11 @@ struct ProfileView: View {
                                         .navigationBarTitleDisplayMode(.inline)
                                 )
                                 
-                                Button(action: {
-                                    showRatingSheet = true
-                                }) {
-                                    HStack {
-                                        Text("Califica nuestra APP")
-                                            .foregroundColor(.primary)
-                                        Spacer(minLength: 3)
-                                        Image(systemName: "chevron.right")
-                                            .foregroundColor(.gray)
-                                    }
-                                    .padding(.vertical, 2)
-                                    .contentShape(Rectangle())
-                                }
+                                NavigationRow(title: "Califica nuestra APP", destination:
+                                    WebView(url: URL(string: "https://apps.apple.com/")!)
+                                        .navigationTitle("Califica nuestra APP")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                )
 
                             }
 

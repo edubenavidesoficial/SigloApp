@@ -16,7 +16,7 @@ struct PrintViewerView: View {
                             .scaledToFit()
                             .edgesIgnoringSafeArea(.all)
                     } else if phase.error != nil {
-                        Image("logo")
+                        Image("LS")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
