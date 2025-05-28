@@ -145,7 +145,7 @@ struct Video: Codable {
 }
 
 
-struct BusquedaResponse: Codable{
+struct BusquedaResponsee: Codable{
     let request_date: String
     let response: String
     let payload: [ArticuloPayload]
@@ -244,3 +244,57 @@ struct ContenidoItem: Codable {
     let filemanager: String?
     let acceso: Int?
 }
+
+struct Root: Codable {
+    let request_date: String
+    let response: String
+    let payload: [MenuItem]
+}
+
+struct MenuItem: Codable {
+    let titulo: String
+    let contenido: [ContenidoItem]
+}
+
+struct BusquedaResponse: Decodable {
+    let requestDate: String
+    let response: String
+    let payload: [Categoria]
+}
+
+struct Categoria: Identifiable, Decodable {
+    var id: String { titulo }  // ID basado en el título
+    let titulo: String
+    let contenido: [Contenido]
+}
+
+struct Contenido: Identifiable, Codable {
+    let id: String
+    let titulo: String
+    let balazo: String? // Si lo usas, asegúrate de tenerlo en el JSON
+
+    private enum CodingKeys: String, CodingKey {
+        case id, titulo, balazo
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // Decodificación flexible
+        if let idString = try? container.decode(String.self, forKey: .id) {
+            self.id = idString
+        } else if let idInt = try? container.decode(Int.self, forKey: .id) {
+            self.id = String(idInt)
+        } else {
+            throw DecodingError.typeMismatch(String.self, .init(
+                codingPath: decoder.codingPath,
+                debugDescription: "Expected id to be String or Int"
+            ))
+        }
+
+        self.titulo = try container.decode(String.self, forKey: .titulo)
+        self.balazo = try? container.decode(String.self, forKey: .balazo) // Opcional
+    }
+}
+
+

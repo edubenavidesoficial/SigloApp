@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 final class SearchFrontViewModel: ObservableObject {
-    @Published var articulos: [ArticuloPayload] = []
+    @Published var articulos: [Categoria] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
 

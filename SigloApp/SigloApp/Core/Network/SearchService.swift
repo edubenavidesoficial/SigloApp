@@ -59,7 +59,7 @@ final class SearchService {
 
                 do {
                     let decoder = JSONDecoder()
-                    let responseData = try decoder.decode(BusquedaResponse.self, from: data)
+                    let responseData = try decoder.decode(BusquedaResponsee.self, from: data)
                     completion(.success(responseData.payload))
                 } catch {
                     print("❌ Error al decodificar JSON busqueda : \(error)")

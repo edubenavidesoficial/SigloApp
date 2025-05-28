@@ -5,14 +5,41 @@ struct SearchFrontView: View {
 
     var body: some View {
         NavigationView {
-            List(viewModel.articulos) { section in
-                Text(section.titulo)
-                    .font(.headline)
-                    .padding(.vertical, 8)
+            Group {
+                if viewModel.isLoading {
+                    ProgressView() // Puedes mostrar un indicador de carga
+                } else if let error = viewModel.errorMessage {
+                    Text("Error: \(error)")
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                } else {
+                    List {
+                        // Asumo que viewModel.articulos es [Categoria] o similar
+                        ForEach(viewModel.articulos) { seccion in
+                            Section(header: Text(seccion.titulo).font(.headline)) {
+                                // Aquí iteramos en seccion.contenido (que debe ser [Contenido])
+                                ForEach(seccion.contenido) { contenido in
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(contenido.titulo)
+                                            .font(.subheadline)
+                                        if let balazo = contenido.balazo {
+                                            Text(balazo)
+                                                .font(.caption)
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                    .padding(.vertical, 4)
+                                }
+                            }
+                        }
+                    }
+                    .listStyle(GroupedListStyle()) // Opcional: mejora apariencia
+                }
             }
             .navigationTitle("Menú de Búsqueda")
             .onAppear {
-                viewModel.cargarMenuBusqueda(query: "") // Asegúrate de que este parámetro sea correcto
+                viewModel.cargarMenuBusqueda(query: "")
             }
         }
     }
