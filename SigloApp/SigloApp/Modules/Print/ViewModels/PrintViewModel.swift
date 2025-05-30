@@ -25,12 +25,10 @@ class PrintViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let payloads):
-                    //print("✅ Respuesta de la API: \(payloads)") // Depuración
-
                     self?.hemeroteca = payloads.first?.portadas.map { portada in
                         PrintModel(
                             title: portada.titulo,
-                            imageName: portada.cover,  // Aquí es donde debes asegurarte de que 'cover' sea una URL válida o una cadena que pueda usarse para cargar la imagen.
+                            imageName: portada.cover,
                             date: payloads.first?.fecha ?? "Desconocido"
                         )
                     } ?? []

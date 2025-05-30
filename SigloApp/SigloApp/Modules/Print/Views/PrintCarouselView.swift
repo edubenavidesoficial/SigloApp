@@ -37,9 +37,12 @@ struct PrintCarouselView: View {
                                 .font(.caption2)
                                 .foregroundColor(.gray)
                                 .padding(.leading, 2)
-                            Image(systemName: "arrow.down.circle.fill")
-                                .foregroundColor(.black)
-                                .font(.caption2)
+
+                            NavigationLink(destination: DocPortadaView()) {
+                                Image(systemName: "arrow.down.circle.fill")
+                                    .foregroundColor(.black)
+                                    .font(.caption2)
+                            }
                         }
                         .padding(.top, 4)
                         .padding(.leading, 8)

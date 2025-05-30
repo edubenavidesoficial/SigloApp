@@ -1,6 +1,5 @@
 import Foundation
 
-// Modelo para la respuesta completa
 struct PortadaResponse: Decodable {
     let request_date: String
     let response: String
@@ -8,8 +7,6 @@ struct PortadaResponse: Decodable {
     let payload: [String: SeccionPortada]
 }
 
-
-// Modelo para la sección de la portada
 struct SeccionPortada: Decodable {
     let seccion: String?
     let mostrar_titulo: Int
@@ -21,7 +18,6 @@ struct Foto: Codable, Sendable {
     let pie_foto: String?
 }
 
-// Modelo para la nota
 struct Nota: Decodable, Sendable {
     let id: Int
     let sid: Int
@@ -37,16 +33,28 @@ struct Nota: Decodable, Sendable {
     let fotos: [Foto]
 }
 
-// MARK: - Modelos de Datos PRINT
 struct NewspaperResponse: Codable {
     let requestDate: String
     let response: String
     let payload: [NewspaperPayload]
 }
 
-struct NewspaperPayload: Codable {
-    let fecha: String
+struct NewspaperPayload: Codable, Identifiable {
+    let id: Int?
+    let title: String?
+    let pdfUrl: URL?
+    let date: String?
+    let fecha: String?
     let portadas: [Portada]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case pdfUrl    = "pdf_url"
+        case date
+        case fecha
+        case portadas
+    }
 }
 
 struct Portada: Codable {
@@ -54,7 +62,8 @@ struct Portada: Codable {
     var cover: String
     var titulo: String
     var pagina: Int
-    var paginas: [String]? // Se hace opcional
+    var paginas: [String]? 
+    var id: String?
 }
 
 
@@ -71,7 +80,6 @@ struct NewspaperCover: Codable {
     let pagina: Int
 }
 
-// MARK: - Manejo de Errores
 enum NetworkError: Error {
     case invalidURL
     case noData
@@ -79,23 +87,26 @@ enum NetworkError: Error {
     case emptyData
     case missingPayload(String)
     case decodingError(Error)
-    
+    case invalidToken
 }
 
-// MARK: - Respuesta general del API
-struct SuplementoResponse: Codable {
+struct SuplementoResponse: Identifiable, Codable {
     let requestDate: String
     let response: String
     let payload: [SuplementoPayload]
+    let processingTime: String
+
+    var id: String { requestDate }
 
     enum CodingKeys: String, CodingKey {
         case requestDate = "request_date"
         case response
         case payload
+        case processingTime = "processing_time"
     }
 }
 
-struct SuplementoPayload: Codable {
+struct SuplementoPayload: Identifiable, Codable {
     let id: Int
     let titulo: String
     let ruta: String
@@ -103,6 +114,10 @@ struct SuplementoPayload: Codable {
     let portada: String
     let sitioWeb: String
     let portadaWeb: Bool
+    let anio: Int?
+    let numero: Int?
+    let paginasCuantas: Int?
+    let paginas: [String]?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -112,16 +127,19 @@ struct SuplementoPayload: Codable {
         case portada
         case sitioWeb = "sitio_web"
         case portadaWeb = "portada_web"
+        case anio
+        case numero
+        case paginasCuantas = "paginas_cuantas"
+        case paginas
     }
 }
 
-// MARK: - Modelo de Portada
+
 struct PortadaMenu: Decodable {
     let id: Int
     let titulo: String
 }
 
-// MARK: - Respuesta del servidor
 struct PortadaMenuResponse: Decodable {
     let request_date: String
     let response: String
@@ -200,7 +218,6 @@ struct ArticuloPayload: Identifiable, Codable{
             id = try container.decodeIfPresent(Int.self, forKey: .id)
             seccion = try container.decodeIfPresent(String.self, forKey: .seccion)
 
-            // Aquí decodificamos seccion_nombre flexible
             if let intValue = try? container.decode(Int.self, forKey: .seccion_nombre) {
                 seccion_nombre = intValue
             } else if let stringValue = try? container.decode(String.self, forKey: .seccion_nombre), let intFromString = Int(stringValue) {
@@ -263,7 +280,7 @@ struct BusquedaResponse: Decodable {
 }
 
 struct Categoria: Identifiable, Decodable {
-    var id: String { titulo }  // ID basado en el título
+    var id: String { titulo }
     let titulo: String
     let contenido: [Contenido]
 }
@@ -271,7 +288,7 @@ struct Categoria: Identifiable, Decodable {
 struct Contenido: Identifiable, Codable {
     let id: String
     let titulo: String
-    let balazo: String? // Si lo usas, asegúrate de tenerlo en el JSON
+    let balazo: String?
 
     private enum CodingKeys: String, CodingKey {
         case id, titulo, balazo
@@ -288,7 +305,7 @@ struct Contenido: Identifiable, Codable {
         } else {
             throw DecodingError.typeMismatch(String.self, .init(
                 codingPath: decoder.codingPath,
-                debugDescription: "Expected id to be String or Int"
+                debugDescription: "String or Int"
             ))
         }
 
@@ -296,5 +313,3 @@ struct Contenido: Identifiable, Codable {
         self.balazo = try? container.decode(String.self, forKey: .balazo) // Opcional
     }
 }
-
-

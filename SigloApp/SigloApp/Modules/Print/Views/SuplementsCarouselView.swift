@@ -32,7 +32,7 @@ struct SuplementsCarouselView: View {
                                     ProgressView()
                                         .frame(width: 150, height: 180)
                                 }
-                            }
+                            } 
 
                             Text(article.title)
                                 .font(.caption)

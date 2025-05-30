@@ -67,7 +67,7 @@ struct HeaderView: View {
 
                         // NavigationLink oculto que navega cuando isSearchViewPresented es true
                         NavigationLink(
-                            destination: SearchFrontView(),
+                            destination: SearchView(),
                             isActive: $isSearchViewPresented,
                             label: {
                                 EmptyView() // No muestra nada

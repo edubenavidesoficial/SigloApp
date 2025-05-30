@@ -1,8 +1,15 @@
-//
-//  Pdf.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 5/28/25.
-//
+import SwiftUI
+import PDFKit
 
-import Foundation
+struct PDFViewUI: UIViewRepresentable {
+    let data: Data
+
+    func makeUIView(context: Context) -> PDFView {
+        let pdfView = PDFView()
+        pdfView.autoScales = true
+        pdfView.document = PDFDocument(data: data)
+        return pdfView
+    }
+
+    func updateUIView(_ uiView: PDFView, context: Context) { }
+}
