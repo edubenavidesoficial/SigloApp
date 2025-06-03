@@ -58,11 +58,21 @@ final class SearchService {
                 }
 
                 do {
-                    let decoder = JSONDecoder()
-                    let responseData = try decoder.decode(BusquedaResponsee.self, from: data)
-                    completion(.success(responseData.payload))
+                    let rawString = String(data: data, encoding: .utf8) ?? ""
+                    if let jsonStartIndex = rawString.firstIndex(of: "{") {
+                        let jsonString = String(rawString[jsonStartIndex...])
+                        if let jsonData = jsonString.data(using: .utf8) {
+                            let decoder = JSONDecoder()
+                            let responseData = try decoder.decode(BusquedaResponsee.self, from: jsonData)
+                            completion(.success(responseData.payload))
+                            return
+                        }
+                    }
+
+                    print("❌ JSON no contiene un objeto válido")
+                    completion(.failure(NetworkError.decodingFailed))
                 } catch {
-                    print("❌ Error al decodificar JSON busqueda : \(error)")
+                    print("❌ Error al decodificar JSON limpiado: \(error)")
                     completion(.failure(error))
                 }
             }

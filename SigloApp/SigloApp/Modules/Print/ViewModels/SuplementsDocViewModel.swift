@@ -1,8 +1,17 @@
-//
-//  File.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 5/30/25.
-//
+import Combine
 
-import Foundation
+final class SuplementsDocViewModel: ObservableObject {
+    @Published var suplementos: [SuplementoPayload] = []
+    @Published var errorMessage: String?
+
+    func cargarSuplementos() {
+        SuplementsDocService.shared.obtenerDocSuplementos { result in
+            switch result {
+            case .success(let suplementos):
+                self.suplementos = suplementos
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+}

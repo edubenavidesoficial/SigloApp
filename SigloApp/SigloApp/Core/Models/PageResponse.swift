@@ -87,6 +87,7 @@ enum NetworkError: Error {
     case emptyData
     case missingPayload(String)
     case decodingError(Error)
+    case decodingFailed
     case invalidToken
 }
 
@@ -117,7 +118,8 @@ struct SuplementoPayload: Identifiable, Codable {
     let anio: Int?
     let numero: Int?
     let paginasCuantas: Int?
-    let paginas: [String]?
+    let paginas: [String]
+    let contenido: [String]
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -131,6 +133,7 @@ struct SuplementoPayload: Identifiable, Codable {
         case numero
         case paginasCuantas = "paginas_cuantas"
         case paginas
+        case contenido
     }
 }
 
@@ -163,14 +166,28 @@ struct Video: Codable {
 }
 
 
-struct BusquedaResponsee: Codable{
+struct BusquedaResponsee: Decodable{
     let request_date: String
     let response: String
     let payload: [ArticuloPayload]
     let processing_time: String
 }
 
-struct ArticuloPayload: Identifiable, Codable{
+struct PayloadItem: Codable {
+    // otras propiedades
+    let galeria: Galeria?
+}
+
+struct Galeria: Codable {
+    // Define aquí las propiedades según el JSON real que recibes dentro de galeria
+    // Ejemplo:
+    let imagenes: [String]?
+    // o si no tienes estructura fija:
+    // let data: [String: AnyCodable]? // usando AnyCodable o algo similar
+}
+
+
+struct ArticuloPayload: Decodable{
     let id: Int
     let sid: Int
     let fecha: String
@@ -181,7 +198,7 @@ struct ArticuloPayload: Identifiable, Codable{
     let balazo: String?
     let autor: String
     let ciudad: String?
-    let contenido: [ContenidoItem]
+    let contenido: [String]
     let seccion: String
     let descripcion: String?
     let nombre: String
@@ -236,7 +253,7 @@ struct ArticuloPayload: Identifiable, Codable{
     }
 }
 
-struct ContenidoItem: Codable {
+struct ContenidoItem: Decodable {
     let id: Int?
     let sid: Int?
     let fecha: String?
@@ -247,7 +264,7 @@ struct ContenidoItem: Codable {
     let balazo: String?
     let autor: String?
     let ciudad: String?
-    let contenido: [String]?
+    let contenidoTexto: String?
     let contenidoHTML: String?
     let seccion: String?
     let fotos: [Foto]?
@@ -260,15 +277,58 @@ struct ContenidoItem: Codable {
     let facebook: String?
     let filemanager: String?
     let acceso: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case id, sid, fecha, fechamod, fecha_formato, titulo, localizador,
+             balazo, autor, ciudad, contenido, contenidoHTML, seccion,
+             fotos, nombre, galeria, plantilla, votacion, video, youtube,
+             facebook, filemanager, acceso
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(Int.self, forKey: .id)
+        sid = try container.decodeIfPresent(Int.self, forKey: .sid)
+        fecha = try container.decodeIfPresent(String.self, forKey: .fecha)
+        fechamod = try container.decodeIfPresent(String.self, forKey: .fechamod)
+        fecha_formato = try container.decodeIfPresent(String.self, forKey: .fecha_formato)
+        titulo = try container.decode(String.self, forKey: .titulo)
+        localizador = try container.decodeIfPresent(String.self, forKey: .localizador)
+        balazo = try container.decodeIfPresent(String.self, forKey: .balazo)
+        autor = try container.decodeIfPresent(String.self, forKey: .autor)
+        ciudad = try container.decodeIfPresent(String.self, forKey: .ciudad)
+
+        // contenido puede venir como array de strings, string simple o incluso como objeto
+        if let array = try? container.decode([String].self, forKey: .contenido) {
+            contenidoTexto = array.joined(separator: "\n")
+        } else if let string = try? container.decode(String.self, forKey: .contenido) {
+            contenidoTexto = string
+        } else {
+            contenidoTexto = nil
+        }
+
+        contenidoHTML = try container.decodeIfPresent(String.self, forKey: .contenidoHTML)
+        seccion = try container.decodeIfPresent(String.self, forKey: .seccion)
+        fotos = try container.decodeIfPresent([Foto].self, forKey: .fotos)
+        nombre = try container.decodeIfPresent(String.self, forKey: .nombre)
+        galeria = try container.decodeIfPresent(String.self, forKey: .galeria)
+        plantilla = try container.decodeIfPresent(Int.self, forKey: .plantilla)
+        votacion = try container.decodeIfPresent(String.self, forKey: .votacion)
+        video = try container.decodeIfPresent([String: String].self, forKey: .video)
+        youtube = try container.decodeIfPresent(String.self, forKey: .youtube)
+        facebook = try container.decodeIfPresent(String.self, forKey: .facebook)
+        filemanager = try container.decodeIfPresent(String.self, forKey: .filemanager)
+        acceso = try container.decodeIfPresent(Int.self, forKey: .acceso)
+    }
 }
 
-struct Root: Codable {
+struct Root: Decodable {
     let request_date: String
     let response: String
     let payload: [MenuItem]
 }
 
-struct MenuItem: Codable {
+struct MenuItem: Decodable {
     let titulo: String
     let contenido: [ContenidoItem]
 }
