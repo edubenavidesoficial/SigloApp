@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C0019E7D2DF0D14900EDF176 /* TabsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */; };
 		C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */; };
 		C008A8EE2DD52F7100E74F88 /* SuplementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */; };
 		C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */; };
@@ -119,6 +120,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsHeaderView.swift; sourceTree = "<group>"; };
 		C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsModel.swift; sourceTree = "<group>"; };
 		C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsViewModel.swift; sourceTree = "<group>"; };
 		C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescargasView.swift; sourceTree = "<group>"; };
@@ -228,6 +230,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C0019E7B2DF0D12D00EDF176 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
 		C05094BB2D7E87CA00938043 = {
 			isa = PBXGroup;
 			children = (
@@ -349,6 +359,7 @@
 		C075CCA02D84008A00B95F69 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				C0019E7B2DF0D12D00EDF176 /* Tabs */,
 				C0ADC1542DDC285400BBE470 /* ViewModels */,
 				C075CCA12D84009E00B95F69 /* Views */,
 			);
@@ -765,6 +776,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C05094D42D7E87CF00938043 /* SigloApp.xcdatamodeld in Sources */,
+				C0019E7D2DF0D14900EDF176 /* TabsHeaderView.swift in Sources */,
 				C08067B62D8D10A500B17D41 /* SessionManager.swift in Sources */,
 				C0ADC15B2DDECA1A00BBE470 /* TabVisibility.swift in Sources */,
 				C0833E012DBC4074009C784C /* ThemeView.swift in Sources */,
