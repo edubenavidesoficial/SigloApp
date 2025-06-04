@@ -118,8 +118,8 @@ struct SuplementoPayload: Identifiable, Codable {
     let anio: Int?
     let numero: Int?
     let paginasCuantas: Int?
-    let paginas: [String]
-    let contenido: [String]
+    let paginas: [String]?
+    let contenido: [String]?
 
     enum CodingKeys: String, CodingKey {
         case id
