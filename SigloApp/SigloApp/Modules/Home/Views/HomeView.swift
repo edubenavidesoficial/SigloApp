@@ -44,6 +44,26 @@ struct HomeView: View {
                                     }
 
                                     SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
+                                    
+                                    HStack(spacing: 16) {
+                                        Text("Siglo TV".uppercased())
+                                            .font(.system(size: 18, weight: .semibold, design: .default))
+                                            .foregroundColor(.primary)
+                                        Spacer()
+                                            .padding(8)
+                                    }
+                                    
+                                    ForEach(viewModel.secciones.filter { $0.seccion == "Foquitos" }, id: \.seccion) { seccion in
+                                        let notas = seccion.notas ?? []
+                                        TabView {
+                                            ForEach(notas, id: \.id) { nota in
+                                                SigloTvView(nota: nota)
+                                            }
+                                        }
+                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                        .indexViewStyle(.page(backgroundDisplayMode: .interactive))
+                                        .frame(height: 450)
+                                    }
 
                                     // Indicador de carga al final
                                     if viewModel.isLoading {
@@ -64,7 +84,7 @@ struct HomeView: View {
                                     .frame(height: 50)
                                 }
                             }
-                            .offset(y: -8)
+                            .offset(y: 2)
                         }
                     }
                 }

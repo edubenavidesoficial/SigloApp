@@ -150,7 +150,6 @@ struct NotaCarruselCard: View {
 }
 
 
-
 struct NotaImageView: View {
     let foto: Foto?
     let size: CGSize

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C0019E7D2DF0D14900EDF176 /* TabsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */; };
+		C0019E812DF389A200EDF176 /* SigloTv.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0019E802DF389A200EDF176 /* SigloTv.swift */; };
 		C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */; };
 		C008A8EE2DD52F7100E74F88 /* SuplementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */; };
 		C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */; };
@@ -121,6 +122,7 @@
 
 /* Begin PBXFileReference section */
 		C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsHeaderView.swift; sourceTree = "<group>"; };
+		C0019E802DF389A200EDF176 /* SigloTv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigloTv.swift; sourceTree = "<group>"; };
 		C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsModel.swift; sourceTree = "<group>"; };
 		C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsViewModel.swift; sourceTree = "<group>"; };
 		C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescargasView.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				C0512F512D95E1A9008CD40D /* NoticiaView.swift */,
 				C0512F542D95FB77008CD40D /* SeccionesHomeView.swift */,
 				C0512F562D96013D008CD40D /* GlobalView.swift */,
+				C0019E802DF389A200EDF176 /* SigloTv.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				C0A08FDC2DE3D78500260DF3 /* SearchFrontViewModel.swift in Sources */,
 				C075CCB12D84564300B95F69 /* ArticleRow.swift in Sources */,
 				C075CC972D83FD9A00B95F69 /* SectionHeader.swift in Sources */,
+				C0019E812DF389A200EDF176 /* SigloTv.swift in Sources */,
 				C0ADC14D2DDBF37D00BBE470 /* FontSizeView.swift in Sources */,
 				C075CCB52D8458EE00B95F69 /* SigloTVRow.swift in Sources */,
 				C08067BE2D8D95EA00B17D41 /* PrintModel.swift in Sources */,

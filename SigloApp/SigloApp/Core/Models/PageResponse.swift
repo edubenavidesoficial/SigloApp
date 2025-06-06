@@ -165,7 +165,6 @@ struct Video: Codable {
     let tipo: String
 }
 
-
 struct BusquedaResponsee: Decodable{
     let request_date: String
     let response: String
