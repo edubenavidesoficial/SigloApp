@@ -1,10 +1,31 @@
 import SwiftUI
 
+// Extensión para inicializar colores desde código hexadecimal
+extension Color {
+    init(hex: String) {
+        let scanner = Scanner(string: hex)
+        _ = scanner.scanString("#")
+
+        var rgb: UInt64 = 0
+        scanner.scanHexInt64(&rgb)
+
+        let r = Double((rgb >> 16) & 0xFF) / 255
+        let g = Double((rgb >> 8) & 0xFF) / 255
+        let b = Double(rgb & 0xFF) / 255
+
+        self.init(red: r, green: g, blue: b)
+    }
+}
+
 struct SearchFrontView: View {
     @StateObject private var viewModel = SearchFrontViewModel()
     @StateObject private var searchViewModel = SearchViewModel()
     @State private var searchText: String = ""
     @State private var selectedTema: String = ""
+
+    // Colores definidos
+    let temaColors = ["#FFEB99", "#CFB495", "#9AB5C1", "#CCC3D1", "#D2BAB7", "#6C567B", "#5D5B6A", "#6B7B8E", "#189DB9", "#696969"]
+    let tendenciaColors = ["#ACDEAA", "#EEF3AD", "#F5C8BD", "#C5CABE", "#CADAB4", "#516091", "#F67280", "#758184", "#41A8CE", "#E33E85"]
 
     var body: some View {
         NavigationView {
@@ -28,67 +49,61 @@ struct SearchFrontView: View {
                         
                         if searchViewModel.searchResults.isEmpty {
                             if let temas = viewModel.articulos.first(where: { $0.titulo == "Buscar por temas" }) {
-                                // BUSCAR POR TEMAS
-                                if let temas = viewModel.articulos.first(where: { $0.titulo == "Buscar por temas" }) {
-                                    Text("Buscar por temas")
-                                        .font(.title2)
-                                        .bold()
-                                        .padding(.horizontal)
+                                Text("Buscar por temas")
+                                    .font(.title2)
+                                    .bold()
+                                    .padding(.horizontal)
 
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack(spacing: 12) {
-                                            ForEach(temas.contenido) { contenido in
-                                                Button(action: {
-                                                    searchText = contenido.titulo
-                                                    searchViewModel.buscarArticulos(query: contenido.titulo)
-                                                }) {
-                                                    Text(contenido.titulo.uppercased())
-                                                        .padding(.horizontal, 16)
-                                                        .padding(.vertical, 8)
-                                                        .background(Color(hue: Double.random(in: 0...1), saturation: 0.4, brightness: 0.9))
-                                                        .foregroundColor(.white)
-                                                        .cornerRadius(10)
-                                                }
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 12) {
+                                        ForEach(Array(temas.contenido.enumerated()), id: \.1.id) { index, contenido in
+                                            Button(action: {
+                                                searchText = contenido.titulo
+                                                searchViewModel.buscarArticulos(query: contenido.titulo)
+                                            }) {
+                                                Text(contenido.titulo.uppercased())
+                                                    .padding(.horizontal, 16)
+                                                    .padding(.vertical, 8)
+                                                    .background(Color(hex: temaColors[index % temaColors.count]))
+                                                    .foregroundColor(.white)
+                                                    .cornerRadius(10)
                                             }
                                         }
-                                        .padding(.horizontal)
                                     }
+                                    .padding(.horizontal)
                                 }
                             }
 
                             if let tendencias = viewModel.articulos.first(where: { $0.titulo == "Tendencias" }) {
-                                // TENDENCIAS EN SLIDER HORIZONTAL
-                                if let tendencias = viewModel.articulos.first(where: { $0.titulo == "Tendencias" }) {
-                                    Text("Tendencias")
-                                        .font(.title2)
-                                        .bold()
-                                        .padding(.horizontal)
+                                Text("Tendencias")
+                                    .font(.title2)
+                                    .bold()
+                                    .padding(.horizontal)
 
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack(spacing: 12) {
-                                            ForEach(tendencias.contenido) { contenido in
-                                                Button(action: {
-                                                    searchText = contenido.titulo
-                                                    searchViewModel.buscarArticulos(query: contenido.titulo)
-                                                }) {
-                                                    Text(contenido.titulo.uppercased())
-                                                        .padding(.horizontal, 16)
-                                                        .padding(.vertical, 8)
-                                                        .background(Color(hue: Double.random(in: 0...1), saturation: 0.4, brightness: 0.9))
-                                                        .foregroundColor(.white)
-                                                        .cornerRadius(10)
-                                                }
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 12) {
+                                        ForEach(Array(tendencias.contenido.enumerated()), id: \.1.id) { index, contenido in
+                                            Button(action: {
+                                                searchText = contenido.titulo
+                                                searchViewModel.buscarArticulos(query: contenido.titulo)
+                                            }) {
+                                                Text(contenido.titulo.uppercased())
+                                                    .padding(.horizontal, 16)
+                                                    .padding(.vertical, 8)
+                                                    .background(Color(hex: tendenciaColors[index % tendenciaColors.count]))
+                                                    .foregroundColor(.white)
+                                                    .cornerRadius(10)
                                             }
                                         }
-                                        .padding(.horizontal)
                                     }
+                                    .padding(.horizontal)
                                 }
                             }
                         } else {
                             TabsHeaderView()
                                 .padding(.top, 8)
                         }
-                        
+
                         if !viewModel.articulos.isEmpty && searchViewModel.searchResults.isEmpty {
                             let articulosFiltrados = viewModel.articulos
                                 .filter { $0.titulo != "Tendencias" && $0.titulo != "Buscar por temas" }
@@ -97,12 +112,10 @@ struct SearchFrontView: View {
                                 VStack(alignment: .leading, spacing: 24) {
                                     ForEach(articulosFiltrados, id: \.id) { articulo in
                                         VStack(alignment: .leading, spacing: 8) {
-                                            // Título del artículo
                                             Text(articulo.titulo)
                                                 .font(.headline)
                                                 .padding(.horizontal)
 
-                                            // Scroll horizontal para los contenidos
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 HStack(spacing: 16) {
                                                     ForEach(articulo.contenido) { contenido in
@@ -127,7 +140,7 @@ struct SearchFrontView: View {
 
                                                                 Spacer()
 
-                                                                Text("12:00") // Reemplaza si tienes contenido.hora
+                                                                Text("12:00")
                                                                     .font(.caption)
                                                                     .foregroundColor(.red)
                                                             }
@@ -148,8 +161,6 @@ struct SearchFrontView: View {
                             }
                         }
 
-
-
                         // RESULTADOS DE BÚSQUEDA
                         if viewModel.isLoading {
                             ProgressView("Cargando...")
@@ -169,7 +180,7 @@ struct SearchFrontView: View {
                                             Text("Autor")
                                                 .font(.caption)
                                                 .foregroundColor(.gray)
-                                            Text("") // Aquí podrías poner autor si existe
+                                            Text("") // Reemplaza si tienes autor
                                         }
 
                                         Text(articulo.descripcion ?? "Sin descripción")
@@ -202,7 +213,3 @@ struct SearchFrontView: View {
         }
     }
 }
-
-
-
-

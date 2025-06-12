@@ -110,7 +110,6 @@ struct ChipSectionView: View {
                         .onTapGesture {
                             selectedTema = chip
                             searchText = chip
-                            // Puedes llamar aquí viewModel.buscarArticulos si pasas el viewModel también por parámetro
                         }
                     }
                 }

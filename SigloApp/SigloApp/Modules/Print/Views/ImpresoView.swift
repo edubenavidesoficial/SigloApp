@@ -8,82 +8,117 @@ struct ImpresoView: View {
     @State private var selectedOption: MenuOption? = nil
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 0) {
-                    
-                    // Header con menú
-                    HeaderView(
-                        selectedOption: $selectedOption,
-                        isMenuOpen: $isMenuOpen,
-                        isLoggedIn: isLoggedIn
-                    )
-                    
-                    // Si se seleccionó una opción de menú
-                    if let selected = selectedOption {
-                        NotesView(title: selected.title, selectedOption: $selectedOption)
-                            .transition(.move(edge: .trailing))
-                    
-                    } else {
-                        
-                        // Selector de pestañas
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(TabTypetwo.allCases, id: \.self) { tab in
-                                    VStack(spacing: 4) {
-                                        Text(tab.rawValue)
-                                            .font(.system(size: 14))
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.5)
-                                            .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
-                                            .foregroundColor(.primary)
-                                            .onTapGesture {
-                                                withAnimation {
-                                                    viewModel.selectedTab = tab
-                                                }
-                                            }
+        ZStack(alignment: .bottom) {
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 0) {
 
-                                        Rectangle()
-                                            .fill(viewModel.selectedTab == tab ? Color.red : Color.clear)
-                                            .frame(height: 2)
+                        // Header con menú
+                        HeaderView(
+                            selectedOption: $selectedOption,
+                            isMenuOpen: $isMenuOpen,
+                            isLoggedIn: isLoggedIn
+                        )
+
+                        if let selected = selectedOption {
+                            NotesView(title: selected.title, selectedOption: $selectedOption)
+                                .transition(.move(edge: .trailing))
+                        } else {
+                            // Selector de pestañas
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 20) {
+                                    ForEach(TabTypetwo.allCases, id: \.self) { tab in
+                                        VStack(spacing: 4) {
+                                            Text(tab.rawValue)
+                                                .font(.system(size: 14))
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(0.5)
+                                                .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
+                                                .foregroundColor(.primary)
+                                                .onTapGesture {
+                                                    withAnimation {
+                                                        viewModel.selectedTab = tab
+                                                    }
+                                                }
+
+                                            Rectangle()
+                                                .fill(viewModel.selectedTab == tab ? Color.red : Color.clear)
+                                                .frame(height: 2)
+                                        }
+                                        .padding(.horizontal, 8)
                                     }
-                                    .padding(.horizontal, 8)
+                                }
+                                .padding(.horizontal)
+                            }
+                            .padding()
+                            .background(Color(.systemBackground))
+
+                            Divider()
+
+                            // Contenido según pestaña
+                            Group {
+                                switch viewModel.selectedTab {
+                                case .hemeroteca:
+                                    PrintCarouselView(viewModel: viewModel)
+                                case .suplementos:
+                                    SuplementsView()
+                                case .descargas:
+                                    DescargasView()
                                 }
                             }
-                            .padding(.horizontal)
-                        }
-                        .padding()
-                        .background(Color(.systemBackground))
 
-                        Divider()
-
-                        // Contenido según la pestaña seleccionada
-                        Group {
-                            switch viewModel.selectedTab {
-                            case .hemeroteca:
-                                PrintCarouselView(viewModel: viewModel)
-                                
-                            case .suplementos:
-                                SuplementsView()
-                                
-                            case .descargas:
-                                DescargasView()
+                            // Error si lo hay
+                            if let errorMessage = viewModel.errorMessage {
+                                Text(errorMessage)
+                                    .foregroundColor(.red)
+                                    .padding()
                             }
-                        }
 
-                        // Error si lo hay
-                        if let errorMessage = viewModel.errorMessage {
-                            Text(errorMessage)
-                                .foregroundColor(.red)
-                                .padding()
+                            Divider()
                         }
-
-                        Divider()
                     }
                 }
+                .blur(radius: isLoggedIn ? 0 : 8) // Difumina si no ha iniciado sesión
+                .disabled(!isLoggedIn) // Desactiva interacción si no está logueado
+                .onAppear {
+                    viewModel.fetchNewspaper()
+                }
             }
-            .onAppear {
-                viewModel.fetchNewspaper()
+
+            // Panel inferior si no ha iniciado sesión
+            if !isLoggedIn {
+                VStack(spacing: 16) {
+                    Text("ESTE CONTENIDO ES SOLO PARA SUSCRIPTORES")
+                        .font(.headline)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.primary)
+
+                    Button(action: {
+                        // Acción para suscribirse
+                        print("Ir a página de suscripción")
+                    }) {
+                        Text("SUSCRIBETE")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                    }
+
+                    Button(action: {
+                        // Acción para iniciar sesión
+                        print("Ir a inicio de sesión")
+                    }) {
+                        Text("YA SOY SUSCRIPTOR")
+                            .underline()
+                            .foregroundColor(.primary)
+                    }
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(8)
+                .padding()
+                .transition(.move(edge: .bottom))
+                .animation(.easeInOut, value: isLoggedIn)
             }
         }
     }

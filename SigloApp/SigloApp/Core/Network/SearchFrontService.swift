@@ -53,7 +53,7 @@ final class SearchFrontService {
 
                 // DEBUG opcional
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido busqueda menu:\n\(jsonString.prefix(5000))...")
+                    print("📦 JSON recibido busqueda menu:\n\(jsonString.prefix(500))...")
                 }
 
                 do {
