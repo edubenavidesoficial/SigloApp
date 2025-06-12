@@ -139,6 +139,10 @@ struct UserView: View {
             }
             .navigationBarHidden(true)
         }
+        .onAppear {
+            print("User en UserView al aparecer: \(String(describing: userManager.user))")
+        }
+
     }
 }
 

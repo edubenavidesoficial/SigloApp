@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - Respuesta exitosa del usuario
+
 struct UserSuccessResponse: Codable {
     let requestDate: String
     let response: String
@@ -12,47 +12,6 @@ struct UserSuccessResponse: Codable {
         case response
         case payload
         case processingTime = "processing_time"
-    }
-}
-
-// MARK: - Payload renombrado para evitar ambigüedad
-struct UserDetailPayload: Codable {
-    let id: Int
-    let usuario: String
-    let correo: String
-    let nombre: String
-    let apellidos: String
-    let nombreLargo: String
-    let nombreCorto: String
-    let nombreIniciales: String
-    let activo: Bool
-    let suscriptor: Bool
-    let accesoA: Bool
-    let accesoH: Bool
-    let menosPub: Bool
-    let susNumero: Int
-    let susTarjeta: Int
-    let susImpresa: Bool
-    let admin: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case usuario
-        case correo
-        case nombre
-        case apellidos
-        case nombreLargo = "nombre_largo"
-        case nombreCorto = "nombre_corto"
-        case nombreIniciales = "nombre_iniciales"
-        case activo
-        case suscriptor
-        case accesoA = "acceso_a"
-        case accesoH = "acceso_h"
-        case menosPub = "menos_pub"
-        case susNumero = "sus_numero"
-        case susTarjeta = "sus_tarjeta"
-        case susImpresa = "sus_impresa"
-        case admin
     }
 }
 

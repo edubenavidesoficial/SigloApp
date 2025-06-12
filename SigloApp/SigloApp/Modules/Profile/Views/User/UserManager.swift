@@ -1,5 +1,5 @@
 import Combine
-import Foundation // Para UserDefaults y Codable
+import Foundation
 
 class UserManager: ObservableObject {
     @Published var user: UserPayload? = nil
@@ -16,6 +16,9 @@ class UserManager: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: "currentUser"),
            let user = try? JSONDecoder().decode(UserPayload.self, from: data) {
             self.user = user
+            print("Usuario cargado: \(user)")
+        } else {
+            print("No hay usuario guardado en UserDefaults")
         }
     }
 }

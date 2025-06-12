@@ -4,7 +4,7 @@ struct LoginView: View {
     @MainActor
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @AppStorage("lastUsername") var lastUsername: String = ""
-
+    @EnvironmentObject var userManager: UserManager
     @State private var username: String = "desarrollo01@elsiglo.mx"
     @State private var password: String = "Desiglo01"
     @State private var showPassword: Bool = false
@@ -189,11 +189,21 @@ struct LoginView: View {
 
         Task {
             do {
-                let token = try await LoginService.login(username: username, password: password)
-                print("✅ Token recibido: \(token)")
+                // Llamas al servicio async para login, devuelve UserPayload
+                let userPayload = try await LoginService.login(username: username, password: password)
+                
+                // Guardas usuario en UserManager
+                userManager.user = userPayload
+                
+                // Guardas usuario serializado en UserDefaults
+                userManager.saveUserToDefaults()
+                
+                // Guardas el último usuario en AppStorage para mostrarlo luego si quieres
                 lastUsername = username
-                UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                
+                // Cambias estado de login para que la app navegue a la siguiente pantalla
                 isLoggedIn = true
+                
                 alertMessage = "Inicio de sesión exitoso"
             } catch {
                 alertMessage = "Error: \(error.localizedDescription)"
@@ -203,4 +213,5 @@ struct LoginView: View {
             showAlert = true
         }
     }
+
 }
