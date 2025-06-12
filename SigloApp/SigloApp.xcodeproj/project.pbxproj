@@ -14,6 +14,7 @@
 		C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */; };
 		C02318D02DFB7AAF00C22006 /* SubscriptionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02318CF2DFB7AAF00C22006 /* SubscriptionsService.swift */; };
 		C02318D22DFB7B8C00C22006 /* UserDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02318D12DFB7B8C00C22006 /* UserDetailService.swift */; };
+		C02318D52DFB815000C22006 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02318D42DFB815000C22006 /* UserManager.swift */; };
 		C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05094C72D7E87CB00938043 /* SigloAppApp.swift */; };
 		C05094CC2D7E87CF00938043 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CB2D7E87CF00938043 /* Assets.xcassets */; };
 		C05094CF2D7E87CF00938043 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CE2D7E87CF00938043 /* Preview Assets.xcassets */; };
@@ -130,6 +131,7 @@
 		C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescargasView.swift; sourceTree = "<group>"; };
 		C02318CF2DFB7AAF00C22006 /* SubscriptionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsService.swift; sourceTree = "<group>"; };
 		C02318D12DFB7B8C00C22006 /* UserDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailService.swift; sourceTree = "<group>"; };
+		C02318D42DFB815000C22006 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		C05094C42D7E87CB00938043 /* SigloApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SigloApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05094C72D7E87CB00938043 /* SigloAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigloAppApp.swift; sourceTree = "<group>"; };
 		C05094CB2D7E87CF00938043 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -244,6 +246,14 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		C02318D32DFB814000C22006 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C02318D42DFB815000C22006 /* UserManager.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		C05094BB2D7E87CA00938043 = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +363,7 @@
 		C075CC952D83FBB700B95F69 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C02318D32DFB814000C22006 /* User */,
 				C0833DFD2DBC3F13009C784C /* SubView */,
 				C0ECA2362D81B0F500CAB3A0 /* ProfileView.swift */,
 				C075CCA62D840E8300B95F69 /* UserView.swift */,
@@ -826,6 +837,7 @@
 				C0AA0D802DA08179005C23FD /* SuplementsView.swift in Sources */,
 				C0A08FD82DE3D4CE00260DF3 /* SearchFrontService.swift in Sources */,
 				C075CC992D83FDFA00B95F69 /* NavigationRow..swift in Sources */,
+				C02318D52DFB815000C22006 /* UserManager.swift in Sources */,
 				C0833DFC2DBC3C57009C784C /* fixView.swift in Sources */,
 				C0A08FDC2DE3D78500260DF3 /* SearchFrontViewModel.swift in Sources */,
 				C075CCB12D84564300B95F69 /* ArticleRow.swift in Sources */,

@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct SigloAppApp: App {
+    @StateObject private var userManager = UserManager()
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .automatic
 
@@ -14,6 +15,7 @@ struct SigloAppApp: App {
 
     var body: some Scene {
         WindowGroup {
+            // Inyectamos el userManager a todo el árbol de vistas
             Group {
                 if showWelcomeView {
                     WelcomeView(navigateToPromo: $navigateToPromo, authToken: $authToken)
@@ -37,6 +39,10 @@ struct SigloAppApp: App {
                         TabsHomeLayoutView(articleViewModel: articleViewModel)
                     }
                 }
+            }
+            .environmentObject(userManager)
+            .onAppear {
+                userManager.loadUserFromDefaults()
             }
             .preferredColorScheme(resolveColorScheme(from: appearanceMode))
         }

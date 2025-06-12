@@ -2,8 +2,14 @@ import SwiftUI
 
 struct UserView: View {
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @AppStorage("lastUsername") private var lastUsername: String = "Usuario"
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
+    @EnvironmentObject var userManager: UserManager
+    
+    private var lastConnectionDate: String {
+        "Viernes 11 de abril 2025 a las 12:15PM"
+    }
     
     var body: some View {
         NavigationView {
@@ -14,6 +20,7 @@ struct UserView: View {
                         isMenuOpen: $isMenuOpen,
                         isLoggedIn: isLoggedIn
                     )
+                    
                     if let selected = selectedOption {
                         NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
@@ -25,13 +32,13 @@ struct UserView: View {
                                 .frame(width: 80, height: 80)
                                 .foregroundColor(.gray)
                             
-                            Text("USUARIO 28")
+                            Text(userManager.user?.usuario ?? "USUARIO")
                                 .font(.headline)
                             
                             Text("Última conexión:")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                            Text("Viernes 11  de abril 2025 a las 12:15PM")
+                            Text(lastConnectionDate)
                                 .font(.subheadline)
                         }
                         .multilineTextAlignment(.center)
@@ -45,7 +52,7 @@ struct UserView: View {
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                             
-                            Text("El Siglo de Torreón")
+                            Text("\(userManager.user?.nombre ?? "") \(userManager.user?.apellidos ?? "")")
                                 .font(.subheadline)
                             
                             Text("Miembro desde hace 3 Años.")
@@ -86,15 +93,12 @@ struct UserView: View {
                         }
                         .padding(.horizontal)
                         
-                        
-                        
                         // Opciones adicionales
                         VStack(spacing: 0) {
                             NavigationLink(destination: Text("Actualizar datos")) {
                                 HStack {
                                     Text("Actualizar datos")
                                     Spacer()
-                                    //  Image(systemName: "chevron.right")
                                 }
                                 .padding()
                             }
@@ -104,7 +108,6 @@ struct UserView: View {
                                 HStack {
                                     Text("Mis comentarios")
                                     Spacer()
-                                    // Image(systemName: "chevron.right")
                                 }
                                 .padding()
                             }
@@ -134,6 +137,9 @@ struct UserView: View {
                     }
                 }
             }
+            .navigationBarHidden(true)
         }
     }
 }
+
+

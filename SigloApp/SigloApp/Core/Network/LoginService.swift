@@ -7,12 +7,16 @@ struct LoginResponse: Decodable {
     let payload: UserPayload?
 }
 
-struct UserPayload: Decodable {
+struct UserPayload: Codable {
     let id: Int
     let usuario: String
     let correo: String
     let nombre: String
     let apellidos: String
+    let nombre_largo: String
+    let nombre_corto: String
+    let nombre_iniciales: String
+    let activo: String
 }
 
 // MARK: - Servicio de Login
