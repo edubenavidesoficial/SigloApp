@@ -5,8 +5,8 @@ struct LoginView: View {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @AppStorage("lastUsername") var lastUsername: String = ""
 
-    @State private var username: String = "clientesactivos4@gmail.com"
-    @State private var password: String = "@PRUEBAMARIO2024%$"
+    @State private var username: String = "desarrollo01@elsiglo.mx"
+    @State private var password: String = "Desiglo01"
     @State private var showPassword: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = "Alerta!"
@@ -178,7 +178,7 @@ struct LoginView: View {
         }
     }
     @MainActor
-    /*func login() {
+    func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -202,8 +202,8 @@ struct LoginView: View {
             isLoading = false
             showAlert = true
         }
-    }*/
-    func login() {
+    }
+    /*func login() {
         guard !username.isEmpty, !password.isEmpty else {
             alertMessage = "Por favor completa usuario y contraseña."
             showAlert = true
@@ -227,6 +227,6 @@ struct LoginView: View {
             isLoading = false
             showAlert = true
         }
-    }
+    }*/
 
 }

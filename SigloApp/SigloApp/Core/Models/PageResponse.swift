@@ -1,5 +1,76 @@
 import Foundation
 
+// MARK: - Respuesta exitosa del usuario
+struct UserSuccessResponse: Codable {
+    let requestDate: String
+    let response: String
+    let payload: UserDetailPayload
+    let processingTime: String
+
+    enum CodingKeys: String, CodingKey {
+        case requestDate = "request_date"
+        case response
+        case payload
+        case processingTime = "processing_time"
+    }
+}
+
+// MARK: - Payload renombrado para evitar ambigüedad
+struct UserDetailPayload: Codable {
+    let id: Int
+    let usuario: String
+    let correo: String
+    let nombre: String
+    let apellidos: String
+    let nombreLargo: String
+    let nombreCorto: String
+    let nombreIniciales: String
+    let activo: Bool
+    let suscriptor: Bool
+    let accesoA: Bool
+    let accesoH: Bool
+    let menosPub: Bool
+    let susNumero: Int
+    let susTarjeta: Int
+    let susImpresa: Bool
+    let admin: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case usuario
+        case correo
+        case nombre
+        case apellidos
+        case nombreLargo = "nombre_largo"
+        case nombreCorto = "nombre_corto"
+        case nombreIniciales = "nombre_iniciales"
+        case activo
+        case suscriptor
+        case accesoA = "acceso_a"
+        case accesoH = "acceso_h"
+        case menosPub = "menos_pub"
+        case susNumero = "sus_numero"
+        case susTarjeta = "sus_tarjeta"
+        case susImpresa = "sus_impresa"
+        case admin
+    }
+}
+
+// MARK: - Respuesta de error
+struct UserErrorResponse: Codable {
+    let requestDate: String
+    let response: String
+    let message: String
+    let processingTime: String
+
+    enum CodingKeys: String, CodingKey {
+        case requestDate = "request_date"
+        case response
+        case message
+        case processingTime = "processing_time"
+    }
+}
+
 struct PortadaResponse: Decodable {
     let request_date: String
     let response: String
@@ -89,6 +160,7 @@ enum NetworkError: Error {
     case decodingError(Error)
     case decodingFailed
     case invalidToken
+    case custom(String) 
 }
 
 struct SuplementoResponse: Identifiable, Codable {
@@ -371,4 +443,33 @@ struct Contenido: Identifiable, Codable {
         self.titulo = try container.decode(String.self, forKey: .titulo)
         self.balazo = try? container.decode(String.self, forKey: .balazo) // Opcional
     }
+}
+
+struct SuscripcionResponse: Codable {
+    let requestDate: String
+    let response: String
+    let payload: SuscripcionPayload
+    let processingTime: String
+}
+
+struct SuscripcionPayload: Codable {
+    let id: Int
+    let suscriptor: Bool
+    let accesoA: Bool
+    let accesoH: Bool
+    let menosPub: Bool
+    let urlSuscribirse: String
+    let urlTarjetaImagen: String
+    let suscripcionDigital: SuscripcionDetalle
+    let suscripcionImpresa: SuscripcionDetalle
+}
+
+struct SuscripcionDetalle: Codable {
+    let urlArchivoDigital: String?
+    let numero: String
+    let tarjeta: String
+    let vigencia: String?
+    let periodo: String?
+    let estado: String?
+    let extras: [String]
 }

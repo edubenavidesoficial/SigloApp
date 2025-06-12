@@ -4,7 +4,7 @@ final class UserDetailService {
     static let shared = UserDetailService()
     private init() {}
 
-    func obtenerDetallesUsuario(usuarioId: Int, completion: @escaping (Result<UserPayload, Error>) -> Void) {
+    func obtenerDetallesUsuario(usuarioId: Int, completion: @escaping (Result<UserDetailPayload, Error>) -> Void) {
         guard let url = URL(string: "\(API.baseURL)usuario/\(usuarioId)") else {
             print("❌ URL inválida")
             completion(.failure(NetworkError.invalidURL))
@@ -53,20 +53,19 @@ final class UserDetailService {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-                    // Check if response is "Success" or "Error"
-                    if let response = try? decoder.decode(UserSuccessResponse.self, from: data) {
-                        completion(.success(response.payload))
-                    } else if let errorResponse = try? decoder.decode(UserErrorResponse.self, from: data) {
-                        print("⚠️ Error en respuesta: \(errorResponse.message)")
-                        completion(.failure(NetworkError.custom(errorResponse.message)))
-                    } else {
-                        throw NetworkError.decodingError
-                    }
+                    let response = try decoder.decode(UserSuccessResponse.self, from: data)
+                    completion(.success(response.payload))
+
+                } catch let decodingError as DecodingError {
+                    print("❌ Error al decodificar JSON: \(decodingError.localizedDescription)")
+                    completion(.failure(NetworkError.decodingError(decodingError)))
 
                 } catch {
-                    print("❌ Error al decodificar JSON: \(error)")
+                    // Error inesperado
+                    print("❌ Error inesperado: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
+
             }
         }.resume()
     }

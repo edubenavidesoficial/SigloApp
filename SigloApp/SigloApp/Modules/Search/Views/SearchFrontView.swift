@@ -23,14 +23,12 @@ struct SearchFrontView: View {
     @State private var searchText: String = ""
     @State private var selectedTema: String = ""
 
-    // Colores definidos
     let temaColors = ["#FFEB99", "#CFB495", "#9AB5C1", "#CCC3D1", "#D2BAB7", "#6C567B", "#5D5B6A", "#6B7B8E", "#189DB9", "#696969"]
     let tendenciaColors = ["#ACDEAA", "#EEF3AD", "#F5C8BD", "#C5CABE", "#CADAB4", "#516091", "#F67280", "#758184", "#41A8CE", "#E33E85"]
 
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
-                // Buscador principal
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -46,7 +44,7 @@ struct SearchFrontView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        
+
                         if searchViewModel.searchResults.isEmpty {
                             if let temas = viewModel.articulos.first(where: { $0.titulo == "Buscar por temas" }) {
                                 Text("Buscar por temas")
@@ -54,23 +52,29 @@ struct SearchFrontView: View {
                                     .bold()
                                     .padding(.horizontal)
 
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        ForEach(Array(temas.contenido.enumerated()), id: \.1.id) { index, contenido in
-                                            Button(action: {
-                                                searchText = contenido.titulo
-                                                searchViewModel.buscarArticulos(query: contenido.titulo)
-                                            }) {
-                                                Text(contenido.titulo.uppercased())
-                                                    .padding(.horizontal, 16)
-                                                    .padding(.vertical, 8)
-                                                    .background(Color(hex: temaColors[index % temaColors.count]))
-                                                    .foregroundColor(.white)
-                                                    .cornerRadius(10)
+                                VStack(spacing: 8) {
+                                    ForEach(0..<2) { fila in
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack(spacing: 12) {
+                                                ForEach(Array(temas.contenido.enumerated()).filter { index, _ in
+                                                    fila == 0 ? index < 5 : index >= 5
+                                                }, id: \.1.id) { index, contenido in
+                                                    Button(action: {
+                                                        searchText = contenido.titulo
+                                                        searchViewModel.buscarArticulos(query: contenido.titulo)
+                                                    }) {
+                                                        Text(contenido.titulo.uppercased())
+                                                            .padding(.horizontal, 16)
+                                                            .padding(.vertical, 8)
+                                                            .background(Color(hex: temaColors[index]))
+                                                            .foregroundColor(index < 5 ? .black : .white)
+                                                            .cornerRadius(10)
+                                                    }
+                                                }
                                             }
+                                            .padding(.horizontal)
                                         }
                                     }
-                                    .padding(.horizontal)
                                 }
                             }
 
@@ -80,23 +84,29 @@ struct SearchFrontView: View {
                                     .bold()
                                     .padding(.horizontal)
 
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        ForEach(Array(tendencias.contenido.enumerated()), id: \.1.id) { index, contenido in
-                                            Button(action: {
-                                                searchText = contenido.titulo
-                                                searchViewModel.buscarArticulos(query: contenido.titulo)
-                                            }) {
-                                                Text(contenido.titulo.uppercased())
-                                                    .padding(.horizontal, 16)
-                                                    .padding(.vertical, 8)
-                                                    .background(Color(hex: tendenciaColors[index % tendenciaColors.count]))
-                                                    .foregroundColor(.white)
-                                                    .cornerRadius(10)
+                                VStack(spacing: 8) {
+                                    ForEach(0..<2) { fila in
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack(spacing: 12) {
+                                                ForEach(Array(tendencias.contenido.enumerated()).filter { index, _ in
+                                                    fila == 0 ? index < 5 : index >= 5
+                                                }, id: \.1.id) { index, contenido in
+                                                    Button(action: {
+                                                        searchText = contenido.titulo
+                                                        searchViewModel.buscarArticulos(query: contenido.titulo)
+                                                    }) {
+                                                        Text(contenido.titulo.uppercased())
+                                                            .padding(.horizontal, 16)
+                                                            .padding(.vertical, 8)
+                                                            .background(Color(hex: tendenciaColors[index]))
+                                                            .foregroundColor(index < 5 ? .black : .white)
+                                                            .cornerRadius(10)
+                                                    }
+                                                }
                                             }
+                                            .padding(.horizontal)
                                         }
                                     }
-                                    .padding(.horizontal)
                                 }
                             }
                         } else {
@@ -161,7 +171,6 @@ struct SearchFrontView: View {
                             }
                         }
 
-                        // RESULTADOS DE BÚSQUEDA
                         if viewModel.isLoading {
                             ProgressView("Cargando...")
                         } else if !searchViewModel.searchResults.isEmpty {
@@ -180,7 +189,7 @@ struct SearchFrontView: View {
                                             Text("Autor")
                                                 .font(.caption)
                                                 .foregroundColor(.gray)
-                                            Text("") // Reemplaza si tienes autor
+                                            Text("")
                                         }
 
                                         Text(articulo.descripcion ?? "Sin descripción")

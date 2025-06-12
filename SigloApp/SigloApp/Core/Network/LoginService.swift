@@ -28,9 +28,9 @@ final class LoginService {
     // Función principal de login usando async/await
     static func login(username: String, password: String) async throws -> UserPayload {
        // let correoHash = md5(username)
-      //  let passwordHash = md5(password)
+        let passwordHash = md5(password)
         let correoHash = md5(username.lowercased())
-        let passwordHash = md5(password.lowercased())
+        //let passwordHash = md5(password.lowercased())
 
         // 📌 Imprimir en consola los valores encriptados para verificar
         print("📌 Usuario encriptado (MD5): \(correoHash)")
