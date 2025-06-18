@@ -15,7 +15,6 @@ struct UserSuccessResponse: Codable {
     }
 }
 
-// MARK: - Respuesta de error
 struct UserErrorResponse: Codable {
     let requestDate: String
     let response: String

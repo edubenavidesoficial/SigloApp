@@ -38,6 +38,13 @@ struct UserView: View {
                                 .resizable()
                                 .frame(width: 80, height: 80)
                                 .foregroundColor(.gray)
+                                .onTapGesture {
+                                    // Cerrar sesión
+                                    UserDefaults.standard.set(false, forKey: "isLoggedIn")
+                                    print("🔴 Sesión cerrada desde UserView")
+                                     isLoggedIn = false
+                                }
+                            
                             
                             Text(userManager.user?.usuario.uppercased() ?? "USUARIO")
                                 .font(.headline)
