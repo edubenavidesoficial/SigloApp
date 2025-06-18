@@ -11,7 +11,6 @@ struct SectionsView: View {
                     Text(seccion.nombre)
                 }
             }
-            .navigationTitle("Secciones")
             .onAppear {
                 viewModel.fetchSecciones()
             }

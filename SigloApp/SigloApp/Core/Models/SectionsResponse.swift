@@ -12,4 +12,5 @@ struct SectionsPayload: Codable {
     let titulo: String
     let tipo: String
     let logo: String?
+    let nombre: String?
 }

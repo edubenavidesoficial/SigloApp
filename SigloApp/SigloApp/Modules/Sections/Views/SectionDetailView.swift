@@ -21,6 +21,5 @@ struct SectionDetailView: View {
                 }
             }
         }
-        .navigationTitle(payload.nombre)
     }
 }
