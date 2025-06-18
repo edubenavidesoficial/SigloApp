@@ -8,8 +8,15 @@ struct UserView: View {
     @EnvironmentObject var userManager: UserManager
     
     private var lastConnectionDate: String {
-        "Viernes 11 de abril 2025 a las 12:15PM"
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "es_ES")
+        formatter.dateFormat = "EEEE d 'de' MMMM yyyy 'a las' h:mma"
+        
+        let formatted = formatter.string(from: date)
+        return formatted.capitalized
     }
+
     
     var body: some View {
         NavigationView {
@@ -32,7 +39,7 @@ struct UserView: View {
                                 .frame(width: 80, height: 80)
                                 .foregroundColor(.gray)
                             
-                            Text(userManager.user?.usuario ?? "USUARIO")
+                            Text(userManager.user?.usuario.uppercased() ?? "USUARIO")
                                 .font(.headline)
                             
                             Text("Última conexión:")
@@ -55,7 +62,7 @@ struct UserView: View {
                             Text("\(userManager.user?.nombre ?? "") \(userManager.user?.apellidos ?? "")")
                                 .font(.subheadline)
                             
-                            Text("Miembro desde hace 3 Años.")
+                            Text("Miembro desde hace [] Años.")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }

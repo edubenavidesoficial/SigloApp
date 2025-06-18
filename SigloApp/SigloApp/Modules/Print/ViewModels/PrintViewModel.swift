@@ -8,35 +8,36 @@ enum TabTypetwo: String, CaseIterable {
 }
 
 class PrintViewModel: ObservableObject {
+    @Published var isNewspaperLoaded = false
     @Published var selectedTab: TabTypetwo = .hemeroteca
     @Published var hemeroteca: [PrintModel] = []
     @Published var suplementos: [SuplementsModel] = []
     @Published var errorMessage: String?
 
-    private let printService = PrintService.shared  // Instancia compartida
+    private let printService = PrintService.shared
 
-    init() {
-        fetchNewspaper() // Llamada automática al inicializar el ViewModel
-    }
-
-    /// Función para obtener los datos del periódico
     func fetchNewspaper() {
+        // Evitar doble carga
+        guard !isNewspaperLoaded else { return }
+
         printService.obtenerPortada { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return } // Captura débil segura
+
                 switch result {
                 case .success(let payloads):
-                    self?.hemeroteca = payloads.first?.portadas.map { portada in
+                    self.hemeroteca = payloads.first?.portadas.map { portada in
                         PrintModel(
                             title: portada.titulo,
                             imageName: portada.cover,
                             date: payloads.first?.fecha ?? "Desconocido"
                         )
                     } ?? []
-                    
+                    self.isNewspaperLoaded = true
 
                 case .failure(let error):
-                    print("❌ Error al obtener datos: \(error.localizedDescription)")
-                    self?.errorMessage = nil // Evita que se muestre en la UI
+                    self.errorMessage = error.localizedDescription
+                    self.isNewspaperLoaded = false // Para permitir reintento si hay error
                 }
             }
         }

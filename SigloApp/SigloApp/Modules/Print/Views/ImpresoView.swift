@@ -78,10 +78,17 @@ struct ImpresoView: View {
                         }
                     }
                 }
-                .blur(radius: isLoggedIn ? 0 : 8) // Difumina si no ha iniciado sesión
-                .disabled(!isLoggedIn) // Desactiva interacción si no está logueado
+                .blur(radius: isLoggedIn ? 0 : 8)
+                .disabled(!isLoggedIn)
                 .onAppear {
-                    viewModel.fetchNewspaper()
+                    if !viewModel.isNewspaperLoaded {
+                        viewModel.fetchNewspaper()
+                    }
+                }
+                .onChange(of: viewModel.selectedTab) { newTab in
+                    if newTab == .hemeroteca && !viewModel.isNewspaperLoaded {
+                        viewModel.fetchNewspaper()
+                    }
                 }
             }
 
@@ -94,10 +101,9 @@ struct ImpresoView: View {
                         .foregroundColor(.primary)
 
                     Button(action: {
-                        // Acción para suscribirse
                         print("Ir a página de suscripción")
                     }) {
-                        Text("SUSCRIBETE")
+                        Text("SUSCRÍBETE")
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -105,7 +111,6 @@ struct ImpresoView: View {
                     }
 
                     Button(action: {
-                        // Acción para iniciar sesión
                         print("Ir a inicio de sesión")
                     }) {
                         Text("YA SOY SUSCRIPTOR")
