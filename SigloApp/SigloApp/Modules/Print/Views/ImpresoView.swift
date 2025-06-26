@@ -104,8 +104,19 @@ struct ImpresoView: View {
                         .font(.headline)
                         .multilineTextAlignment(.center)
 
-                    // Si NO está activo, mostramos “Suscribirse”
-                    if estado != "activa" {
+                    // Si no está logueado, mostrar siempre el link fijo
+                    if !isLoggedIn {
+                        if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
+                            Link("SUSCRÍBETE", destination: url)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .cornerRadius(8)
+                        }
+                    }
+                    // Si está logueado pero no es suscriptor activo, mostrar su URL específica si existe
+                    else if estado != "activa" {
                         if let urlString = subVM.suscripcion?.urlSuscribirse,
                            let url = URL(string: urlString) {
                             Link("SUSCRÍBETE", destination: url)
@@ -114,15 +125,6 @@ struct ImpresoView: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color.red)
                                 .cornerRadius(8)
-                        } else {
-                            if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
-                                Link("SUSCRÍBETE", destination: url)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.red)
-                                    .cornerRadius(8)
-                            }
                         }
                     }
 
