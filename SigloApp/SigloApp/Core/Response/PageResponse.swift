@@ -411,32 +411,32 @@ struct SuscripcionResponse: Codable {
 }
 
 struct SuscripcionPayload: Codable {
-    let id: Int
+    let id: Int?
     let suscriptor: Bool
     let accesoA: Bool
     let accesoH: Bool
     let menosPub: Bool
-    let urlSuscribirse: String
-    let urlTarjetaImagen: String
-    let suscripcionDigital: SuscripcionDetalle
-    let suscripcionImpresa: SuscripcionDetalle
+    let urlSuscribirse: String?
+    let urlTarjetaImagen: String?
+    let suscripcionDigital: SuscripcionDigital
+    let suscripcionImpresa: SuscripcionImpresa
 }
 
-struct SuscripcionDetalle: Codable {
+struct SuscripcionDigital: Codable {
     let urlArchivoDigital: String?
-    let numero: String
-    let tarjeta: String
-    let vigencia: String
-    let periodo: String
-    let estado: String
+    let numero: Int
+    let tarjeta: Int
+    let vigencia: String?
+    let periodo: String?
+    let estado: String?
     let extras: [String]
 }
 
 struct SuscripcionImpresa: Codable {
     let numero: Int
     let tarjeta: Int
-    let vigencia: String
-    let periodo: String
-    let estado: String
+    let vigencia: String?     // <-- opcional
+    let periodo: String?      // <-- opcional
+    let estado: String?       // <-- opcional
     let extras: [String]
 }

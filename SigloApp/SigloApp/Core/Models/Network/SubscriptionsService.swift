@@ -57,7 +57,7 @@ final class SubscriptionsService {
                 }
 
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido Suscripciones:\n\(jsonString.prefix(500))...")
+                    print("📦 JSON recibido Suscripciones:\n\(jsonString.prefix(1000))...")
                 }
 
                 // 5. Decodificación
