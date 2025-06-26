@@ -10,7 +10,7 @@ struct HeaderView: View {
     @State private var showMenu = false
     @State private var showLogoutAlert = false
     @State private var isSearchViewPresented = false
-    @State private var navigateToSections = false
+    @State private var mostrarSectionsFullscreen = false  // <-- aquí
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -20,21 +20,13 @@ struct HeaderView: View {
                         if selectedOption != nil {
                             selectedOption = nil
                         } else {
-                            navigateToSections = true
+                            // En vez de navegar push, presentamos fullscreen
+                            mostrarSectionsFullscreen = true
                         }
                     }) {
                         Image(systemName: selectedOption != nil ? "chevron.left" : "line.horizontal.3")
                             .imageScale(.large)
                     }
-
-                    // NavigationLink oculto
-                    NavigationLink(
-                        destination: SectionsView(),
-                        isActive: $navigateToSections,
-                        label: {
-                            EmptyView()
-                        }
-                    ).hidden()
 
                     Spacer()
 
@@ -45,7 +37,6 @@ struct HeaderView: View {
 
                     Spacer()
 
-                    // Ícono de búsqueda siempre visible
                     Button(action: {
                         isSearchViewPresented = true
                     }) {
@@ -53,14 +44,6 @@ struct HeaderView: View {
                             .font(.title2)
                             .foregroundColor(.black)
                     }
-
-                    // Navegación oculta a vista de búsqueda
-                    NavigationLink(
-                        destination: SearchFrontView(),
-                        isActive: $isSearchViewPresented,
-                        label: {
-                            EmptyView()
-                        }).hidden()
                 }
                 .padding(.horizontal)
                 .padding(.top, 15)
@@ -90,6 +73,19 @@ struct HeaderView: View {
                     .zIndex(2)
             }
         }
+        // Presentación fullscreen de SectionsView
+        .fullScreenCover(isPresented: $mostrarSectionsFullscreen) {
+            SectionsView()
+        }
+        // Navegación a búsqueda con NavigationLink como antes
+        .background(
+            NavigationLink(
+                destination: SearchFrontView(),
+                isActive: $isSearchViewPresented,
+                label: { EmptyView() }
+            )
+            .hidden()
+        )
     }
 
     func logout() {
