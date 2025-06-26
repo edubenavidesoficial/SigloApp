@@ -1,12 +1,15 @@
-import Foundation
 import SwiftUI
 
-enum TabTypetwo: String, CaseIterable {
+// Tu enum de pestañas
+enum TabTypetwo: String, CaseIterable, Identifiable {
     case hemeroteca = "HEMEROTECA EL SIGLO DE TORREÓN"
     case suplementos = "SUPLEMENTOS"
     case descargas = "MIS DESCARGAS"
+
+    var id: String { rawValue }
 }
 
+// ViewModel que maneja estado y datos
 class PrintViewModel: ObservableObject {
     @Published var isNewspaperLoaded = false
     @Published var selectedTab: TabTypetwo = .hemeroteca
@@ -17,12 +20,11 @@ class PrintViewModel: ObservableObject {
     private let printService = PrintService.shared
 
     func fetchNewspaper() {
-        // Evitar doble carga
         guard !isNewspaperLoaded else { return }
 
         printService.obtenerPortada { [weak self] result in
             DispatchQueue.main.async {
-                guard let self = self else { return } // Captura débil segura
+                guard let self = self else { return }
 
                 switch result {
                 case .success(let payloads):
@@ -37,7 +39,7 @@ class PrintViewModel: ObservableObject {
 
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
-                    self.isNewspaperLoaded = false // Para permitir reintento si hay error
+                    self.isNewspaperLoaded = false
                 }
             }
         }

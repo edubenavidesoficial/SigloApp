@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct UserView: View {
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("lastUsername") private var lastUsername: String = "Usuario"
@@ -7,16 +8,15 @@ struct UserView: View {
     @State private var selectedOption: MenuOption? = nil
     @EnvironmentObject var userManager: UserManager
     
+    @StateObject private var viewModel = UserSubscriptionViewModel()
+    
     private var lastConnectionDate: String {
         let date = Date()
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "es_ES")
         formatter.dateFormat = "EEEE d 'de' MMMM yyyy 'a las' h:mma"
-        
-        let formatted = formatter.string(from: date)
-        return formatted.capitalized
+        return formatter.string(from: date).capitalized
     }
-
     
     var body: some View {
         NavigationView {
@@ -31,20 +31,17 @@ struct UserView: View {
                     if let selected = selectedOption {
                         NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
-                    }
-                    else {
+                    } else {
                         VStack(spacing: 0) {
                             Image("user")
                                 .resizable()
                                 .frame(width: 80, height: 80)
                                 .foregroundColor(.gray)
                                 .onTapGesture {
-                                    // Cerrar sesión
                                     UserDefaults.standard.set(false, forKey: "isLoggedIn")
                                     print("🔴 Sesión cerrada desde UserView")
-                                     isLoggedIn = false
+                                    isLoggedIn = false
                                 }
-                            
                             
                             Text(userManager.user?.usuario.uppercased() ?? "USUARIO")
                                 .font(.headline)
@@ -60,15 +57,12 @@ struct UserView: View {
                         
                         Divider()
                         
-                        // Información del usuario
                         VStack(spacing: 4) {
                             Text("Nombre:")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                            
                             Text("\(userManager.user?.nombre ?? "") \(userManager.user?.apellidos ?? "")")
                                 .font(.subheadline)
-                            
                             Text("Miembro desde hace [] Años.")
                                 .font(.caption)
                                 .foregroundColor(.gray)
@@ -76,38 +70,89 @@ struct UserView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         
-                        // Tarjeta e información de suscripción
-                        HStack(alignment: .top, spacing: 16) {
-                            Image("card")
-                                .resizable()
-                                .frame(width: 140, height: 180)
-                                .cornerRadius(8)
-                            
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Información de suscriptor:")
-                                    .fontWeight(.semibold)
-                                
-                                Text("Número de suscriptor:")
-                                Text("4951")
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                                
-                                Text("Tarifa:")
-                                Text("Suscripción Anual")
-                                Text("Periodo: 15/01/2024 - 14/01/2025")
-                                
-                                Text("Archivo Digital")
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                                Text("Hemeroteca")
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                            }
-                            .font(.footnote)
-                        }
-                        .padding(.horizontal)
+                        Divider()
+                            .padding(.vertical)
                         
-                        // Opciones adicionales
+                        // Aquí mostramos la info de suscripción con el ViewModel
+                        if viewModel.isLoading {
+                            ProgressView("Cargando suscripción...")
+                                .padding()
+                        } else if let error = viewModel.errorMessage {
+                            Text("Error al cargar suscripción: \(error)")
+                                .foregroundColor(.blue)
+                                .padding()
+                        } else if let suscripcion = viewModel.suscripcion {
+                            HStack(alignment: .top, spacing: 16) {
+                                // Imagen tarjeta real (async)
+                                if let url = URL(string: suscripcion.urlTarjetaImagen) {
+                                    AsyncImage(url: url) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 140, height: 180)
+                                                .cornerRadius(8)
+                                        case .failure:
+                                            Image("card")
+                                                .resizable()
+                                                .frame(width: 140, height: 180)
+                                                .cornerRadius(8)
+                                        @unknown default:
+                                            EmptyView()
+                                        }
+                                    }
+                                } else {
+                                    Image("card")
+                                        .resizable()
+                                        .frame(width: 140, height: 180)
+                                        .cornerRadius(8)
+                                }
+                                
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Información de suscriptor:")
+                                        .fontWeight(.semibold)
+                                    
+                                    Text("Número de suscriptor:")
+                                    Text("\(suscripcion.id)")
+                                        .foregroundColor(.red)
+                                        .fontWeight(.bold)
+                                    
+                                    Text("Tarifa:")
+                                    Text(suscripcion.suscripcionImpresa.periodo)
+                                    
+                                    Text("Periodo:")
+                                    Text("Vigencia: \(suscripcion.suscripcionImpresa.vigencia)")
+                                    
+                                    Text("Estado:")
+                                    Text(suscripcion.suscripcionImpresa.estado)
+                                        .foregroundColor(suscripcion.suscripcionImpresa.estado.lowercased() == "activa" ? .green : .red)
+                                    
+                                    Link("Suscribirse", destination: URL(string: suscripcion.urlSuscribirse)!)
+                                        .foregroundColor(.blue)
+                                        .underline()
+                                    
+                                    Text("Archivo Digital")
+                                        .foregroundColor(.red)
+                                        .fontWeight(.bold)
+                                    Text("Hemeroteca")
+                                        .foregroundColor(.red)
+                                        .fontWeight(.bold)
+                                }
+                                .font(.footnote)
+                            }
+                            .padding(.horizontal)
+                        } else {
+                            Text("No hay información de suscripción.")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                        
+                        Divider()
+                            .padding(.vertical)
+                        
                         VStack(spacing: 0) {
                             NavigationLink(destination: Text("Actualizar datos")) {
                                 HStack {
@@ -132,7 +177,6 @@ struct UserView: View {
                         .foregroundColor(.black)
                         .fontWeight(.bold)
                         
-                        // Redes sociales
                         HStack(spacing: 20) {
                             Image("logo.youtube").resizable().frame(width: 20, height: 20)
                             Image("logo.facebook").resizable().frame(width: 20, height: 18)
@@ -143,7 +187,6 @@ struct UserView: View {
                         .font(.title3)
                         .padding(.top)
                         
-                        // Pie de página
                         Text("CÍA. EDITORA DE LA LAGUNA S.A. DE C.V")
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -154,10 +197,15 @@ struct UserView: View {
             .navigationBarHidden(true)
         }
         .onAppear {
-            print("User en UserView al aparecer: \(String(describing: userManager.user))")
+            print("👤 userManager.user: \(String(describing: userManager.user))")
+            
+            if let id = userManager.user?.id {
+                print("🔑 Usuario ID obtenido desde UserManager: \(id)")
+                viewModel.cargarSuscripcion(usuarioId: id)
+            } else {
+                print("⚠️ No se encontró el ID del usuario.")
+            }
         }
 
     }
 }
-
-

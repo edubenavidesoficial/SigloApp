@@ -50,6 +50,10 @@ import Foundation
                                 completion(.failure(NetworkError.emptyData))
                                 return
                             }
+                            
+                            if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) {
+                                print("Objeto JSON recibido: \(jsonObject)")
+                            }
 
                             // DEBUG opcional
                             if let jsonString = String(data: data, encoding: .utf8) {
@@ -59,7 +63,7 @@ import Foundation
                             do {
                                 let decoder = JSONDecoder()
                                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                                let responseData = try decoder.decode(SectionsResponse.self, from: data)
+                                let responseData = try decoder.decode(SectionListResponse.self, from: data)
                                 completion(.success(responseData.payload))
                             } catch {
                                 print("❌ Error al decodificar JSON: \(error)")

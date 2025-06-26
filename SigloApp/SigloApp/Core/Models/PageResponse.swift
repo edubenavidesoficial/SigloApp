@@ -426,8 +426,17 @@ struct SuscripcionDetalle: Codable {
     let urlArchivoDigital: String?
     let numero: String
     let tarjeta: String
-    let vigencia: String?
-    let periodo: String?
-    let estado: String?
+    let vigencia: String
+    let periodo: String
+    let estado: String
+    let extras: [String]
+}
+
+struct SuscripcionImpresa: Codable {
+    let numero: Int
+    let tarjeta: Int
+    let vigencia: String
+    let periodo: String
+    let estado: String
     let extras: [String]
 }

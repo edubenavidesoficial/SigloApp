@@ -1,6 +1,17 @@
 import Foundation
 
-struct SectionResponse: Codable {
+// Respuesta para lista de secciones
+struct SectionListResponse: Decodable {
+    let requestDate: String
+    let response: String
+    let message: String?
+    let payload: [SectionPayload]
+    let processingTime: String?
+}
+
+
+// Respuesta para detalle de sección
+struct SectionDetailResponse: Decodable {
     let requestDate: String
     let response: String
     let message: String?
@@ -9,37 +20,57 @@ struct SectionResponse: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case requestDate = "request_date"
-        case response
-        case message
-        case payload
+        case response, message, payload
         case processingTime = "processing_time"
     }
 }
 
-struct SectionPayload: Codable, Identifiable {
-    let id: Int
+// Modelo SectionPayload con init personalizado para solo decodificar
+struct SectionPayload: Decodable, Identifiable {
+    let sectionId: Int
+    var id: Int { sectionId }
+    
     let nombre: String
-    let tipo: String
+    let ordenar: Int?
+    let tipo: String?
     let logo: String?
     let notas: [Noticia]?
-    let videos: [Video]?   // Asegúrate que Video esté definido y sea Codable
+    let videos: [SectionVideo]?
 
     private enum CodingKeys: String, CodingKey {
-        case id
-        case nombre = "titulo"
-        case tipo
-        case logo
-        case notas
-        case videos
+        case sectionId = "id"
+        case ordenar, tipo, logo, notas, videos
+        case nombre
+        case titulo
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        sectionId = try container.decode(Int.self, forKey: .sectionId)
+        ordenar = try container.decodeIfPresent(Int.self, forKey: .ordenar)
+        tipo = try container.decodeIfPresent(String.self, forKey: .tipo)
+        logo = try container.decodeIfPresent(String.self, forKey: .logo)
+        notas = try container.decodeIfPresent([Noticia].self, forKey: .notas)
+        videos = try container.decodeIfPresent([SectionVideo].self, forKey: .videos)
+        
+        if let nombreValue = try? container.decode(String.self, forKey: .nombre) {
+            nombre = nombreValue
+        } else if let tituloValue = try? container.decode(String.self, forKey: .titulo) {
+            nombre = tituloValue
+        } else {
+            nombre = "Sin título"
+        }
     }
 }
 
-struct FotoNota: Codable {
+// FotoNota
+struct FotoNota: Decodable {
     let urlFoto: String
     let pieFoto: String?
 }
 
-struct FotoGaleria: Codable {
+// FotoGaleria
+struct FotoGaleria: Decodable {
     let id: Int
     let galeria: Int
     let titulo: String?
@@ -51,7 +82,8 @@ struct FotoGaleria: Codable {
     let tags: [String]
 }
 
-struct Noticia: Codable, Identifiable {
+// Noticia
+struct Noticia: Decodable, Identifiable {
     let id: Int
     let sid: Int
     let fecha: String
@@ -71,9 +103,16 @@ struct Noticia: Codable, Identifiable {
     let galeria: Galeria?
     let plantilla: Int?
     let votacion: Int?
-    let video: [String: String]? // ajusta si es necesario
+    let video: [String: String]?
     let youtube: String?
     let facebook: String?
     let filemanager: String?
     let acceso: Int
+}
+
+// Video renombrado para evitar conflicto
+struct SectionVideo: Decodable {
+    let id: Int?
+    let url: String?
+    // Agrega más campos según tu JSON
 }

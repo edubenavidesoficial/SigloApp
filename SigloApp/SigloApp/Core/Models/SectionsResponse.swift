@@ -3,8 +3,15 @@ import Foundation
 struct SectionsResponse: Codable {
     let requestDate: String
     let response: String
-    let payload: [SectionPayload]
+    let payload: [SectionsPayload]
     let processingTime: String
+
+    private enum CodingKeys: String, CodingKey {
+        case requestDate = "request_date"
+        case response
+        case payload
+        case processingTime = "processing_time"
+    }
 }
 
 struct SectionsPayload: Codable {

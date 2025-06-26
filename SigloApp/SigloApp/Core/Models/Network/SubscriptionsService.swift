@@ -5,23 +5,28 @@ final class SubscriptionsService {
     private init() {}
 
     func obtenerSuscripcion(usuarioId: Int, completion: @escaping (Result<SuscripcionPayload, Error>) -> Void) {
+        // 1. Generar URL
         guard let url = URL(string: "\(API.baseURL)suscripcion/\(usuarioId)") else {
             print("❌ URL inválida")
             completion(.failure(NetworkError.invalidURL))
             return
         }
 
+        print("🌐 URL generada: \(url.absoluteString)")
+
+        // 2. Crear request
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
-        // Agregar token si está disponible
+        // 3. Agregar token si está disponible
         if let token = TokenService.shared.getStoredToken() {
             print("✅ Token disponible: \(token)")
-            request.setValue("\(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
         } else {
             print("⚠️ Token no disponible")
         }
 
+        // 4. Iniciar llamada
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
@@ -51,11 +56,11 @@ final class SubscriptionsService {
                     return
                 }
 
-                // DEBUG opcional
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido:\n\(jsonString.prefix(500))...")
+                    print("📦 JSON recibido Suscripciones:\n\(jsonString.prefix(500))...")
                 }
 
+                // 5. Decodificación
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -69,4 +74,3 @@ final class SubscriptionsService {
         }.resume()
     }
 }
- 
