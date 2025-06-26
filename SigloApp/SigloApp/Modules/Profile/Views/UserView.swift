@@ -169,26 +169,46 @@ struct UserView: View {
 
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Información de suscriptor:").fontWeight(.semibold)
-                Text("Número de suscriptor:").foregroundColor(.black).fontWeight(.bold)
+                Text("Información de suscriptor:")
+                    .fontWeight(.semibold)
+
+                Text("Número de suscriptor:")
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
                 Text("\(suscripcion.suscripcionDigital.numero)")
                     .foregroundColor(.red)
                     .fontWeight(.bold)
-                Text("Tarifa:").foregroundColor(.black).fontWeight(.bold)
-                HStack { Text(suscripcion.suscripcionDigital.periodo ?? "Suscripcion Desconocida") }
-                HStack { Text("Vigencia:"); Text(suscripcion.suscripcionDigital.vigencia ?? "00/00/00") }
+
+                Text("Tarifa:")
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
+                Text(suscripcion.suscripcionDigital.periodo ?? "Suscripción Desconocida")
+
                 HStack {
-                    Text("Estado:")
-                    let estado = suscripcion.suscripcionDigital.estado ?? "Desconocido"
-                    Text(estado)
-                        .foregroundColor(estado.lowercased() == "activa" ? .green : .red)
+                    Text("Vigencia:")
+                    Text(suscripcion.suscripcionDigital.vigencia ?? "00/00/00")
                 }
 
-                Link("Suscribirse", destination: URL(string: suscripcion.urlSuscribirse ?? "")!)
-                    .foregroundColor(.blue).underline()
+                // Solo mostramos el estado y el link si NO está activo
+                let estado = suscripcion.suscripcionDigital.estado?.lowercased() ?? ""
+                if estado != "activa" {
+                    HStack {
+                        Text("Estado:")
+                        Text(estado.capitalized)
+                            .foregroundColor(.red)
+                    }
 
-                Text("Archivo Digital").foregroundColor(.red).fontWeight(.bold)
-                Text("Hemeroteca").foregroundColor(.red).fontWeight(.bold)
+                    Link("Suscribirse", destination: URL(string: suscripcion.urlSuscribirse ?? "")!)
+                        .foregroundColor(.blue)
+                        .underline()
+                }
+
+                Text("Archivo Digital")
+                    .foregroundColor(.red)
+                    .fontWeight(.bold)
+                Text("Hemeroteca")
+                    .foregroundColor(.red)
+                    .fontWeight(.bold)
             }
             .font(.footnote)
         }

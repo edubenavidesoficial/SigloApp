@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct ImpresoView: View {
-    @StateObject var viewModel = PrintViewModel()
+    @StateObject private var printVM = PrintViewModel()
+    @StateObject private var subVM = UserSubscriptionViewModel()
+    @EnvironmentObject var userManager: UserManager
     @State private var pushNotificationsEnabled = true
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
+    
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -33,16 +36,16 @@ struct ImpresoView: View {
                                                 .font(.system(size: 14))
                                                 .lineLimit(1)
                                                 .minimumScaleFactor(0.5)
-                                                .fontWeight(viewModel.selectedTab == tab ? .bold : .regular)
+                                                .fontWeight(printVM.selectedTab == tab ? .bold : .regular)
                                                 .foregroundColor(.primary)
                                                 .onTapGesture {
                                                     withAnimation {
-                                                        viewModel.selectedTab = tab
+                                                        printVM.selectedTab = tab
                                                     }
                                                 }
 
                                             Rectangle()
-                                                .fill(viewModel.selectedTab == tab ? Color.red : Color.clear)
+                                                .fill(printVM.selectedTab == tab ? Color.red : Color.clear)
                                                 .frame(height: 2)
                                         }
                                         .padding(.horizontal, 8)
@@ -57,9 +60,9 @@ struct ImpresoView: View {
 
                             // Contenido según pestaña
                             Group {
-                                switch viewModel.selectedTab {
+                                switch printVM.selectedTab {
                                 case .hemeroteca:
-                                    PrintCarouselView(viewModel: viewModel)
+                                    PrintCarouselView(viewModel: printVM)
                                 case .suplementos:
                                     SuplementsView()
                                 case .descargas:
@@ -68,7 +71,7 @@ struct ImpresoView: View {
                             }
 
                             // Error si lo hay
-                            if let errorMessage = viewModel.errorMessage {
+                            if let errorMessage = printVM.errorMessage {
                                 Text(errorMessage)
                                     .foregroundColor(.red)
                                     .padding()
@@ -78,45 +81,55 @@ struct ImpresoView: View {
                         }
                     }
                 }
-                .blur(radius: isLoggedIn ? 0 : 8)
-                .disabled(!isLoggedIn)
+                
                 .onAppear {
-                    if !viewModel.isNewspaperLoaded {
-                        viewModel.fetchNewspaper()
+                    // Carga la suscripción al aparecer
+                    if let userId = userManager.user?.id {
+                        subVM.cargarSuscripcion(usuarioId: userId)
                     }
-                }
-                .onChange(of: viewModel.selectedTab) { newTab in
-                    if newTab == .hemeroteca && !viewModel.isNewspaperLoaded {
-                        viewModel.fetchNewspaper()
+                    // Carga el periódico
+                    if !printVM.isNewspaperLoaded {
+                        printVM.fetchNewspaper()
                     }
                 }
             }
 
-            // Panel inferior si no ha iniciado sesión
-            if !isLoggedIn {
+            // Panel inferior para NO suscriptores
+            let estado = subVM.suscripcion?.suscripcionDigital.estado?.lowercased() ?? ""
+            let isSubscriber = subVM.suscripcion?.suscriptor == true && estado == "activa"
+
+            if !isLoggedIn || !isSubscriber {
                 VStack(spacing: 16) {
                     Text("ESTE CONTENIDO ES SOLO PARA SUSCRIPTORES")
                         .font(.headline)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.primary)
 
-                    Button(action: {
-                        print("Ir a página de suscripción")
-                    }) {
-                        Text("SUSCRÍBETE")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.red)
+                    // Si NO está activo, mostramos “Suscribirse”
+                    if estado != "activa" {
+                        if let urlString = subVM.suscripcion?.urlSuscribirse,
+                           let url = URL(string: urlString) {
+                            Link("SUSCRÍBETE", destination: url)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .cornerRadius(8)
+                        } else {
+                            if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
+                                Link("SUSCRÍBETE", destination: url)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.red)
+                                    .cornerRadius(8)
+                            }
+                        }
                     }
 
-                    Button(action: {
-                        print("Ir a inicio de sesión")
-                    }) {
-                        Text("YA SOY SUSCRIPTOR")
-                            .underline()
-                            .foregroundColor(.primary)
+                    Button("YA SOY SUSCRIPTOR") {
+                        // Navegar a login o refrescar estado
                     }
+                    .underline()
                 }
                 .padding()
                 .background(.ultraThinMaterial)
