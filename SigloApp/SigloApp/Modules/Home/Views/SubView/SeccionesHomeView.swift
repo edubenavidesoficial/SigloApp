@@ -12,91 +12,93 @@ struct SeccionesHomeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            if let portada = viewModel.secciones.first(where: { $0.seccion == "Portada" }) {
-                let notas = Array((portada.notas ?? []).dropFirst().prefix(4))
-                
-                ForEach(notas, id: \.id) { nota in
-                    NotaRow(nota: nota, seccion: "Portada", articleActionHelper: articleActionHelper)
-                }
-            } else {
-                Text("No hay notas disponibles en la Portada.")
-                    .foregroundColor(.gray)
-                    .padding()
-            }
-        }
+            ScrollView {
+                VStack(spacing: 16) {
+                    if let portada = viewModel.secciones.first(where: { $0.seccion == "Portada" }) {
+                        let notas = Array((portada.notas ?? []).dropFirst().prefix(4))
 
-        VStack(spacing: 16) {
-            if let sinSeccion = viewModel.secciones.first(where: { $0.seccion == nil }),
-               let notaRandom = sinSeccion.notas?.shuffled().first {
-                NotaDestacadaView(nota: notaRandom)
-            }
-
-            if let foquitos = viewModel.secciones.first(where: { $0.seccion == "Foquitos" }) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(foquitos.notas ?? [], id: \.id) { nota in
-                            NotaCarruselCard(nota: nota)
+                        ForEach(notas, id: \.id) { nota in
+                            NotaRow(nota: nota, seccion: "Portada", articleActionHelper: articleActionHelper)
                         }
+                    } else {
+                        Text("No hay notas disponibles en la Portada.")
+                            .foregroundColor(.gray)
+                            .padding()
                     }
-                    .padding(.horizontal)
                 }
-                .padding(.bottom)
+
+                VStack(spacing: 16) {
+                    if let sinSeccion = viewModel.secciones.first(where: { $0.seccion == nil }),
+                       let notaRandom = sinSeccion.notas?.shuffled().first {
+                        NotaDestacadaView(nota: notaRandom)
+                    }
+
+                    if let foquitos = viewModel.secciones.first(where: { $0.seccion == "Foquitos" }) {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(foquitos.notas ?? [], id: \.id) { nota in
+                                    NotaCarruselCard(nota: nota)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.bottom)
+                    }
+                }
             }
-        }
-        
-        
     }
 }
-
 struct NotaRow: View {
     let nota: Nota
     let seccion: String
     let articleActionHelper: ArticleActionHelper
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Rectangle().fill(Color.red).frame(width: 4, height: 14)
-                    Text(nota.localizador).font(.caption).foregroundColor(.red)
-                    Spacer()
-                    Menu {
-                        Button { articleActionHelper.compartirNota(nota) } label: {
-                            Label("Compartir", systemImage: "square.and.arrow.up")
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Rectangle().fill(Color.red).frame(width: 4, height: 14)
+                        Text(nota.localizador).font(.caption).foregroundColor(.red)
+                        Spacer()
+                        Menu {
+                            Button { articleActionHelper.compartirNota(nota) } label: {
+                                Label("Compartir", systemImage: "square.and.arrow.up")
+                            }
+                            Button { articleActionHelper.guardarNota(nota) } label: {
+                                Label("Guardar", systemImage: "bookmark")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 10)
                         }
-                        Button { articleActionHelper.guardarNota(nota) } label: {
-                            Label("Guardar", systemImage: "bookmark")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(.gray)
-                            .padding(.trailing, 10)
                     }
+
+                    Text(nota.titulo)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+
+                    Text(nota.autor)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+
+                    Text(seccion)
+                        .foregroundColor(.red)
+                        .font(.caption)
                 }
 
-                Text(nota.titulo)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .lineLimit(2)
+                Spacer()
 
-                Text(nota.autor)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-
-                Text(seccion)
-                    .foregroundColor(.red)
-                    .font(.caption)
+                NotaImageView(foto: nota.fotos.first, size: CGSize(width: 100, height: 100), fecha: nota.fecha_formato)
             }
-
-            Spacer()
-
-            NotaImageView(foto: nota.fotos.first, size: CGSize(width: 100, height: 100), fecha: nota.fecha_formato)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
     }
 }
+
 
 struct NotaDestacadaView: View {
     let nota: Nota

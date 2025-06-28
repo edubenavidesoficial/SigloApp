@@ -30,13 +30,20 @@ final class NewsService {
                     return
                 }
                 
+                // Imprimir el JSON recibido como texto para inspección
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("JSON recibido News:\n\(jsonString)")
+                } else {
+                    print("No se pudo convertir data a string")
+                }
+                
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(NewsResponse.self, from: data)
                     
                     if let firstItem = response.payload.first {
-                        completion(.success(firstItem)) // ✅ Devuelve solo la primera noticia
+                        completion(.success(firstItem))
                     } else {
                         completion(.failure(NetworkError.emptyData))
                     }
