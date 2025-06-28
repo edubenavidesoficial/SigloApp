@@ -144,35 +144,59 @@ struct NotaCarruselCard: View {
 
     var body: some View {
         NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
                 ZStack(alignment: .bottomLeading) {
-                    NotaImageView(foto: nota.fotos.first, size: CGSize(width: 280, height: 360), fecha: nota.fecha_formato)
-                    
+                    NotaImageView(
+                        foto: nota.fotos.first,
+                        size: CGSize(width: 280, height: 360),
+                        fecha: nil
+                    )
+
                     VStack(alignment: .leading, spacing: 4) {
-                        HStack(alignment: .center, spacing: 5) {
+                        HStack(spacing: 4) {
                             Rectangle()
                                 .fill(Color.white)
                                 .frame(width: 4, height: 14)
-                            
+
                             Text(nota.localizador)
                                 .font(.caption)
                                 .foregroundColor(.white)
                                 .shadow(radius: 2)
                         }
-                        
+
                         Text(nota.titulo)
-                            .font(.caption)
+                            .font(.subheadline) // Tamaño más grande que .caption
+                            .fontWeight(.bold)  // Negrilla
                             .foregroundColor(.white)
                             .shadow(radius: 2)
+                            .multilineTextAlignment(.leading)
+
+                        HStack(spacing: 6) {
+                            Text(nota.autor.uppercased())
+                                .font(.caption)
+                                .foregroundColor(.white)
+
+                            // Aumentamos tamaño del ícono con Label
+                            Label {
+                                Text(nota.fecha_formato)
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            } icon: {
+                                Image(systemName: "clock")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 12))
+                            }
+                        }
                     }
-                    .padding(40)
+                    .padding(15)
                 }
-                .frame(width: 280, height: 360)
+                .frame(width: 270, height: 400)
             }
         }
-        .frame(width: 280)
+        .frame(width: 270)
     }
 }
+
 
 struct NotaImageView: View {
     let foto: Foto?
