@@ -41,15 +41,14 @@ final class NewsService {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(NewsResponse.self, from: data)
-                    
-                    if let firstItem = response.payload.first {
-                        completion(.success(firstItem))
-                    } else {
-                        completion(.failure(NetworkError.emptyData))
-                    }
+
+                    // ✅ Ahora payload es un único objeto NewsArticle
+                    completion(.success(response.payload))
                 } catch {
+                    print("❌ Error al decodificar JSON: \(error)")
                     completion(.failure(error))
                 }
+
             }
         }.resume()
     }

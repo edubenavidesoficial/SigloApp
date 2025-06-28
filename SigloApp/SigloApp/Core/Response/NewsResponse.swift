@@ -2,7 +2,7 @@ import Foundation
 
 struct NewsResponse: Codable {
     let response: String
-    let payload: [NewsArticle]
+    let payload: NewsArticle
 }
 
 struct NewsArticle: Codable {

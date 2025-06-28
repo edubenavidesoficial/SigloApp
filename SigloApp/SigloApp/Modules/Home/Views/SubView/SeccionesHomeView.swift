@@ -104,6 +104,7 @@ struct NotaDestacadaView: View {
     let nota: Nota
 
     var body: some View {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
             VStack(alignment: .leading, spacing: 8) {
                 NotaImageView(
                     foto: nota.fotos.first,
@@ -121,15 +122,18 @@ struct NotaDestacadaView: View {
                 }
                 Text(nota.titulo)
                     .font(.headline)
-
+                    .foregroundColor(.black)
+                
                 Text(nota.contenido.first ?? "")
                     .font(.system(size: 14))
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.leading)
-
+                
                 Text(nota.autor)
                     .font(.caption)
                     .foregroundColor(.red)
             }
+        }
             .padding(.horizontal)
         .padding(.vertical)
     }
@@ -139,30 +143,32 @@ struct NotaCarruselCard: View {
     let nota: Nota
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ZStack(alignment: .bottomLeading) {
-                NotaImageView(foto: nota.fotos.first, size: CGSize(width: 280, height: 360), fecha: nota.fecha_formato)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(alignment: .center, spacing: 5) {
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(width: 4, height: 14)
-
-                        Text(nota.localizador)
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+            VStack(alignment: .leading, spacing: 8) {
+                ZStack(alignment: .bottomLeading) {
+                    NotaImageView(foto: nota.fotos.first, size: CGSize(width: 280, height: 360), fecha: nota.fecha_formato)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(alignment: .center, spacing: 5) {
+                            Rectangle()
+                                .fill(Color.white)
+                                .frame(width: 4, height: 14)
+                            
+                            Text(nota.localizador)
+                                .font(.caption)
+                                .foregroundColor(.white)
+                                .shadow(radius: 2)
+                        }
+                        
+                        Text(nota.titulo)
                             .font(.caption)
                             .foregroundColor(.white)
                             .shadow(radius: 2)
                     }
-
-                    Text(nota.titulo)
-                        .font(.caption)
-                        .foregroundColor(.white)
-                        .shadow(radius: 2)
+                    .padding(40)
                 }
-                .padding(40)
+                .frame(width: 280, height: 360)
             }
-            .frame(width: 280, height: 360)
         }
         .frame(width: 280)
     }
