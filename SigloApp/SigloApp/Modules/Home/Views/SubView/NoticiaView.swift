@@ -9,7 +9,7 @@ struct NoticiaView: View {
                 GeometryReader { geometry in
                     FotoView(foto: foto)
                         .scaledToFill() 
-                        .frame(width: geometry.size.width, height: geometry.size.height) // Rellena todo el espacio
+                        .frame(width: geometry.size.width, height: geometry.size.height)
                         .clipped()
                         .overlay(
                             LinearGradient(
@@ -30,7 +30,7 @@ struct NoticiaView: View {
                     HStack {
                         Rectangle()
                             .fill(Color.white)
-                            .frame(width: 4, height: 14) // Ajusta el tamaño según necesidad
+                            .frame(width: 4, height: 14)
 
                         Text(nota.localizador)
                             .font(.caption)
@@ -66,7 +66,7 @@ struct NoticiaView: View {
                     HStack {
                         Image(systemName: "clock") // Icono de reloj
                             .foregroundColor(.white.opacity(0.8))
-                        Text("00:00")
+                        Text(nota.fecha_formato)
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.8))
                     }

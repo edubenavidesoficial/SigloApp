@@ -63,7 +63,7 @@ final class PortadaService {
 
                 // DEBUG opcional
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido K:\n\(jsonString.prefix(50))...")
+                    print("📦 JSON recibido Portada:\n\(jsonString.prefix(1000))...")
                 }
 
                 do {

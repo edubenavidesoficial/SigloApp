@@ -32,7 +32,8 @@ struct HomeView: View {
                                         viewModel.cargarPortada()
                                     }
                                 } else {
-                                    ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
+                                    //Carrusel no se usa actualemte
+                                    /*ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
                                         let notas = seccion.notas ?? []
                                         TabView {
                                             ForEach(notas, id: \.id) { nota in
@@ -41,18 +42,25 @@ struct HomeView: View {
                                         }
                                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                                         .frame(height: 450)
+                                    }*/
+                                    // Primera nota
+                                    if let seccion = viewModel.secciones.first(where: { $0.seccion == "Portada" }),
+                                       let nota = seccion.notas?.first {
+                                        NoticiaView(nota: nota)
+                                            .frame(height: 450)
+                                    } else {
+                                        Text("No hay noticias disponibles")
+                                            .foregroundColor(.gray)
+                                            .padding()
                                     }
 
                                     SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
                                     
-
-                                    // Indicador de carga al final
                                     if viewModel.isLoading {
                                         ProgressView("Cargando más...")
                                             .padding()
                                     }
 
-                                    // Detector para cargar más al llegar al final
                                     GeometryReader { geometry in
                                         Color.clear
                                             .onAppear {
@@ -94,8 +102,7 @@ struct HomeView: View {
             }
         }
     }
-
-    /// Método para mapear un mensaje de error a un tipo de ErrorType
+    
     private func getErrorType(from message: String) -> ErrorType {
         if message.contains("404") {
             return .notFound
