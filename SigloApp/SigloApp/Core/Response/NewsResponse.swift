@@ -8,9 +8,12 @@ struct NewsResponse: Codable {
 struct NewsArticle: Codable {
     let id: Int
     let titulo: String
+    let localizador: String
+    let balazo: String?
     let autor: String?
     let ciudad: String?
     let fecha: String
+    let fechamod: String
     let seccion: String?
     let contenido: [String]
     let contenidoHTML: String?

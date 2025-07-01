@@ -12,6 +12,7 @@
 		C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */; };
 		C008A8EE2DD52F7100E74F88 /* SuplementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */; };
 		C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */; };
+		C01388482E1411710002CD33 /* CustomTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01388472E1411710002CD33 /* CustomTopBar.swift */; };
 		C01924FB2E0355B6000ABEFF /* SectionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01924FA2E0355B6000ABEFF /* SectionsService.swift */; };
 		C01924FF2E03568E000ABEFF /* SectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01924FE2E03568E000ABEFF /* SectionService.swift */; };
 		C01925032E035779000ABEFF /* SectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01925022E035779000ABEFF /* SectionResponse.swift */; };
@@ -28,6 +29,7 @@
 		C03250D52E1050AB00A4C149 /* NewsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250D42E1050AB00A4C149 /* NewsResponse.swift */; };
 		C03250D92E1051ED00A4C149 /* NewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250D82E1051ED00A4C149 /* NewsListView.swift */; };
 		C03250DB2E10520C00A4C149 /* NewsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250DA2E10520C00A4C149 /* NewsDetailView.swift */; };
+		C03250DE2E106AB100A4C149 /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250DD2E106AB100A4C149 /* HTMLTextView.swift */; };
 		C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05094C72D7E87CB00938043 /* SigloAppApp.swift */; };
 		C05094CC2D7E87CF00938043 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CB2D7E87CF00938043 /* Assets.xcassets */; };
 		C05094CF2D7E87CF00938043 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05094CE2D7E87CF00938043 /* Preview Assets.xcassets */; };
@@ -142,6 +144,7 @@
 		C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsModel.swift; sourceTree = "<group>"; };
 		C008A8ED2DD52F7100E74F88 /* SuplementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsViewModel.swift; sourceTree = "<group>"; };
 		C008A8EF2DD62C6F00E74F88 /* DescargasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescargasView.swift; sourceTree = "<group>"; };
+		C01388472E1411710002CD33 /* CustomTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTopBar.swift; sourceTree = "<group>"; };
 		C01924FA2E0355B6000ABEFF /* SectionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsService.swift; sourceTree = "<group>"; };
 		C01924FE2E03568E000ABEFF /* SectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionService.swift; sourceTree = "<group>"; };
 		C01925022E035779000ABEFF /* SectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionResponse.swift; sourceTree = "<group>"; };
@@ -158,6 +161,7 @@
 		C03250D42E1050AB00A4C149 /* NewsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsResponse.swift; sourceTree = "<group>"; };
 		C03250D82E1051ED00A4C149 /* NewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListView.swift; sourceTree = "<group>"; };
 		C03250DA2E10520C00A4C149 /* NewsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailView.swift; sourceTree = "<group>"; };
+		C03250DD2E106AB100A4C149 /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
 		C05094C42D7E87CB00938043 /* SigloApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SigloApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05094C72D7E87CB00938043 /* SigloAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigloAppApp.swift; sourceTree = "<group>"; };
 		C05094CB2D7E87CF00938043 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -344,10 +348,19 @@
 		C03250D72E1051DD00A4C149 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				C03250DC2E106AA100A4C149 /* html */,
 				C03250D82E1051ED00A4C149 /* NewsListView.swift */,
 				C03250DA2E10520C00A4C149 /* NewsDetailView.swift */,
 			);
 			path = News;
+			sourceTree = "<group>";
+		};
+		C03250DC2E106AA100A4C149 /* html */ = {
+			isa = PBXGroup;
+			children = (
+				C03250DD2E106AB100A4C149 /* HTMLTextView.swift */,
+			);
+			path = html;
 			sourceTree = "<group>";
 		};
 		C05094BB2D7E87CA00938043 = {
@@ -718,6 +731,7 @@
 				C0ABDB422D80643400ABFA77 /* TabsLayoutView.swift */,
 				C075CC8D2D83E2C300B95F69 /* TabsHomeLayoutView.swift */,
 				C0ADC15A2DDECA1A00BBE470 /* TabVisibility.swift */,
+				C01388472E1411710002CD33 /* CustomTopBar.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -950,6 +964,7 @@
 				C02318D52DFB815000C22006 /* UserManager.swift in Sources */,
 				C0833DFC2DBC3C57009C784C /* fixView.swift in Sources */,
 				C0A08FDC2DE3D78500260DF3 /* SearchFrontViewModel.swift in Sources */,
+				C01388482E1411710002CD33 /* CustomTopBar.swift in Sources */,
 				C075CCB12D84564300B95F69 /* ArticleRow.swift in Sources */,
 				C075CC972D83FD9A00B95F69 /* SectionHeader.swift in Sources */,
 				C0019E812DF389A200EDF176 /* SigloTv.swift in Sources */,
@@ -968,6 +983,7 @@
 				C05094C82D7E87CB00938043 /* SigloAppApp.swift in Sources */,
 				C02318D02DFB7AAF00C22006 /* SubscriptionsService.swift in Sources */,
 				C075CCB92D845ACE00B95F69 /* ContentView.swift in Sources */,
+				C03250DE2E106AB100A4C149 /* HTMLTextView.swift in Sources */,
 				C075CCB32D8458A600B95F69 /* NewsRow.swift in Sources */,
 				C0ADC1592DDE9BAB00BBE470 /* PrintViewerView.swift in Sources */,
 				C0833DFF2DBC3FB5009C784C /* WebWiew.swift in Sources */,
