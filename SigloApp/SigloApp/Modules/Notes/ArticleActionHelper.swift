@@ -1,8 +1,10 @@
 import Foundation
 import SwiftUI
 
-class ArticleActionHelper: ObservableObject {  // Conforma al protocolo ObservableObject
-    @Published var articleViewModel: ArticleViewModel  // Si quieres que algo sea observado, usa @Published
+class ArticleActionHelper: ObservableObject {
+    @Published var articleViewModel: ArticleViewModel
+    @Published var showShareSheet: Bool = false
+    @Published var shareContent: [Any] = []
 
     init(articleViewModel: ArticleViewModel) {
         self.articleViewModel = articleViewModel
@@ -10,24 +12,28 @@ class ArticleActionHelper: ObservableObject {  // Conforma al protocolo Observab
 
     func compartirNota(_ nota: Nota) {
         print("Compartir: \(nota.titulo)")
-        // Agrega lógica para compartir la nota, por ejemplo, usando un ActivityViewController
+        let texto = "\(nota.titulo)\n\(nota.localizador)"
+        self.shareContent = [texto]
+        
+        DispatchQueue.main.async {
+            self.showShareSheet = true
+        }
     }
+
 
     func guardarNota(_ nota: Nota) {
         print("Guardando nota: \(nota.titulo)")
 
         let savedArticle = SavedArticle(
-            category: "Nacional",
+            category: nota.localizador,
             title: nota.titulo,
             author: nota.autor,
-            location: nota.localizador,
-            time: "Hace 1h",
+            location: nota.ciudad,
+            time: nota.fecha_formato,
             imageName: "ejemplo",
-            //imageName: nota.fotos.first?.url_foto ?? "ejemplo",
-            description: nil
+            description: nota.fotos.description
         )
 
-        // Guardamos el artículo usando el articleViewModel
-      articleViewModel.saveArticle(savedArticle)
+        articleViewModel.saveArticle(savedArticle)
     }
 }

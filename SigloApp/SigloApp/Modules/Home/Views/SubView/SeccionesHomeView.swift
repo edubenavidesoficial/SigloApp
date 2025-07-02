@@ -12,42 +12,48 @@ struct SeccionesHomeView: View {
     }
 
     var body: some View {
-            ScrollView {
-                VStack(spacing: 16) {
-                    if let portada = viewModel.secciones.first(where: { $0.seccion == "Portada" }) {
-                        let notas = Array((portada.notas ?? []).dropFirst().prefix(4))
+        ScrollView {
+            VStack(spacing: 16) {
+                if let portada = viewModel.secciones.first(where: { $0.seccion == "Portada" }) {
+                    let notas = Array((portada.notas ?? []).dropFirst().prefix(4))
 
-                        ForEach(notas, id: \.id) { nota in
-                            NotaRow(nota: nota, seccion: "Portada", articleActionHelper: articleActionHelper)
-                        }
-                    } else {
-                        Text("No hay notas disponibles en la Portada.")
-                            .foregroundColor(.gray)
-                            .padding()
+                    ForEach(notas, id: \.id) { nota in
+                        NotaRow(nota: nota, seccion: "Portada", articleActionHelper: articleActionHelper)
                     }
-                }
-
-                VStack(spacing: 16) {
-                    if let sinSeccion = viewModel.secciones.first(where: { $0.seccion == nil }),
-                       let notaRandom = sinSeccion.notas?.shuffled().first {
-                        NotaDestacadaView(nota: notaRandom)
-                    }
-
-                    if let foquitos = viewModel.secciones.first(where: { $0.seccion == "Foquitos" }) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(foquitos.notas ?? [], id: \.id) { nota in
-                                    NotaCarruselCard(nota: nota)
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-                        .padding(.bottom)
-                    }
+                } else {
+                    Text("No hay notas disponibles en la Portada.")
+                        .foregroundColor(.gray)
+                        .padding()
                 }
             }
+
+            VStack(spacing: 16) {
+                if let sinSeccion = viewModel.secciones.first(where: { $0.seccion == nil }),
+                   let notaRandom = sinSeccion.notas?.shuffled().first {
+                    NotaDestacadaView(nota: notaRandom)
+                }
+
+                if let foquitos = viewModel.secciones.first(where: { $0.seccion == "Foquitos" }) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(foquitos.notas ?? [], id: \.id) { nota in
+                                NotaCarruselCard(nota: nota)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .padding(.bottom)
+                }
+            }
+        }
+        // 👇 Esta parte es la que te faltaba
+        .sheet(isPresented: $articleActionHelper.showShareSheet) {
+            ActivityView(activityItems: articleActionHelper.shareContent)
+        }
     }
 }
+
+
 struct NotaRow: View {
     let nota: Nota
     let seccion: String
@@ -62,10 +68,14 @@ struct NotaRow: View {
                         Text(nota.localizador).font(.caption).foregroundColor(.red)
                         Spacer()
                         Menu {
-                            Button { articleActionHelper.compartirNota(nota) } label: {
+                            Button {
+                                articleActionHelper.compartirNota(nota)
+                            } label: {
                                 Label("Compartir", systemImage: "square.and.arrow.up")
                             }
-                            Button { articleActionHelper.guardarNota(nota) } label: {
+                            Button {
+                                articleActionHelper.guardarNota(nota)
+                            } label: {
                                 Label("Guardar", systemImage: "bookmark")
                             }
                         } label: {

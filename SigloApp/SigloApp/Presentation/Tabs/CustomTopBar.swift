@@ -38,5 +38,8 @@ struct CustomTopBar: View {
         .padding(.horizontal)
         .padding(.vertical, 12)
         .background(Color.black)
+        .safeAreaInset(edge: .top) {
+            Color.black.frame(height:  UIApplication.shared.windows.first?.safeAreaInsets.top ?? 20)
+        }
     }
 }

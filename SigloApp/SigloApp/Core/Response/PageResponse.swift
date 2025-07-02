@@ -49,7 +49,6 @@ struct Foto: Codable, Sendable {
 
 struct Nota: Decodable, Sendable {
     let id: Int
-    let sid: Int
     let fecha: String
     let fechamod: String
     let fecha_formato: String
