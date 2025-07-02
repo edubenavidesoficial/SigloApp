@@ -1,45 +1,89 @@
 import SwiftUI
 
 struct SectionDetailView: View {
-    let payload: SectionPayload  // Sección inicial
+    @StateObject private var viewModel = SectionDetailViewModel()
+    @StateObject var articleViewModel = ArticleViewModel()
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @State private var isMenuOpen: Bool = false
+    @State private var selectedOption: MenuOption? = nil
+    @State private var token: String? = nil
+    @State private var didLoad: Bool = false
+    @State private var showTokenError = false
+
+    let payload: SectionPayload
     @State private var contenido: SectionPayload?
-    @State private var isLoading = true
-    @State private var errorMessage: String?
 
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView("Cargando contenido...")
-            } else if let contenido = contenido {
-                Text("Sección: \(contenido.nombre)")
-                Text("Tipo: \(contenido.tipo ?? "N/A")")
-                if let notas = contenido.notas {
-                    List(notas) { nota in
-                        Text(nota.titulo)
-                    }
+        ZStack(alignment: .top) {
+            ScrollView {
+                VStack(spacing: 0) {
+                    // Esto crea espacio debajo del header para que no tape contenido
+                    Color.clear.frame(height: headerHeight)
+
+                    if let errorMessage = viewModel.errorMessage {
+                        ErrorView(errorType: getErrorType(from: errorMessage)) {
+                            viewModel.cargarPortada(idSeccion: payload.sectionId ?? 0)
+                        }
+                    } else if let seccion = viewModel.secciones.first {
+                        let notas = seccion.notas ?? []
+                        TabView {
+                            ForEach(notas, id: \.id) { nota in
+                                NewsView(nota: nota)
+                            }
+                        }
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .frame(height: 550)
+                        .padding(.top, -75)
+
+                        ForEach(notas.dropFirst().prefix(5), id: \.id) { nota in
+                            SectionDestacadaView(nota: nota)
+                        }
+
+                        if viewModel.isLoading {
+                            ProgressView("Cargando más...")
+                                .padding()
+                        }
+                    } 
                 }
-            } else if let errorMessage = errorMessage {
-                Text("⚠️ \(errorMessage)")
-                    .foregroundColor(.red)
             }
+
+            // Header transparente y fijo encima
+            WriteHeaderView(
+                nombreSeccion: payload.nombre,
+                selectedOption: $selectedOption,
+                isMenuOpen: $isMenuOpen,
+                isLoggedIn: isLoggedIn
+            )
+            .background(Color.clear)
         }
-        .navigationTitle(payload.nombre)
+        .edgesIgnoringSafeArea(.top)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .onAppear {
-            fetchContenido()
+            if !didLoad {
+                viewModel.cargarPortada(idSeccion: payload.sectionId ?? 0)
+                didLoad = true
+            }
         }
     }
 
-    private func fetchContenido() {
-        SectionService.shared.obtenerContenidoDeSeccion(idSeccion: payload.sectionId) { result in
-            DispatchQueue.main.async {
-                isLoading = false
-                switch result {
-                case .success(let detalle):
-                    self.contenido = detalle
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                }
-            }
+    // Altura total estimada del header (incluye safe area top + barra)
+    private var headerHeight: CGFloat {
+        let safeTop = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first?.safeAreaInsets.top ?? 44
+        return safeTop + 55 // 55 es la altura estimada del contenido del header
+    }
+
+    private func getErrorType(from message: String) -> ErrorType {
+        if message.contains("404") {
+            return .notFound
+        } else if message.contains("mantenimiento") {
+            return .maintenance
+        } else if message.contains("conexión") {
+            return .connection
+        } else {
+            return .unexpected
         }
     }
 }

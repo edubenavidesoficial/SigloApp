@@ -9,39 +9,63 @@ final class SectionService {
             completion(.failure(NetworkError.invalidURL))
             return
         }
-        
+
+        print("🌐 URL generada: \(url.absoluteString)")
+
+        // 2. Crear request
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+
+        // 3. Agregar token si está disponible
         if let token = TokenService.shared.getStoredToken() {
+            print("✅ Token disponible: \(token)")
             request.setValue(token, forHTTPHeaderField: "Authorization")
+        } else {
+            print("⚠️ Token no disponible")
         }
-        
+
+        // 4. Iniciar llamada
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
+                    print("❌ Error en la solicitud: \(error.localizedDescription)")
                     completion(.failure(error))
                     return
                 }
-                
-                guard let httpResponse = response as? HTTPURLResponse,
-                      (200...299).contains(httpResponse.statusCode),
-                      let data = data else {
+
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("❌ Respuesta no válida")
                     completion(.failure(NetworkError.invalidResponse))
                     return
                 }
 
+                print("📡 Código de estado: \(httpResponse.statusCode)")
+
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    let message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
+                    print("❌ Error HTTP: \(httpResponse.statusCode) - \(message)")
+                    completion(.failure(NetworkError.invalidResponse))
+                    return
+                }
+
+                guard let data = data else {
+                    print("❌ Datos vacíos")
+                    completion(.failure(NetworkError.emptyData))
+                    return
+                }
+
+               /* if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📦 JSON recibido Seccion:\n\(jsonString.prefix(100))...")
+                }*/
+
+                // 5. Decodificación
                 do {
                     let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let response = try decoder.decode(SectionListResponse.self, from: data)
-                    
-                    if let firstItem = response.payload.first {
-                        completion(.success(firstItem)) // ✅ Devuelve solo el primer objeto del array
-                    } else {
-                        completion(.failure(NetworkError.emptyData)) // ⚠️ Si el array viene vacío
-                    }
+                    let response = try decoder.decode(SectionSingleResponse.self, from: data)
+                    completion(.success(response.payload))
                 } catch {
-                    completion(.failure(error)) // ❌ Error al decodificar
+                    print("❌ Error al decodificar JSON: \(error)")
+                    completion(.failure(error))
                 }
             }
         }.resume()

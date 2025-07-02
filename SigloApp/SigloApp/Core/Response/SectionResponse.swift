@@ -1,5 +1,9 @@
 import Foundation
 
+struct SectionSingleResponse: Decodable {
+    let payload: SectionPayload
+}
+
 // Respuesta para lista de secciones
 struct SectionListResponse: Decodable {
     let requestDate: String
@@ -8,7 +12,6 @@ struct SectionListResponse: Decodable {
     let payload: [SectionPayload]
     let processingTime: String?
 }
-
 
 // Respuesta para detalle de sección
 struct SectionDetailResponse: Decodable {
@@ -27,9 +30,8 @@ struct SectionDetailResponse: Decodable {
 
 // Modelo SectionPayload con init personalizado para solo decodificar
 struct SectionPayload: Decodable, Identifiable {
-    let sectionId: Int
-    var id: Int { sectionId }
-    
+    let sectionId: Int?
+    var id: Int? { sectionId }
     let nombre: String
     let ordenar: Int?
     let tipo: String?
@@ -43,16 +45,16 @@ struct SectionPayload: Decodable, Identifiable {
         case nombre
         case titulo
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        sectionId = try container.decode(Int.self, forKey: .sectionId)
+        sectionId = try container.decodeIfPresent(Int.self, forKey: .sectionId)
         ordenar = try container.decodeIfPresent(Int.self, forKey: .ordenar)
         tipo = try container.decodeIfPresent(String.self, forKey: .tipo)
         logo = try container.decodeIfPresent(String.self, forKey: .logo)
         notas = try container.decodeIfPresent([Noticia].self, forKey: .notas)
         videos = try container.decodeIfPresent([SectionVideo].self, forKey: .videos)
-        
+
         if let nombreValue = try? container.decode(String.self, forKey: .nombre) {
             nombre = nombreValue
         } else if let tituloValue = try? container.decode(String.self, forKey: .titulo) {
@@ -61,12 +63,6 @@ struct SectionPayload: Decodable, Identifiable {
             nombre = "Sin título"
         }
     }
-}
-
-// FotoNota
-struct FotoNota: Decodable {
-    let urlFoto: String
-    let pieFoto: String?
 }
 
 // FotoGaleria
@@ -88,7 +84,7 @@ struct Noticia: Decodable, Identifiable {
     let sid: Int
     let fecha: String
     let fechamod: String
-    let fechaFormato: String
+    let fechaFormato: String?
     let titulo: String
     let localizador: String?
     let balazo: String?
@@ -103,11 +99,22 @@ struct Noticia: Decodable, Identifiable {
     let galeria: Galeria?
     let plantilla: Int?
     let votacion: Int?
-    let video: [String: String]?
+    let video: SectionVideo?
     let youtube: String?
     let facebook: String?
     let filemanager: String?
     let acceso: Int
+}
+
+// FotoNota
+struct FotoNota: Decodable {
+    let urlFoto: String
+    let pieFoto: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case urlFoto = "url_foto"
+        case pieFoto = "pie_foto"
+    }
 }
 
 // Video renombrado para evitar conflicto
@@ -116,3 +123,5 @@ struct SectionVideo: Decodable {
     let url: String?
     // Agrega más campos según tu JSON
 }
+
+
