@@ -70,7 +70,7 @@ struct WriteHeaderView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.top, safeAreaTop) // Aquí agregamos padding para no tapar barra de estado
+                .padding(.top, 26) 
                 .padding(.bottom, 10)
 
                 Divider()

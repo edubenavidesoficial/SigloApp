@@ -79,6 +79,7 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
             .onAppear {
                 if !didLoad {
                     viewModel.cargarPortada()

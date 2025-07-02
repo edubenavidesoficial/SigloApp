@@ -21,7 +21,6 @@ struct SectionsView: View {
                         .scaledToFill()
                         .frame(height: 150)
                         .clipped()
-                        .padding(.top, 10)
 
                     // Iconos de redes sociales
                     HStack(spacing: 20) {
@@ -36,11 +35,70 @@ struct SectionsView: View {
                     .padding(.vertical, 5)
 
                     // Lista de secciones
-                    List(viewModel.secciones, id: \.id) { seccion in
-                        NavigationLink(destination: SectionDetailView(payload: seccion)) {
-                            Text(seccion.nombre)
+                    List {
+                        // Portada
+                        NavigationLink(destination:
+                            HomeView()
+                                .navigationBarBackButtonHidden(true)
+                        ) {
+                            Text("Portada")
+                                .foregroundColor(.red)
+                        }
+
+                        // Minuto a minuto
+                        NavigationLink(destination: Text("Minuto a minuto")) {
+                            Text("Minuto a minuto")
+                                .foregroundColor(.red)
+                        }
+
+                        // Secciones dinámicas
+                        ForEach(viewModel.secciones, id: \.id) { seccion in
+                            NavigationLink(destination: SectionDetailView(payload: seccion)) {
+                                Text(seccion.nombre)
+                                    .foregroundColor(seccion.nombre == "Siglo TV" ? .red : .black)
+                            }
+                        }
+
+                        // Anuncios (sección de encabezado)
+                        Section(header: Text("ANUNCIOS")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        ) {
+                            // Clasificados
+                            NavigationLink(destination:
+                                    ClassifiedsView()
+                                    .navigationBarBackButtonHidden(true)
+                            ) {
+                                Text("Clasificados")
+                                    .foregroundColor(.black)
+                            }
+
+                            // Desplegados
+                            NavigationLink(destination:
+                                Text("Desplegados")
+                            ) {
+                                Text("Desplegados")
+                                    .foregroundColor(.black)
+                            }
+
+                            // Esquelas
+                            NavigationLink(destination:
+                                Text("Esquelas")
+                            ) {
+                                Text("Esquelas")
+                                    .foregroundColor(.black)
+                            }
+
+                            // Felicitaciones
+                            NavigationLink(destination:
+                                Text("Felicitaciones") // Puedes reemplazar esto con una vista real
+                            ) {
+                                Text("Felicitaciones")
+                                    .foregroundColor(.black)
+                            }
                         }
                     }
+
                     .listStyle(.plain)
                     .onAppear {
                         viewModel.fetchSecciones()
@@ -81,7 +139,6 @@ struct SectionsView: View {
                 .foregroundColor(.white)
                 .frame(width: 180, height: 40)
                 .background(Color.red)
-                .cornerRadius(8)
         }
     }
 }

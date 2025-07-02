@@ -1,22 +1,18 @@
 import SwiftUI
 
 struct ClassifiedsView: View {
-    @StateObject private var printVM = PrintViewModel()
+    @StateObject private var classifiedsVM = ClassifiedsViewModel()
     @StateObject private var subVM = UserSubscriptionViewModel()
     @EnvironmentObject var userManager: UserManager
-    @State private var pushNotificationsEnabled = true
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
-    
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            NavigationView {
+            NavigationStack {
                 ScrollView {
                     VStack(spacing: 0) {
-
-                        // Header con menú
                         HeaderView(
                             selectedOption: $selectedOption,
                             isMenuOpen: $isMenuOpen,
@@ -27,25 +23,24 @@ struct ClassifiedsView: View {
                             NotesView(title: selected.title, selectedOption: $selectedOption)
                                 .transition(.move(edge: .trailing))
                         } else {
-                            // Selector de pestañas
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 20) {
-                                    ForEach(TabTypetwo.allCases, id: \.self) { tab in
+                                    ForEach(TabClassifieds.allCases) { tab in
                                         VStack(spacing: 4) {
                                             Text(tab.rawValue)
                                                 .font(.system(size: 14))
                                                 .lineLimit(1)
                                                 .minimumScaleFactor(0.5)
-                                                .fontWeight(printVM.selectedTab == tab ? .bold : .regular)
+                                                .fontWeight(classifiedsVM.selectedTab == tab ? .bold : .regular)
                                                 .foregroundColor(.primary)
                                                 .onTapGesture {
                                                     withAnimation {
-                                                        printVM.selectedTab = tab
+                                                        classifiedsVM.selectedTab = tab
                                                     }
                                                 }
 
                                             Rectangle()
-                                                .fill(printVM.selectedTab == tab ? Color.red : Color.clear)
+                                                .fill(classifiedsVM.selectedTab == tab ? Color.red : Color.clear)
                                                 .frame(height: 2)
                                         }
                                         .padding(.horizontal, 8)
@@ -58,20 +53,20 @@ struct ClassifiedsView: View {
 
                             Divider()
 
-                            // Contenido según pestaña
                             Group {
-                                switch printVM.selectedTab {
-                                case .hemeroteca:
-                                    PrintCarouselView(viewModel: printVM)
-                                case .suplementos:
-                                    SuplementsView()
-                                case .descargas:
-                                    DescargasView()
+                                switch classifiedsVM.selectedTab {
+                                case .avisos:
+                                    AvisosCarouselView(viewModel: classifiedsVM)
+                                case .desplegados:
+                                    AvisosView()
+                                case .esquelas:
+                                    AvisosView()
+                                case .anunciate:
+                                    AvisosView()
                                 }
                             }
 
-                            // Error si lo hay
-                            if let errorMessage = printVM.errorMessage {
+                            if let errorMessage = classifiedsVM.errorMessage {
                                 Text(errorMessage)
                                     .foregroundColor(.red)
                                     .padding()
@@ -81,20 +76,16 @@ struct ClassifiedsView: View {
                         }
                     }
                 }
-                
                 .onAppear {
-                    // Carga la suscripción al aparecer
                     if let userId = userManager.user?.id {
                         subVM.cargarSuscripcion(usuarioId: userId)
                     }
-                    // Carga el periódico
-                    if !printVM.isNewspaperLoaded {
-                        printVM.fetchNewspaper()
+                    if !classifiedsVM.isNewspaperLoaded {
+                        classifiedsVM.fetchClassifiedCategories()
                     }
                 }
             }
 
-            // Panel inferior para NO suscriptores
             let estado = subVM.suscripcion?.suscripcionDigital.estado?.lowercased() ?? ""
             let isSubscriber = subVM.suscripcion?.suscriptor == true && estado == "activa"
 
@@ -104,32 +95,10 @@ struct ClassifiedsView: View {
                         .font(.headline)
                         .multilineTextAlignment(.center)
 
-                    // Si no está logueado, mostrar siempre el link fijo
-                    if !isLoggedIn {
-                        if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
-                            Link("SUSCRÍBETE", destination: url)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.red)
-                                .cornerRadius(8)
-                        }
-                    }
-                    // Si está logueado pero no es suscriptor activo, mostrar su URL específica si existe
-                    else if estado != "activa" {
-                        if let urlString = subVM.suscripcion?.urlSuscribirse,
-                           let url = URL(string: urlString) {
-                            Link("SUSCRÍBETE", destination: url)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.red)
-                                .cornerRadius(8)
-                        }
-                    }
+                    subscriptionButton
 
                     Button("YA SOY SUSCRIPTOR") {
-                        // Navegar a login o refrescar estado
+                        // Acción para usuarios suscriptores
                     }
                     .underline()
                 }
@@ -142,5 +111,28 @@ struct ClassifiedsView: View {
             }
         }
     }
-}
 
+    @ViewBuilder
+    var subscriptionButton: some View {
+        if !isLoggedIn {
+            if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
+                Link("SUSCRÍBETE", destination: url)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .cornerRadius(8)
+            }
+        } else if (subVM.suscripcion?.suscripcionDigital.estado?.lowercased() ?? "") != "activa" {
+            if let urlString = subVM.suscripcion?.urlSuscribirse,
+               let url = URL(string: urlString) {
+                Link("SUSCRÍBETE", destination: url)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .cornerRadius(8)
+            }
+        }
+    }
+}

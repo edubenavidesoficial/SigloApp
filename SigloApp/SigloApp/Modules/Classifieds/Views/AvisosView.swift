@@ -1,8 +1,17 @@
-//
-//  AvisosView.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 7/2/25.
-//
+import SwiftUI
 
-import Foundation
+struct AvisosView: View {
+    var body: some View {
+        VStack {
+           
+            Text("Aún no tienes datos")
+                .font(.title3)
+                .foregroundColor(.gray)
+
+            Text("cargando..")
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+        .padding()
+    }
+}
