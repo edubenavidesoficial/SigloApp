@@ -217,12 +217,13 @@ struct UserView: View {
 
     private var accionesSection: some View {
         VStack(spacing: 0) {
-             NavigationLink(destination: Text("Actualizar datos")) {
+            Link(destination: URL(string: "https://www.elsiglodetorreon.com.mx/login/")!) {
                 HStack {
                     Text("Actualizar datos")
                     Spacer()
                 }
             }
+            .padding(.top, -15)
             .padding()
 
             Divider()

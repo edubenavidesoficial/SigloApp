@@ -36,9 +36,10 @@ class ClassifiedsViewModel: ObservableObject {
                 case .success(let payloads):
                     self.avisos = payloads.compactMap { key, section in
                         ClassifiedsModel(
-                            title: section.nombre,
-                            imageName: "",
-                            date: ""
+                            id: key,
+                            seccion_nombre: section.nombre,
+                            anuncio: "",
+                            title: section.nombre        
                         )
                     }
                     self.isNewspaperLoaded = true

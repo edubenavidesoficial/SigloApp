@@ -31,7 +31,7 @@ final class AdsService {
                 }
 
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON Ads:\n\(jsonString)")
+                    print("📦 JSON recibido:\n\(jsonString.prefix(500))...")
                 }
 
                 do {

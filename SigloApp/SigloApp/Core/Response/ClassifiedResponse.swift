@@ -1,19 +1,19 @@
 import Foundation
 
-// MARK: - Respuesta Principal de Clasificados
+
 struct ClasificadosResponse: Decodable {
     let request_date: String
     let response: String
     let payload: [String: ClasificadoSeccion]
 }
 
-// MARK: - Nivel 1: Secciones principales (ej: "Inmuebles", "Vehículos")
+
 struct ClasificadoSeccion: Decodable {
     let nombre: String
     let categorias: [String: ClasificadoCategoria]
 }
 
-// MARK: - Nivel 2 y 3+: Categorías anidadas (ej: "Torreón", "Casas", etc.)
+
 struct ClasificadoCategoria: Decodable {
     let nombre: String
     let categorias: [String: ClasificadoCategoria]?
@@ -42,7 +42,6 @@ struct ClasificadoCategoria: Decodable {
 }
 
 
-// MARK: - Modelo para anuncios (opcional, según tu JSON de anuncios)
 struct AdsResponse: Decodable {
     let requestDate: String
     let response: String
@@ -54,14 +53,14 @@ struct ClassifiedAd: Decodable, Identifiable {
     let id: String
     let numero: String
     let orden: String
-    let foto: String
+    let foto: String?
     let seccion: String
-    let seccionNombre: String
-    let clasif1: String
-    let clasif1Nombre: String
-    let clasif2: String
-    let clasif2Nombre: String
-    let clasif3: String
+    let seccionNombre: String?
+    let clasif1: String?             // <-- Cambiar a opcional
+    let clasif1Nombre: String?
+    let clasif2: String?
+    let clasif2Nombre: String?
+    let clasif3: String?
     let clasif3Nombre: String?
     let anuncio: String
     let anuncioHTML: String
