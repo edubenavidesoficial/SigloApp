@@ -53,6 +53,7 @@ struct ImpresoView: View {
                                 }
                                 .padding(.horizontal)
                             }
+                            
                             .padding()
                             .background(Color(.systemBackground))
 

@@ -1,12 +1,23 @@
 import SwiftUI
 
+
 struct AvisosCarouselView: View {
-    var viewModel: ClassifiedsViewModel
+    @ObservedObject var viewModel: ClassifiedsViewModel
     @State private var selectedArticle: ClassifiedsModel?
+    var filterCategory: String? // Añadido para filtro
 
     var body: some View {
-        ZStack {
+        let articles = filterCategory == nil
+            ? viewModel.classifiedsArticlesForCurrentTab()
+            : viewModel.classifiedsArticlesForCurrentTab().filter { $0.title == filterCategory }
+
+         ZStack {
             TabView {
+                ForEach(articles) { article in
+                    // Tu código aquí para mostrar article...
+                    Text(article.title) // Ejemplo simple
+                }
+
                 ForEach(viewModel.classifiedsArticlesForCurrentTab()) { article in
                     VStack {
                         Button(action: {

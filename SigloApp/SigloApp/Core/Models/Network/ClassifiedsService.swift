@@ -4,7 +4,7 @@ final class ClassifiedsService {
     static let shared = ClassifiedsService()
     private init() {}
 
-    func obtenerCategorias(completion: @escaping (Result<[String: ClassifiedSection], Error>) -> Void) {
+    func obtenerCategorias(completion: @escaping (Result<[String: ClasificadoSeccion], Error>) -> Void) {
         guard let url = URL(string: "\(API.baseURL)clasificados/categorias/") else {
             completion(.failure(NetworkError.invalidURL))
             return
@@ -19,6 +19,7 @@ final class ClassifiedsService {
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
+                    print("❌ Error de red: \(error.localizedDescription)")
                     completion(.failure(error))
                     return
                 }
@@ -26,22 +27,22 @@ final class ClassifiedsService {
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200...299).contains(httpResponse.statusCode),
                       let data = data else {
+                    print("❌ Respuesta inválida del servidor")
                     completion(.failure(NetworkError.invalidResponse))
                     return
                 }
 
-                // Para depurar: imprimir JSON crudo
+                // 🧪 Mostrar JSON crudo en consola para depurar
                 if let jsonString = String(data: data, encoding: .utf8) {
                     print("📦 JSON Clasificados:\n\(jsonString)")
                 }
 
                 do {
                     let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let response = try decoder.decode(ClassifiedsResponse.self, from: data)
+                    let response = try decoder.decode(ClasificadosResponse.self, from: data)
                     completion(.success(response.payload))
                 } catch {
-                    print("❌ Error al decodificar clasificados: \(error)")
+                    print("❌ Error al decodificar JSON: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             }

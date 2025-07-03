@@ -1,57 +1,48 @@
 import Foundation
 
-// Nivel raíz de la respuesta
-struct ClassifiedsResponse: Decodable {
-    let requestDate: String
+// MARK: - Respuesta Principal de Clasificados
+struct ClasificadosResponse: Decodable {
+    let request_date: String
     let response: String
-    let payload: [String: ClassifiedSection]
-    let processingTime: String
+    let payload: [String: ClasificadoSeccion]
 }
 
-// Sección principal (ej: "Inmuebles")
-struct ClassifiedSection: Decodable {
+// MARK: - Nivel 1: Secciones principales (ej: "Inmuebles", "Vehículos")
+struct ClasificadoSeccion: Decodable {
     let nombre: String
-    let categorias: [String: ClassifiedCategory1]?
+    let categorias: [String: ClasificadoCategoria]
 }
 
-// Nivel 1 de categoría (ej: "Inmuebles - Compra/Venta")
-struct ClassifiedCategory1: Decodable {
+// MARK: - Nivel 2 y 3+: Categorías anidadas (ej: "Torreón", "Casas", etc.)
+struct ClasificadoCategoria: Decodable {
     let nombre: String
-    let categorias: [String: ClassifiedCategory2]?
-}
+    let categorias: [String: ClasificadoCategoria]?
 
-// Nivel 2 de categoría (ej: "Torreón", "Gómez/Lerdo")
-struct ClassifiedCategory2: Decodable {
-    let nombre: String
-    let categorias: [String: String]
-
-    enum CodingKeys: String, CodingKey {
-        case nombre, categorias
-    }
-
+    // Decodificación especial para manejar casos como [] o {} en JSON
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         nombre = try container.decode(String.self, forKey: .nombre)
-        
-        if let dict = try? container.decode([String: String].self, forKey: .categorias) {
+
+        // Intentamos decodificar como diccionario
+        if let dict = try? container.decode([String: ClasificadoCategoria].self, forKey: .categorias) {
             categorias = dict
-        } else if var unkeyedContainer = try? container.nestedUnkeyedContainer(forKey: .categorias) {
-            // Es un array
-            if unkeyedContainer.isAtEnd {
-                categorias = [:] // Array vacío, asignamos diccionario vacío
-            } else {
-                throw DecodingError.dataCorruptedError(forKey: .categorias,
-                                                       in: container,
-                                                       debugDescription: "Expected dictionary or empty array for categorias")
-            }
+        } else if (try? container.decode([EmptyCategory].self, forKey: .categorias)) != nil {
+            categorias = [:] // Si viene un array vacío: []
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .categorias,
-                                                   in: container,
-                                                   debugDescription: "Expected dictionary or empty array for categorias")
+            categorias = [:] // Si no viene nada o viene mal
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case nombre, categorias
+    }
+
+    // Estructura dummy para detectar []
+    private struct EmptyCategory: Decodable {}
 }
 
+
+// MARK: - Modelo para anuncios (opcional, según tu JSON de anuncios)
 struct AdsResponse: Decodable {
     let requestDate: String
     let response: String
@@ -83,12 +74,15 @@ struct ClassifiedAd: Decodable, Identifiable {
     let filemanger: String?
 
     private enum CodingKeys: String, CodingKey {
-        case id, numero, orden, foto, seccion, seccionNombre = "seccion_nombre",
-             clasif1 = "clasif_1", clasif1Nombre = "clasif_1_nombre",
-             clasif2 = "clasif_2", clasif2Nombre = "clasif_2_nombre",
-             clasif3 = "clasif_3", clasif3Nombre = "clasif_3_nombre",
-             anuncio, anuncioHTML, masTexto, masTextoHTML, marco, color,
-             whatsapp, youtube, filemanger
+        case id, numero, orden, foto, seccion
+        case seccionNombre = "seccion_nombre"
+        case clasif1 = "clasif_1"
+        case clasif1Nombre = "clasif_1_nombre"
+        case clasif2 = "clasif_2"
+        case clasif2Nombre = "clasif_2_nombre"
+        case clasif3 = "clasif_3"
+        case clasif3Nombre = "clasif_3_nombre"
+        case anuncio, anuncioHTML, masTexto, masTextoHTML, marco, color, whatsapp, youtube, filemanger
     }
 }
 
@@ -98,3 +92,4 @@ struct AdDetailResponse: Decodable {
     let payload: ClassifiedAd
     let processingTime: String
 }
+

@@ -48,6 +48,7 @@ struct HomeView: View {
                                        let nota = seccion.notas?.first {
                                         NoticiaView(nota: nota)
                                             .frame(height: 450)
+                                            .padding(.top, -10)
                                     } else {
                                         Text("No hay noticias disponibles")
                                             .foregroundColor(.gray)

@@ -3,27 +3,29 @@ import SwiftUI
 // Enum para las pestañas del menú clasificados
 enum TabClassifieds: String, CaseIterable, Identifiable {
     case avisos = "AVISOS"
-    case desplegados = "DESPLEGADOS" 
+    case desplegados = "DESPLEGADOS"
     case esquelas = "ESQUELAS"
     case anunciate = "ANUNCIATE"
 
     var id: String { rawValue }
 }
 
+// ViewModel para los clasificados
 class ClassifiedsViewModel: ObservableObject {
     @Published var isNewspaperLoaded = false
     @Published var selectedTab: TabClassifieds = .avisos
 
-    // Aquí usas modelos adecuados para cada sección
     @Published var avisos: [ClassifiedsModel] = []
-    @Published var desplegados: [SuplementsModel] = []
-    @Published var anunciate: [SuplementsModel] = []
+    @Published var desplegados: [ClassifiedsModel] = []
+    @Published var esquelas: [ClassifiedsModel] = []
+    @Published var anunciate: [ClassifiedsModel] = []
+
+    @Published var selectedCategory: String? = nil  // <-- Aquí guardamos la categoría seleccionada
 
     @Published var errorMessage: String?
 
     private let classifiedsService = ClassifiedsService.shared
 
-    // Carga las categorías de clasificados (secciones y categorías)
     func fetchClassifiedCategories() {
         guard !isNewspaperLoaded else { return }
 
@@ -32,17 +34,14 @@ class ClassifiedsViewModel: ObservableObject {
                 guard let self = self else { return }
                 switch result {
                 case .success(let payloads):
-                    // payloads es [String: ClassifiedSection]
-                    // Mapeamos cada sección a un modelo simple para mostrar
                     self.avisos = payloads.compactMap { key, section in
                         ClassifiedsModel(
                             title: section.nombre,
-                            imageName: "", // Si no hay imagen, deja vacío o agrega lógica
-                            date: "" // Si no hay fecha, deja vacío o agrega lógica
+                            imageName: "",
+                            date: ""
                         )
                     }
                     self.isNewspaperLoaded = true
-
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     self.isNewspaperLoaded = false
@@ -50,20 +49,26 @@ class ClassifiedsViewModel: ObservableObject {
             }
         }
     }
-    // Devuelve los anuncios según la pestaña seleccionada
+
     func classifiedsArticlesForCurrentTab() -> [ClassifiedsModel] {
+        var articles = [ClassifiedsModel]()
+
         switch selectedTab {
         case .avisos:
-            return avisos
+            articles = avisos
         case .desplegados:
-            // Si quieres devolver desplegados, ajusta aquí
-            return []
+            articles = desplegados
         case .esquelas:
-            // Si quieres devolver esquelas, ajusta aquí
-            return []
+            articles = esquelas
         case .anunciate:
-            // Si quieres devolver anunciate, ajusta aquí
-            return []
+            articles = anunciate
         }
+
+        // Filtrar por categoría si se ha seleccionado alguna
+        if let selectedCategory = selectedCategory {
+            articles = articles.filter { $0.title == selectedCategory }
+        }
+
+        return articles
     }
 }
