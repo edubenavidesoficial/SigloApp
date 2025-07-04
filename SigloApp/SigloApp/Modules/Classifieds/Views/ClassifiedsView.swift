@@ -120,6 +120,7 @@ struct ClassifiedsView: View {
                                     Text("ANUNCIATE")
                                 }
                             }
+                            
 
                             // Filtro de categorías tipo radio buttons cuadrados negros en mayúsculas
                             if showCategories {

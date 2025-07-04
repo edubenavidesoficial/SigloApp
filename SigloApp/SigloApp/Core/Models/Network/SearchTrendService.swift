@@ -1,29 +1,16 @@
 import Foundation
 
 struct SearchTrendService {
-    static let shared = TrendSearchService()
+    static let shared = SearchTrendService()
     private init() {}
 
-    /// Realiza la búsqueda por tendencia específica.
-    ///
-    /// - Parameters:
-    ///   - tendenciaID: ID numérico de la tendencia a consultar.
-    ///   - pagina: Número de página para paginación.
-    ///   - token: Token JWT de autorización.
-    ///   - completion: Cierre que devuelve un resultado con el array de artículos o un error.
-    func fetchTendencias(
-        tendenciaID: Int,
-        pagina: Int,
-        token: String,
-        completion: @escaping (Result<[TendenciaArticulo], Error>) -> Void
-    ) {
-        let urlString = "https://www.elsiglodetorreon.com.mx/api/app/v1/buscar/tendencias/\(tendenciaID)/\(pagina)"
-        
-        guard let url = URL(string: urlString) else {
-            completion(.failure(NSError(domain: "URL inválida", code: -1)))
+    func fetchTendencias(tendenciaID: Int,pagina: Int,token: String,completion: @escaping (Result<[TendenciaArticulo], Error>) -> Void) {
+        guard let url = URL(string: "\(API.baseURL)buscar/tendencias/\(tendenciaID)/\(pagina)") else {
+            print("❌ URL inválida para búsqueda por tema")
+            completion(.failure(NetworkError.invalidURL))
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

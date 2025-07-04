@@ -1,8 +1,11 @@
-//
-//  TabClassifieds.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 7/4/25.
-//
-
 import Foundation
+
+// Enum para las pestañas del menú clasificados
+enum TabClassifieds: String, CaseIterable, Identifiable {
+    case avisos = "AVISOS"
+    case desplegados = "DESPLEGADOS"
+    case esquelas = "ESQUELAS"
+    case anunciate = "ANUNCIATE"
+
+    var id: String { rawValue }
+}

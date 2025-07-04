@@ -1,7 +1,7 @@
 import Foundation
 
 final class SearchTopicService {
-    static let shared = SearchByTopicService()
+    static let shared = SearchTopicService()
     private init() {}
 
     func buscarPorTema(idTema: Int, pagina: Int, completion: @escaping (Result<[ArticuloPayload], Error>) -> Void) {

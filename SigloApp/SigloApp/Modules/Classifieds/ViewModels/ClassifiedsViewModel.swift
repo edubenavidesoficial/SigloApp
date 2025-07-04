@@ -1,20 +1,9 @@
 import SwiftUI
 
-// Enum para las pestañas del menú clasificados
-enum TabClassifieds: String, CaseIterable, Identifiable {
-    case avisos = "AVISOS"
-    case desplegados = "DESPLEGADOS"
-    case esquelas = "ESQUELAS"
-    case anunciate = "ANUNCIATE"
-
-    var id: String { rawValue }
-}
-
 // ViewModel para los clasificados
 class ClassifiedsViewModel: ObservableObject {
     @Published var isNewspaperLoaded = false
     @Published var selectedTab: TabClassifieds = .avisos
-
     @Published var avisos: [ClassifiedsModel] = []
     @Published var desplegados: [ClassifiedsModel] = []
     @Published var esquelas: [ClassifiedsModel] = []
