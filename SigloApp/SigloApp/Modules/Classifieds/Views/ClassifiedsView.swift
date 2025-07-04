@@ -60,7 +60,7 @@ struct ClassifiedsView: View {
                             HStack {
                                 Button(action: {
                                     withAnimation {
-                                        showCategories.toggle()
+                                   showCategories.toggle()
                                     }
                                 }) {
                                     HStack(spacing: 6) {

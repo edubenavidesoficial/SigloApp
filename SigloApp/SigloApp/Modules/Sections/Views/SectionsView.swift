@@ -19,7 +19,7 @@ struct SectionsView: View {
                     Image("menu")
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 150)
+                        .frame(height: 180)
                         .clipped()
 
                     // Iconos de redes sociales
@@ -51,11 +51,24 @@ struct SectionsView: View {
                                 .foregroundColor(.red)
                         }
 
-                        // Secciones dinámicas
-                        ForEach(viewModel.secciones, id: \.id) { seccion in
+                        // Secciones dinámicas (excluyendo suplementos)
+                        ForEach(viewModel.secciones.filter { ![67, 32, 35, 219].contains($0.id) }, id: \.id) { seccion in
                             NavigationLink(destination: SectionDetailView(payload: seccion)) {
                                 Text(seccion.nombre)
                                     .foregroundColor(seccion.nombre == "Siglo TV" ? .red : .black)
+                            }
+                        }
+
+                        // Suplementos
+                        Section(header: Text("SUPLEMENTOS")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        ) {
+                            // Extraemos manualmente los suplementos según su ID
+                            ForEach(viewModel.secciones.filter { [67, 32, 35, 219].contains($0.id) }, id: \.id) { suplemento in
+                                NavigationLink(destination: SectionDetailView(payload: suplemento)) {
+                                    Text(suplemento.nombre)
+                                }
                             }
                         }
 
@@ -75,7 +88,8 @@ struct SectionsView: View {
 
                             // Desplegados
                             NavigationLink(destination:
-                                Text("Desplegados")
+                                            ClassifiedsView()
+                                            .navigationBarBackButtonHidden(true)
                             ) {
                                 Text("Desplegados")
                                     .foregroundColor(.black)
@@ -83,7 +97,8 @@ struct SectionsView: View {
 
                             // Esquelas
                             NavigationLink(destination:
-                                Text("Esquelas")
+                                            ClassifiedsView()
+                                            .navigationBarBackButtonHidden(true)
                             ) {
                                 Text("Esquelas")
                                     .foregroundColor(.black)
@@ -91,7 +106,8 @@ struct SectionsView: View {
 
                             // Felicitaciones
                             NavigationLink(destination:
-                                Text("Felicitaciones") // Puedes reemplazar esto con una vista real
+                                            ClassifiedsView()
+                                            .navigationBarBackButtonHidden(true)
                             ) {
                                 Text("Felicitaciones")
                                     .foregroundColor(.black)
@@ -111,19 +127,24 @@ struct SectionsView: View {
                         }
                     }
 
-                    // Botones inferiores
-                    VStack(spacing: 10) {
+                    VStack(spacing: 4) { // Reduces el espacio entre botones
                         actionButton(title: "Anúnciate") {
-                            print("Anúnciate presionado")
+                            if let url = URL(string: "https://www.elsiglodetorreon.com.mx/login/") {
+                                UIApplication.shared.open(url)
+                            }
                         }
-
+                        .buttonStyle(.borderedProminent)
+                        
                         actionButton(title: "Suscríbete") {
-                            print("Suscríbete presionado")
+                            if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
+                                UIApplication.shared.open(url)
+                            }
                         }
+                        .buttonStyle(.borderedProminent)
                     }
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 2)
                 }
-                .frame(maxWidth: 200)
+                .frame(maxWidth: 250)
                 .padding()
                 .background(Color.white)
                 .edgesIgnoringSafeArea(.vertical)
@@ -137,7 +158,7 @@ struct SectionsView: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.white)
-                .frame(width: 180, height: 40)
+                .frame(width: 230, height: 38)
                 .background(Color.red)
         }
     }
