@@ -118,10 +118,15 @@ struct FotoNota: Decodable {
 }
 
 // Video renombrado para evitar conflicto
-struct SectionVideo: Decodable {
+struct SectionVideo: Identifiable, Decodable {
     let id: Int?
     let url: String?
-    // Agrega más campos según tu JSON
-}
+    let titulo: String?
+    let contenido: String?
+    let cover: String?
+    let fecha: String?
+    let tipo: String?
 
+    var safeId: Int { id ?? UUID().hashValue } // para ForEach en caso de que id sea nil
+}
 

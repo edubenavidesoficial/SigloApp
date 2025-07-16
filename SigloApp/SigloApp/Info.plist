@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FiraSansCondensed-Medium</string>
+		<string>FiraSansCondensed-Regular</string>
+		<string>FiraSansCondensed-SemiBold</string>
+		<string>FiraSansExtraCondensed-Medium</string>
+		<string>FiraSansExtraCondensed-Regular</string>
+		<string>FiraSansExtraCondensed-SemiBold</string>
+		<string>NotoSerif-Bold</string>
+		<string>NotoSerif-Medium</string>
+		<string>NotoSerif-Regular</string>
+	</array>
+</dict>
+</plist>

@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Error personalizado
 enum PortadaServiceError: Error {
     case invalidURL
     case invalidResponse
@@ -9,7 +8,6 @@ enum PortadaServiceError: Error {
     case decodingError(Error)
 }
 
-// MARK: - Servicio de portada
 final class PortadaService {
     static let shared = PortadaService()
     private init() {}

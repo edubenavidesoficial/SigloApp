@@ -17,15 +17,29 @@ struct SectionDetailView: View {
         ZStack(alignment: .top) {
             ScrollView {
                 VStack(spacing: 0) {
-                    // Esto crea espacio debajo del header para que no tape contenido
+                    // Espacio para el header
                     Color.clear.frame(height: headerHeight)
 
                     if let errorMessage = viewModel.errorMessage {
                         ErrorView(errorType: getErrorType(from: errorMessage)) {
                             viewModel.cargarPortada(idSeccion: payload.sectionId ?? 0)
                         }
-                    } else if let seccion = viewModel.secciones.first {
+                    } else if payload.sectionId == 903 {
+                        if let videos = viewModel.videos, !videos.isEmpty {
+                            ForEach(videos, id: \.id) { video in
+                                VideoView(video: video)
+                            }
+                        } else if viewModel.isLoading {
+                            ProgressView("Cargando videos...")
+                                .padding()
+                        } else {
+                            Text("No hay videos disponibles")
+                                .padding()
+                        }
+                    }
+                    else if let seccion = viewModel.secciones.first {
                         let notas = seccion.notas ?? []
+
                         TabView {
                             ForEach(notas, id: \.id) { nota in
                                 NewsView(nota: nota)
@@ -33,7 +47,7 @@ struct SectionDetailView: View {
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .frame(height: 550)
-                        .padding(.top, -75)
+                        .padding(.top, -102)
 
                         ForEach(notas.dropFirst().prefix(5), id: \.id) { nota in
                             SectionDestacadaView(nota: nota)
@@ -43,17 +57,18 @@ struct SectionDetailView: View {
                             ProgressView("Cargando más...")
                                 .padding()
                         }
-                    } 
+                    }
                 }
             }
 
-            // Header transparente y fijo encima
+            // Header
             WriteHeaderView(
                 nombreSeccion: payload.nombre,
                 selectedOption: $selectedOption,
                 isMenuOpen: $isMenuOpen,
                 isLoggedIn: isLoggedIn
             )
+            .padding(.top)
             .background(Color.clear)
         }
         .edgesIgnoringSafeArea(.top)
@@ -67,14 +82,15 @@ struct SectionDetailView: View {
         }
     }
 
-    // Altura total estimada del header (incluye safe area top + barra)
+    // Altura del header
     private var headerHeight: CGFloat {
         let safeTop = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .first?.windows.first?.safeAreaInsets.top ?? 44
-        return safeTop + 55 // 55 es la altura estimada del contenido del header
+        return safeTop + 55
     }
 
+    // Tipo de error
     private func getErrorType(from message: String) -> ErrorType {
         if message.contains("404") {
             return .notFound

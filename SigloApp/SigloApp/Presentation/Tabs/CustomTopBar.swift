@@ -39,7 +39,12 @@ struct CustomTopBar: View {
         .padding(.vertical, 12)
         .background(Color.black)
         .safeAreaInset(edge: .top) {
-            Color.black.frame(height:  UIApplication.shared.windows.first?.safeAreaInsets.top ?? 20)
+            GeometryReader { geometry in
+                Color.black
+                    .frame(height: geometry.safeAreaInsets.top)
+                    .edgesIgnoringSafeArea(.top)
+            }
+            .frame(height: 0)
         }
     }
 }

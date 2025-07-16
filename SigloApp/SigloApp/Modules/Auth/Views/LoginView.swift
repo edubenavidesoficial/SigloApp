@@ -32,7 +32,7 @@ struct LoginView: View {
 
                 (
                     Text("¿Aún no tienes cuenta? ")
-                        .font(.subheadline)
+                        .font(.custom("FiraSansCondensed-Regular", size: 15))
                         .foregroundColor(.gray)
                     +
                     Text("Regístrate aquí")
@@ -107,7 +107,7 @@ struct LoginView: View {
 
                 Text("¿Olvidaste tu contraseña?")
                     .foregroundColor(.red)
-                    .font(.footnote)
+                    .font(.custom("FiraSansCondensed-Regular", size: 15))
                     .padding(.top, 4)
 
                 Divider()
@@ -144,9 +144,9 @@ struct LoginView: View {
                     )
                     .cornerRadius(10)
                 }
-
+                .padding(.top, 10)
                 Text("Si continúas, aceptas nuestras Condiciones del Servicio y la Política de Privacidad.")
-                    .font(.footnote)
+                    .font(.custom("FiraSansCondensed-Regular", size: 15))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 

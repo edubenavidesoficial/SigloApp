@@ -1,3 +1,5 @@
+import Foundation
+
 // Tu enum de pestañas
 enum TabTypetwo: String, CaseIterable, Identifiable {
     case hemeroteca = "HEMEROTECA EL SIGLO DE TORREÓN"

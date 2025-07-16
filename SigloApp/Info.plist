@@ -1,8 +1,12 @@
-//
-//  Info.plist
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 7/9/25.
-//
-
-import Foundation
+<key>UIAppFonts</key>
+<array>
+    <string>Fonts/FiraSansCondensed-Medium.ttf</string>
+    <string>Fonts/FiraSansCondensed-Regular.ttf</string>
+    <string>Fonts/FiraSansCondensed-SemiBold.ttf</string>
+    <string>Fonts/FiraSansExtraCondensed-Medium.ttf</string>
+    <string>Fonts/FiraSansExtraCondensed-Regular.ttf</string>
+    <string>Fonts/FiraSansExtraCondensed-SemiBold.ttf</string>
+    <string>Fonts/NotoSerif-Bold.ttf</string>
+    <string>Fonts/NotoSerif-Medium.ttf</string>
+    <string>Fonts/NotoSerif-Regular.ttf</string>
+</array>

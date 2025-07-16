@@ -54,9 +54,9 @@ final class SectionService {
                     return
                 }
 
-               /* if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido Seccion:\n\(jsonString.prefix(100))...")
-                }*/
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📦 JSON recibido Seccion:\n\(jsonString.prefix(20000))...")
+                }
 
                 // 5. Decodificación
                 do {

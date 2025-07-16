@@ -61,13 +61,16 @@ struct ImpresoView: View {
 
                             // Contenido según pestaña
                             Group {
-                                switch printVM.selectedTab {
-                                case .hemeroteca:
-                                    PrintCarouselView(viewModel: printVM)
-                                case .suplementos:
-                                    SuplementsView()
-                                case .descargas:
-                                    DescargasView()
+                                if printVM.isLoading {
+                                } else {
+                                    switch printVM.selectedTab {
+                                    case .hemeroteca:
+                                        PrintCarouselView(viewModel: printVM)
+                                    case .suplementos:
+                                        SuplementsView()
+                                    case .descargas:
+                                        DescargasView()
+                                    }
                                 }
                             }
 

@@ -15,7 +15,7 @@ struct PromoView: View {
                 .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
                 .foregroundColor(.gray)
 
-            Text("Cargando promociones...")
+            Text("Cargando...")
                 .font(.headline)
                 .padding()
 

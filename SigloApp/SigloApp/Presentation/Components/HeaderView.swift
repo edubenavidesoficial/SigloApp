@@ -5,26 +5,31 @@ struct HeaderView: View {
     @Binding var isMenuOpen: Bool
     var isLoggedIn: Bool
     var showBack: Bool = true
+    var isInUserView: Bool = false
+
     var action: (() -> Void)? = nil
 
-    @State private var showMenu = false
+    @Environment(\.dismiss) var dismiss
+
     @State private var showLogoutAlert = false
     @State private var isSearchViewPresented = false
-    @State private var mostrarSectionsFullscreen = false  // <-- aquí
+    @State private var mostrarSectionsFullscreen = false
 
     var body: some View {
         ZStack(alignment: .leading) {
             VStack(spacing: 0) {
                 HStack {
+                    // Botón izquierdo: retroceder o menú
                     Button(action: {
-                        if selectedOption != nil {
-                            selectedOption = nil
+                        if isInUserView {
+                             dismiss()
+                        } else if selectedOption != nil {
+                            dismiss()
                         } else {
-                            // En vez de navegar push, presentamos fullscreen
                             mostrarSectionsFullscreen = true
                         }
                     }) {
-                        Image(systemName: selectedOption != nil ? "chevron.left" : "line.horizontal.3")
+                        Image(systemName: isInUserView ? "chevron.left" : "line.horizontal.3")
                             .imageScale(.large)
                     }
 
@@ -37,6 +42,7 @@ struct HeaderView: View {
 
                     Spacer()
 
+                    // Botón derecho: buscar
                     Button(action: {
                         isSearchViewPresented = true
                     }) {
@@ -56,6 +62,7 @@ struct HeaderView: View {
             .disabled(isMenuOpen)
 
             if isMenuOpen {
+                // Fondo semitransparente para cerrar menú con tap
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
@@ -64,9 +71,8 @@ struct HeaderView: View {
                         }
                     }
                     .zIndex(1)
-            }
 
-            if isMenuOpen {
+                // Menú lateral
                 SideMenuView(selectedOption: $selectedOption, isMenuOpen: $isMenuOpen)
                     .frame(width: 250)
                     .transition(.move(edge: .leading))
@@ -77,7 +83,7 @@ struct HeaderView: View {
         .fullScreenCover(isPresented: $mostrarSectionsFullscreen) {
             SectionsView()
         }
-        // Navegación a búsqueda con NavigationLink como antes
+        // Navegación a búsqueda
         .background(
             NavigationLink(
                 destination: SearchFrontView(),
@@ -86,10 +92,5 @@ struct HeaderView: View {
             )
             .hidden()
         )
-    }
-
-    func logout() {
-        UserDefaults.standard.set(false, forKey: "isLoggedIn")
-        print("🔴 Sesión cerrada")
     }
 }

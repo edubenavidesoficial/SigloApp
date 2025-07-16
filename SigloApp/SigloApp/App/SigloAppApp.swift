@@ -43,6 +43,14 @@ struct SigloAppApp: App {
             .environmentObject(userManager)
             .onAppear {
                 userManager.loadUserFromDefaults()
+
+                // ✅ Imprimir fuentes personalizadas disponibles
+                for family in UIFont.familyNames.sorted() {
+                    print("Family: \(family)")
+                    for name in UIFont.fontNames(forFamilyName: family) {
+                        print(" - \(name)")
+                    }
+                }
             }
             .preferredColorScheme(resolveColorScheme(from: appearanceMode))
         }

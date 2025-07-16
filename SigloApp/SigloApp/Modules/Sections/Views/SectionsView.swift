@@ -7,7 +7,6 @@ struct SectionsView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .leading) {
-                // Fondo semitransparente que permite cerrar tocando fuera
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
@@ -152,14 +151,16 @@ struct SectionsView: View {
         }
     }
 
-    // Botón reutilizable
     func actionButton(title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.white)
-                .frame(width: 230, height: 38)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
                 .background(Color.red)
+                .cornerRadius(1)
         }
+        .frame(width: 230)
     }
 }

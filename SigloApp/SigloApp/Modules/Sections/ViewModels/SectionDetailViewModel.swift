@@ -3,6 +3,7 @@ import Combine
 
 final class SectionDetailViewModel: ObservableObject {
     @Published var secciones: [SectionPayload] = []
+    @Published var videos: [SectionVideo]? = nil
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
 
@@ -19,9 +20,14 @@ final class SectionDetailViewModel: ObservableObject {
 
                 switch result {
                 case .success(let contenido):
-                    self.secciones = [contenido] // normalmente el contenido de la sección
+                    self.secciones = [contenido]
 
-                    //print("Payload id recibido: ", idSeccion, contenido)
+                    // ✅ Aquí extraemos los videos si es sección 903
+                    if idSeccion == 903 {
+                        self.videos = contenido.videos
+                    } else {
+                        self.videos = nil
+                    }
 
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
@@ -31,3 +37,4 @@ final class SectionDetailViewModel: ObservableObject {
         }
     }
 }
+

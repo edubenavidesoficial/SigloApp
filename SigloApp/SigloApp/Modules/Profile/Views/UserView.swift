@@ -7,6 +7,7 @@ struct UserView: View {
     @EnvironmentObject var userManager: UserManager
     @StateObject private var viewModel = UserSubscriptionViewModel()
 
+    // Fecha de última conexión formateada correctamente
     private var lastConnectionDate: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "es_ES")
@@ -21,9 +22,10 @@ struct UserView: View {
                     HeaderView(
                         selectedOption: $selectedOption,
                         isMenuOpen: $isMenuOpen,
-                        isLoggedIn: isLoggedIn
+                        isLoggedIn: isLoggedIn,
+                        isInUserView: true //
                     )
-
+                    
                     if let selected = selectedOption {
                         NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
@@ -54,7 +56,6 @@ struct UserView: View {
 
     private var perfilSection: some View {
         VStack(spacing: 8) {
-            // Avatar y desconexión
             Image("user")
                 .resizable()
                 .frame(width: 80, height: 80)
@@ -63,20 +64,18 @@ struct UserView: View {
                     isLoggedIn = false
                 }
 
-            // Nombre de usuario
             Text(userManager.user?.usuario.uppercased() ?? "USUARIO")
-                .font(.headline)
+                .font(.custom("FiraSansCondensed-Medium", size: 20))
 
-            // Última conexión
             Text("Última conexión:")
                 .font(.subheadline)
                 .foregroundColor(.gray)
+
             Text(lastConnectionDate)
                 .font(.subheadline)
 
-            // Datos personales
             Text("Nombre:")
-                .font(.headline)
+                .font(.custom("FiraSansCondensed-Medium", size: 20))
             Text("\(userManager.user?.nombre ?? "") \(userManager.user?.apellidos ?? "")")
                 .font(.subheadline)
 
@@ -123,14 +122,12 @@ struct UserView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(
                             VStack(spacing: 2) {
-                                // Número sin puntos
                                 Text("\(suscripcion.suscripcionDigital.tarjeta)")
-                                    .font(.caption)
+                                    .font(.custom("FiraSansExtraCondensed-Regular", size: 10))
                                     .foregroundColor(.white)
 
-                                // Texto debajo
                                 Text("EL SIGLO DE TORREON")
-                                    .font(.system(size: 8, weight: .regular))
+                                    .font(.custom("FiraSansCondensed-Regular", size: 8))
                                     .foregroundColor(.white)
                             }
                             .padding(6)
@@ -167,10 +164,9 @@ struct UserView: View {
                 }
             }
 
-
             VStack(alignment: .leading, spacing: 6) {
                 Text("Información de suscriptor:")
-                    .fontWeight(.semibold)
+                    .font(.custom("FiraSansCondensed-Medium", size: 20))
 
                 Text("Número de suscriptor:")
                     .foregroundColor(.black)
@@ -178,6 +174,7 @@ struct UserView: View {
                 Text("\(suscripcion.suscripcionDigital.numero)")
                     .foregroundColor(.red)
                     .fontWeight(.bold)
+                    .font(.custom("FiraSansCondensed-SemiBold", size: 20))
 
                 Text("Tarifa:")
                     .foregroundColor(.black)
@@ -189,7 +186,6 @@ struct UserView: View {
                     Text(suscripcion.suscripcionDigital.vigencia ?? "00/00/00")
                 }
 
-                // Solo mostramos el estado y el link si NO está activo
                 let estado = suscripcion.suscripcionDigital.estado?.lowercased() ?? ""
                 if estado != "activa" {
                     HStack {
@@ -238,20 +234,16 @@ struct UserView: View {
 
             Divider()
 
-            // Cerrar sesión sin negrita
+            // Botón corregido para cerrar sesión
             Button(action: {
                 isLoggedIn = false
             }) {
-                Button(action: {
-                    isLoggedIn = false
-                }) {
-                    HStack {
-                        Text("Cerrar Sesión")
-                            .fontWeight(.regular)
-                        Spacer()
-                    }
-                    .padding()
+                HStack {
+                    Text("Cerrar Sesión")
+                        .fontWeight(.regular)
+                    Spacer()
                 }
+                .padding()
             }
             .buttonStyle(PlainButtonStyle())
         }
@@ -261,7 +253,6 @@ struct UserView: View {
         .foregroundColor(.black)
         .fontWeight(.bold)
     }
-
 
     private var socialFooter: some View {
         HStack(spacing: 20) {

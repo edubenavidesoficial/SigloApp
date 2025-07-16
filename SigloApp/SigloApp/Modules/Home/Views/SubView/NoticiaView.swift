@@ -64,7 +64,7 @@ struct NoticiaView: View {
                     Spacer()
 
                     HStack {
-                        Image(systemName: "clock") // Icono de reloj
+                        Image(systemName: "clock")
                             .foregroundColor(.white.opacity(0.8))
                         Text(nota.fecha_formato)
                             .font(.caption)

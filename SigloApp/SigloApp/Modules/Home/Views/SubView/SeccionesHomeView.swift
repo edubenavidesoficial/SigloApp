@@ -1,4 +1,5 @@
 import SwiftUI
+let label = UILabel()
 
 struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
@@ -86,7 +87,7 @@ struct NotaRow: View {
                     }
 
                     Text(nota.titulo)
-                        .font(.headline)
+                        .font(.custom("FiraSansCondensed-Regular", size: 18))
                         .foregroundColor(.primary)
                         .lineLimit(2)
 

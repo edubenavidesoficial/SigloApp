@@ -52,7 +52,7 @@ struct PrintCarouselView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 470)
 
-            // ✅ NavigationLink con vista destino válida
+            // NavigationLink con vista destino válida
             NavigationLink(
                 destination: selectedArticle.map { PrintViewerView(article: $0) },
                 isActive: Binding(

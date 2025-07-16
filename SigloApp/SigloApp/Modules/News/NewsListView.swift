@@ -27,7 +27,7 @@ struct NewsListView: View {
         NewsService.shared.obtenerNoticia(idNoticia: 2343332) { result in
             switch result {
             case .success(let noticia):
-                self.noticias = [noticia] // Puedes reemplazar esto con un array real
+                self.noticias = [noticia] 
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
