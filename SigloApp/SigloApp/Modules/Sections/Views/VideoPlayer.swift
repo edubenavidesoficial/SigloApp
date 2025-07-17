@@ -47,6 +47,25 @@ struct VideoListPlayerView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
+                        HStack {
+                            Text(video.seccion ?? "SIGLO")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.white)
+                                .shadow(radius: 2)
+                                .padding(.leading)
+
+                            Spacer()
+
+                            HStack {
+                                Image(systemName: "clock")
+                                    .foregroundColor(.white.opacity(0.8))
+                                Text(video.fechaformato ?? "00:00")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                            .padding(.trailing)
+                        }
                     }
                     .padding(.horizontal)
                 } else {
@@ -57,7 +76,6 @@ struct VideoListPlayerView: View {
                 }
 
                 Divider()
-                    .background(Color.white)
 
                 ScrollView {
                     VStack(spacing: 12) {
@@ -70,25 +88,58 @@ struct VideoListPlayerView: View {
                             }) {
                                 HStack {
                                     if let cover = video.cover, let coverURL = URL(string: cover) {
-                                        AsyncImage(url: coverURL) { image in
-                                            image.resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                        } placeholder: {
-                                            Color.gray.opacity(0.3)
+                                        ZStack(alignment: .bottomLeading) {
+                                            AsyncImage(url: coverURL) { image in
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                            } placeholder: {
+                                                Color.gray.opacity(0.3)
+                                            }
+
+                                            Circle()
+                                                .fill(Color.black.opacity(1))
+                                                .frame(width: 20, height: 20)
+                                                .overlay(
+                                                    Image(systemName: "play.fill")
+                                                        .foregroundColor(.white)
+                                                        .font(.system(size: 12, weight: .bold))
+                                                )
+                                                .padding(6)
                                         }
                                         .frame(width: 100, height: 56)
                                         .clipped()
-                                        .cornerRadius(8)
-                                    } else {
+                                        .cornerRadius(1)
+                                    }
+                                    else {
                                         // Imagen por defecto si no hay cover
                                         Color.gray.frame(width: 100, height: 56)
-                                            .cornerRadius(8)
+                                            .cornerRadius(1)
                                     }
 
-                                    VStack(alignment: .leading) {
+                                    VStack {
                                         Text(video.titulo ?? "Sin título")
-                                            .font(.headline)
+                                            .font(.custom("FiraSansCondensed-Medium", size: 15))
                                             .foregroundColor(.white)
+                                        HStack {
+                                            Text(video.seccion ?? "SIGLO")
+                                                .font(.custom("FiraSansCondensed-Medium", size: 14))
+                                                .bold()
+                                                .foregroundColor(.white)
+                                                .shadow(radius: 2)
+                                                .padding(.leading)
+
+                                            Spacer()
+
+                                            HStack {
+                                                Image(systemName: "clock")
+                                                    .foregroundColor(.white.opacity(0.8))
+                                                Text(video.fechaformato ?? "00:00")
+                                                    .font(.custom("FiraSansCondensed-Regular", size: 14))
+                                                    .foregroundColor(.white.opacity(0.8))
+                                            }
+                                            .padding(.trailing)
+                                        }
                                     }
                                     Spacer()
                                 }

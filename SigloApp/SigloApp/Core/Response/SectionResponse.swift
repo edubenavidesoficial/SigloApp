@@ -117,7 +117,6 @@ struct FotoNota: Decodable {
     }
 }
 
-// Video renombrado para evitar conflicto
 struct SectionVideo: Identifiable, Decodable {
     let id: Int?
     let url: String?
@@ -126,7 +125,14 @@ struct SectionVideo: Identifiable, Decodable {
     let cover: String?
     let fecha: String?
     let tipo: String?
+    let seccion: String?
+    let fechaformato: String?
 
-    var safeId: Int { id ?? UUID().hashValue } // para ForEach en caso de que id sea nil
+    var safeId: Int { id ?? UUID().hashValue }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, url, titulo, contenido, cover, fecha, tipo, seccion
+        case fechaformato = "fecha_formato"
+    }
 }
 
