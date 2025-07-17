@@ -43,7 +43,7 @@ struct SeccionPortada: Decodable {
 }
 
 struct Foto: Codable, Sendable {
-    let url_foto: String
+    let url_foto: String?
     let pie_foto: String?
 }
 

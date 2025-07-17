@@ -9,6 +9,7 @@ final class SectionDetailViewModel: ObservableObject {
 
     func cargarPortada(idSeccion: Int) {
         guard !isLoading else { return }
+
         isLoading = true
         errorMessage = nil
 
@@ -22,7 +23,6 @@ final class SectionDetailViewModel: ObservableObject {
                 case .success(let contenido):
                     self.secciones = [contenido]
 
-                    // ✅ Aquí extraemos los videos si es sección 903
                     if idSeccion == 903 {
                         self.videos = contenido.videos
                     } else {
@@ -31,7 +31,7 @@ final class SectionDetailViewModel: ObservableObject {
 
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
-                    print("❌ Error al cargar sección: \(error)")
+                    print("❌ Error al cargar sección: \(error.localizedDescription)")
                 }
             }
         }

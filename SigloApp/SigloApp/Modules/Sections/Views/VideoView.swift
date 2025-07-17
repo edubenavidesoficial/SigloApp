@@ -5,15 +5,35 @@ struct VideoView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if let cover = video.cover, let url = URL(string: cover) {
-                AsyncImage(url: url) { image in
-                    image.resizable().aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Color.gray.opacity(0.3)
+            if let cover = video.cover,
+               let url = URL(string: cover),
+               let videoURL = video.url,
+               let linkURL = URL(string: videoURL) {
+
+                ZStack {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Color.gray.opacity(0.3)
+                    }
+                    .frame(height: 200)
+                    .clipped()
+                    .cornerRadius(12)
+
+                    Link(destination: linkURL) {
+                        Circle()
+                            .fill(Color.black.opacity(0.4))
+                            .frame(width: 60, height: 60)
+                            .overlay(
+                                Image(systemName: "play.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 28, weight: .bold))
+                            )
+                            .shadow(radius: 5)
+                    }
                 }
-                .frame(height: 200)
-                .clipped()
-                .cornerRadius(8)
             }
 
             Text(video.titulo ?? "Sin título")
@@ -23,11 +43,6 @@ struct VideoView: View {
                 Text(contenido)
                     .font(.subheadline)
                     .lineLimit(3)
-            }
-
-            if let videoURL = video.url, let url = URL(string: videoURL) {
-                Link("Ver video", destination: url)
-                    .foregroundColor(.blue)
             }
 
             Divider()

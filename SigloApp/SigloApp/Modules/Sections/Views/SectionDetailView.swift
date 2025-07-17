@@ -24,10 +24,30 @@ struct SectionDetailView: View {
                         ErrorView(errorType: getErrorType(from: errorMessage)) {
                             viewModel.cargarPortada(idSeccion: payload.sectionId ?? 0)
                         }
+
                     } else if payload.sectionId == 903 {
                         if let videos = viewModel.videos, !videos.isEmpty {
-                            ForEach(videos, id: \.id) { video in
-                                VideoView(video: video)
+                            // ✅ Mostrar solo el primer video
+                            if let primerVideo = videos.first {
+                                VideoView(video: primerVideo)
+                            }
+
+                            // ✅ Carrusel horizontal con todos los videos
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(videos, id: \.id) { video in
+                                        VideoCard(video: video)
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+
+                            // ✅ Mostrar del 7º al 10º video
+                            if videos.count > 6 {
+                                let videosSeleccionados = Array(videos.dropFirst(6).prefix(4))
+                                ForEach(videosSeleccionados, id: \.id) { video in
+                                    VideoView(video: video)
+                                }
                             }
                         } else if viewModel.isLoading {
                             ProgressView("Cargando videos...")
@@ -36,8 +56,8 @@ struct SectionDetailView: View {
                             Text("No hay videos disponibles")
                                 .padding()
                         }
-                    }
-                    else if let seccion = viewModel.secciones.first {
+
+                    } else if let seccion = viewModel.secciones.first {
                         let notas = seccion.notas ?? []
 
                         TabView {
@@ -61,15 +81,26 @@ struct SectionDetailView: View {
                 }
             }
 
-            // Header
-            WriteHeaderView(
-                nombreSeccion: payload.nombre,
-                selectedOption: $selectedOption,
-                isMenuOpen: $isMenuOpen,
-                isLoggedIn: isLoggedIn
-            )
-            .padding(.top)
-            .background(Color.clear)
+            // ✅ Header según sección
+            if payload.sectionId == 903 {
+                BlackHeaderView(
+                    nombreSeccion: payload.nombre,
+                    selectedOption: $selectedOption,
+                    isMenuOpen: $isMenuOpen,
+                    isLoggedIn: isLoggedIn
+                )
+                .padding(.top)
+                .background(Color.clear)
+            } else {
+                WriteHeaderView(
+                    nombreSeccion: payload.nombre,
+                    selectedOption: $selectedOption,
+                    isMenuOpen: $isMenuOpen,
+                    isLoggedIn: isLoggedIn
+                )
+                .padding(.top)
+                .background(Color.clear)
+            }
         }
         .edgesIgnoringSafeArea(.top)
         .navigationBarHidden(true)

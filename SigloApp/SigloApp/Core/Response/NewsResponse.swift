@@ -23,6 +23,6 @@ struct NewsArticle: Codable {
 }
 
 struct NewsPhoto: Codable {
-    let urlFoto: String
-    let pieFoto: String?
+    let url_foto: String?
+    let pie_foto: String?
 }

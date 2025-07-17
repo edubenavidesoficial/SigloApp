@@ -218,7 +218,7 @@ struct NotaImageView: View {
         VStack(alignment: .trailing, spacing: 4) {
             ZStack {
                 if let foto = foto {
-                    AsyncImage(url: URL(string: foto.url_foto)) { phase in
+                    AsyncImage(url: URL(string: foto.url_foto ?? "")) { phase in
                         switch phase {
                         case .success(let image):
                             image.resizable()

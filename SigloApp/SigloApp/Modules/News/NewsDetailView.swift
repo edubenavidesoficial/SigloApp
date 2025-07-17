@@ -9,15 +9,8 @@ struct NewsDetailView: View {
     @State private var isLoading = true
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Barra personalizada
-            CustomTopBar {
-                presentationMode.wrappedValue.dismiss()
-            }
-
-            Divider()
-
-            Group {
+        ZStack(alignment: .top) {
+            VStack(spacing: 0) {
                 if isLoading {
                     Spacer()
                     ProgressView("Cargando...")
@@ -25,9 +18,9 @@ struct NewsDetailView: View {
                 } else if let noticia = noticia {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-
                             // Categoría y Título
                             VStack(alignment: .leading, spacing: 8) {
+
                                 Text(noticia.localizador)
                                     .font(.caption)
                                     .foregroundColor(.red)
@@ -41,9 +34,10 @@ struct NewsDetailView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
+                            .padding(.top, 30)
 
                             // Datos del autor y fecha
-                            HStack(spacing: 8) {
+                            HStack(spacing: 3) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text("AGENCIA")
                                         .font(.caption)
@@ -62,24 +56,71 @@ struct NewsDetailView: View {
                             }
 
                             // Imagen con pie de foto
-                            VStack(spacing: 4) {
-                                Image("LS")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .cornerRadius(8)
+                            VStack(spacing: 2) {
+                                ForEach(noticia.fotos.compactMap { $0.url_foto }, id: \.self) { urlString in
+                                    if let url = URL(string: urlString) {
+                                        AsyncImage(url: url) { phase in
+                                            switch phase {
+                                            case .empty:
+                                                ProgressView()
+                                                    .frame(height: 250)
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .cornerRadius(8)
+                                            case .failure:
+                                                Image(systemName: "photo")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .foregroundColor(.gray)
+                                            @unknown default:
+                                                EmptyView()
+                                            }
+                                        }
+                                    }
+                                }
 
-                                Text("Paso de Ciclón John por el Pacífico mexicano")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                // Si quieres mostrar solo la primera foto con su pie de foto:
+                                if let firstPhoto = noticia.fotos.first,
+                                   let urlString = firstPhoto.url_foto,
+                                   let url = URL(string: urlString) {
+                                    VStack {
+                                        AsyncImage(url: url) { phase in
+                                            switch phase {
+                                            case .empty:
+                                                ProgressView()
+                                                    .frame(height: 250)
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .cornerRadius(8)
+                                            case .failure:
+                                                Image(systemName: "photo")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .foregroundColor(.gray)
+                                            @unknown default:
+                                                EmptyView()
+                                            }
+                                        }
+                                        if let pie = firstPhoto.pie_foto, !pie.isEmpty {
+                                            Text(pie)
+                                                .font(.caption)
+                                                .foregroundColor(.gray)
+                                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                        }
+                                    }
+                                }
                             }
-
+                            Spacer()
                             // Autor
                             Text(noticia.autor ?? "")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
 
-                            // Contenido HTML (flexible entre String y Array)
+                            // Contenido
                             HTMLWebView(htmlContent: formatContenido(noticia.contenido))
                                 .frame(minHeight: 600)
                         }
@@ -91,8 +132,18 @@ struct NewsDetailView: View {
                         .padding()
                 }
             }
+
+            // ✅ Top bar seguro con iOS 17
+            CustomTopBar {
+                presentationMode.wrappedValue.dismiss()
+            }
+            .padding(.top, -20)
+            .background(.white)
+            .shadow(radius: 4)
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 0) // ocupa espacio pero no dibuja nada
+            }
         }
-        .ignoresSafeArea(edges: .top)
         .navigationBarBackButtonHidden(true)
         .onAppear {
             NewsService.shared.obtenerNoticia(idNoticia: idNoticia) { result in
@@ -107,7 +158,6 @@ struct NewsDetailView: View {
         }
     }
 
-    // MARK: - Helper
     func formatContenido(_ contenido: Any?) -> String {
         if let texto = contenido as? String {
             return texto

@@ -5,7 +5,7 @@ struct FotoView: View {
 
     var body: some View {
         VStack {
-            if let url = URL(string: foto.url_foto) {
+            if let url = URL(string: foto.url_foto ?? "") {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
@@ -44,7 +44,7 @@ struct SigloTvVideoView: View {
 
     var body: some View {
         VStack {
-            if let url = URL(string: foto.url_foto) {
+            if let url = URL(string: foto.url_foto ?? "") {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:

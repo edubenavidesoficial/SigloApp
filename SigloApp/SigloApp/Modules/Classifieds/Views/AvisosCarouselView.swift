@@ -31,26 +31,36 @@ struct AvisosCarouselView: View {
                             LazyVStack(spacing: 12) {
                                 ForEach(filteredAds) { ad in
                                     VStack(alignment: .leading, spacing: 8) {
+                                        
                                         if let sectionName = ad.seccionNombre, !sectionName.isEmpty {
                                             Text(sectionName)
                                                 .font(.caption)
                                                 .foregroundColor(.red)
                                         }
-                                        
-                                        if let foto = ad.foto, !foto.isEmpty, foto != "0" {
-                                            if let url = URL(string: foto) {
+
+                                        Group {
+                                            if let fotos = ad.fotos, let firstFoto = fotos.first,
+                                               firstFoto != "0", let url = URL(string: firstFoto) {
                                                 AsyncImage(url: url) { image in
                                                     image
                                                         .resizable()
-                                                        .scaledToFit()
-                                                        .frame(height: 150)
-                                                        .cornerRadius(4)
+                                                        .scaledToFill()
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                        .clipped()
+                                                        .cornerRadius(8)
                                                 } placeholder: {
-                                                    ProgressView()
+                                                    ZStack {
+                                                        Color.gray.opacity(0.2)
+                                                        ProgressView()
+                                                    }
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                                    .cornerRadius(8)
                                                 }
+                                            } else {
+                                                EmptyView()
                                             }
                                         }
-                                        
+
                                         Text(ad.anuncio)
                                             .font(.body)
                                     }
@@ -60,7 +70,6 @@ struct AvisosCarouselView: View {
                                     .cornerRadius(8)
                                     .shadow(color: Color.black.opacity(0.15), radius: 2, x: 0, y: 1)
                                     .padding(.horizontal)
-                                    // Detectar tap y abrir detalle
                                     .onTapGesture {
                                         selectedAdId = ad.id
                                         isShowingDetail = true

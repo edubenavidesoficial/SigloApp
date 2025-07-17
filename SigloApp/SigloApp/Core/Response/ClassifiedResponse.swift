@@ -56,7 +56,7 @@ struct ClassifiedAd: Decodable, Identifiable {
     let foto: String?
     let seccion: String
     let seccionNombre: String?
-    let clasif1: String?             // <-- Cambiar a opcional
+    let clasif1: String?
     let clasif1Nombre: String?
     let clasif2: String?
     let clasif2Nombre: String?
@@ -71,6 +71,7 @@ struct ClassifiedAd: Decodable, Identifiable {
     let whatsapp: String?
     let youtube: String?
     let filemanger: String?
+    let fotos: [String]? 
 
     private enum CodingKeys: String, CodingKey {
         case id, numero, orden, foto, seccion
@@ -82,6 +83,7 @@ struct ClassifiedAd: Decodable, Identifiable {
         case clasif3 = "clasif_3"
         case clasif3Nombre = "clasif_3_nombre"
         case anuncio, anuncioHTML, masTexto, masTextoHTML, marco, color, whatsapp, youtube, filemanger
+        case fotos
     }
 }
 
