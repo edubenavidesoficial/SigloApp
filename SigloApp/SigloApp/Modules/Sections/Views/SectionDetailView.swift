@@ -27,12 +27,12 @@ struct SectionDetailView: View {
 
                     } else if payload.sectionId == 903 {
                         if let videos = viewModel.videos, !videos.isEmpty {
-                            // ✅ Mostrar solo el primer video
+                            // Mostrar solo el primer video, pasando la lista completa
                             if let primerVideo = videos.first {
-                                VideoView(video: primerVideo)
+                                VideoView(video: primerVideo, allVideos: videos)
                             }
 
-                            // ✅ Carrusel horizontal con todos los videos
+                            // Carrusel horizontal con todos los videos
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
                                     ForEach(videos, id: \.id) { video in
@@ -42,11 +42,11 @@ struct SectionDetailView: View {
                                 .padding(.horizontal)
                             }
 
-                            // ✅ Mostrar del 7º al 10º video
+                            // Mostrar videos del 7º al 10º
                             if videos.count > 6 {
                                 let videosSeleccionados = Array(videos.dropFirst(6).prefix(4))
                                 ForEach(videosSeleccionados, id: \.id) { video in
-                                    VideoView(video: video)
+                                    VideoView(video: video, allVideos: videos)
                                 }
                             }
                         } else if viewModel.isLoading {
@@ -56,7 +56,6 @@ struct SectionDetailView: View {
                             Text("No hay videos disponibles")
                                 .padding()
                         }
-
                     } else if let seccion = viewModel.secciones.first {
                         let notas = seccion.notas ?? []
 
@@ -81,7 +80,7 @@ struct SectionDetailView: View {
                 }
             }
 
-            // ✅ Header según sección
+            // Header según sección
             if payload.sectionId == 903 {
                 BlackHeaderView(
                     nombreSeccion: payload.nombre,

@@ -18,7 +18,8 @@ struct SectionsView: View {
                     Image("menu")
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 180)
+                        .frame(height: 206)
+                        .padding(.top, -15)
                         .clipped()
 
                     // Iconos de redes sociales
@@ -143,7 +144,7 @@ struct SectionsView: View {
                     }
                     .padding(.bottom, 2)
                 }
-                .frame(maxWidth: 250)
+                .frame(maxWidth: 290)
                 .padding()
                 .background(Color.white)
                 .edgesIgnoringSafeArea(.vertical)
@@ -161,6 +162,6 @@ struct SectionsView: View {
                 .background(Color.red)
                 .cornerRadius(1)
         }
-        .frame(width: 230)
+        .frame(width: 285)
     }
 }

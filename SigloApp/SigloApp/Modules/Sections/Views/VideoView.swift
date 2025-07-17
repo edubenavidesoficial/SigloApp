@@ -2,13 +2,13 @@ import SwiftUI
 
 struct VideoView: View {
     let video: SectionVideo
+    let allVideos: [SectionVideo]  // Lista completa para pasar a VideoListPlayerView
+    @State private var showPlayer = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let cover = video.cover,
-               let url = URL(string: cover),
-               let videoURL = video.url,
-               let linkURL = URL(string: videoURL) {
+               let url = URL(string: cover) {
 
                 ZStack {
                     AsyncImage(url: url) { image in
@@ -22,7 +22,9 @@ struct VideoView: View {
                     .clipped()
                     .cornerRadius(12)
 
-                    Link(destination: linkURL) {
+                    Button(action: {
+                        showPlayer = true
+                    }) {
                         Circle()
                             .fill(Color.black.opacity(0.4))
                             .frame(width: 60, height: 60)
@@ -34,6 +36,15 @@ struct VideoView: View {
                             .shadow(radius: 5)
                     }
                 }
+                .background(
+                    NavigationLink(
+                        destination: VideoListPlayerView(videos: allVideos, currentVideo: video),
+                        isActive: $showPlayer
+                    ) {
+                        EmptyView()
+                    }
+                    .hidden()
+                )
             }
 
             Text(video.titulo ?? "Sin título")
