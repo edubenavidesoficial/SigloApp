@@ -87,6 +87,14 @@ struct ClassifiedAd: Decodable, Identifiable {
     }
 }
 
+struct SimpleAd: Identifiable {
+    let id: String
+    let seccionNombre: String?
+    let anuncio: String
+    let fotos: [String]? 
+}
+
+
 struct AdDetailResponse: Decodable {
     let requestDate: String
     let response: String
@@ -94,3 +102,37 @@ struct AdDetailResponse: Decodable {
     let processingTime: String
 }
 
+struct AnuncioSeccion: Codable {
+    let seccion: String
+    let nombreSeccion: String
+    let items: [AnuncioItem]
+
+    enum CodingKeys: String, CodingKey {
+        case seccion
+        case nombreSeccion = "seccion_nombre"
+        case items
+    }
+}
+
+struct AnuncioItem: Codable {
+    let id: Int   // Aquí es Int porque el JSON lo envía así
+    let titulo: String
+    let descripcion: String?
+    let observaciones: String?
+    let whatsapp: String?
+    let imagen: String
+    let fecha: String
+    let fechaFormato: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, titulo, descripcion, observaciones, whatsapp, imagen, fecha
+        case fechaFormato = "fecha_formato"
+    }
+}
+
+struct AnuncioResponse: Codable {
+    let request_date: String
+    let response: String
+    let payload: [AnuncioSeccion]
+    let processing_time: String
+}

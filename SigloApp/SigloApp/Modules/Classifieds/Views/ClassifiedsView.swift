@@ -108,14 +108,22 @@ struct ClassifiedsView: View {
                             Group {
                                 switch classifiedsVM.selectedTab {
                                 case .avisos:
-                                    AvisosCarouselView(
+                                    AvisosListView(
                                         viewModel: classifiedsVM,
                                         filterCategory: classifiedsVM.selectedCategory
                                     )
                                 case .desplegados:
-                                    Text("DESPLEGADOS")
+                                    DesplegadosListView(
+                                        viewModel: classifiedsVM,
+                                        filterCategory: classifiedsVM.selectedCategory,
+                                        tipo: "desplegados"
+                                    )
                                 case .esquelas:
-                                    Text("ESQUELAS")
+                                    DesplegadosListView(
+                                        viewModel: classifiedsVM,
+                                        filterCategory: classifiedsVM.selectedCategory,
+                                        tipo: "esquelas"
+                                    )
                                 case .anunciate:
                                     Text("ANUNCIATE")
                                 }

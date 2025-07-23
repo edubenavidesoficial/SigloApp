@@ -9,7 +9,7 @@ class ClassifiedsViewModel: ObservableObject {
     @Published var esquelas: [ClassifiedsModel] = []
     @Published var anunciate: [ClassifiedsModel] = []
 
-    @Published var selectedCategory: String? = nil  // <-- Aquí guardamos la categoría seleccionada
+    @Published var selectedCategory: String? = nil 
 
     @Published var errorMessage: String?
 

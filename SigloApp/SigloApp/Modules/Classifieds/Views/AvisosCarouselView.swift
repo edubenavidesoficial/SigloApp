@@ -5,7 +5,7 @@ extension Color {
     static let customLightGray = Color(red: 248/255, green: 248/255, blue: 248/255)
 }
 
-struct AvisosCarouselView: View {
+struct AvisosListView: View {
     @ObservedObject var viewModel: ClassifiedsViewModel
     @StateObject private var adsModel = AdsViewModel()
     
