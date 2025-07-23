@@ -44,6 +44,7 @@ struct HomeView: View {
                                         .frame(height: 450)
                                     }*/
                                     // Primera nota
+                                    
                                     if let seccion = viewModel.secciones.first(where: { $0.seccion == "Portada" }),
                                        let nota = seccion.notas?.first {
                                         NoticiaView(nota: nota)
