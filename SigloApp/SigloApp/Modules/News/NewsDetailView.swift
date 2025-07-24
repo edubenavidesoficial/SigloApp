@@ -2,6 +2,8 @@ import SwiftUI
 
 struct NewsDetailView: View {
     let idNoticia: Int
+    @StateObject private var viewModel = HomeViewModel()
+    @StateObject var articleViewModel = ArticleViewModel()
     @Environment(\.presentationMode) var presentationMode
 
     @State private var noticia: NewsArticle?
@@ -123,6 +125,14 @@ struct NewsDetailView: View {
                             // Contenido
                             HTMLWebView(htmlContent: formatContenido(noticia.contenido))
                                 .frame(minHeight: 600)
+                            NewsSectionsModel(
+                                relacionadas: noticia.relacionadas?.compactMap { $0 } ?? [],
+                                mas_notas: noticia.masNotas ?? [],
+
+                                articleViewModel: articleViewModel
+                                
+                            )
+                            
                         }
                         .padding()
                     }

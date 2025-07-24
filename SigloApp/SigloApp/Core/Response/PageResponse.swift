@@ -51,7 +51,7 @@ struct Nota: Decodable, Sendable {
     let id: Int
     let fecha: String
     let fechamod: String
-    let fecha_formato: String
+    let fecha_formato: String?
     let titulo: String
     let localizador: String
     let balazo: String?
@@ -180,18 +180,18 @@ struct PortadaMenuResponse: Decodable {
 }
 
 struct Video: Codable {
-    let id: Int
-    let sid: Int
-    let titulo: String
+    let id: Int?
+    let sid: Int?
+    let titulo: String?
     let contenido: String?
-    let seccion: String
-    let url: String
+    let seccion: String?
+    let url: String?
     let cover: String?
-    let url_web: String
-    let fecha: String
-    let fecha_formato: String
-    let tags: [String]
-    let tipo: String
+    let url_web: String?
+    let fecha: String?
+    let fecha_formato: String?
+    let tags: [String]?
+    let tipo: String?
 }
 
 struct BusquedaResponsee: Decodable{

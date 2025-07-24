@@ -283,7 +283,7 @@ struct SeccionesHomeView: View {
                                 
                                 // Aumentamos tamaño del ícono con Label
                                 Label {
-                                    Text(nota.fecha_formato)
+                                    Text(nota.fecha_formato ?? "")
                                         .font(.caption)
                                         .foregroundColor(.white)
                                 } icon: {
@@ -371,7 +371,7 @@ struct SeccionesHomeView: View {
                         Spacer()
                         
                         Label {
-                            Text(nota.fecha_formato)
+                            Text(nota.fecha_formato ?? "")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         } icon: {
@@ -469,7 +469,7 @@ struct SeccionesHomeView: View {
                             Spacer()
                             
                             Label {
-                                Text(nota.fecha_formato)
+                                Text(nota.fecha_formato ?? "")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             } icon: {
