@@ -35,8 +35,11 @@ struct NewsSectionsModel: View {
                     ForEach(relacionadas.indices, id: \.self) { index in
                         if index == 0 {
                             NewsBigImageRow(nota: relacionadas[index], articleActionHelper: articleActionHelper)
+                                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         } else {
                             NewsRelaRow(nota: relacionadas[index], articleActionHelper: articleActionHelper)
+                                .background(Color(.systemBackground))
+                                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         }
                     }
                 }
