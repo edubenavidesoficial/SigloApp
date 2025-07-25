@@ -22,8 +22,6 @@ struct NewsListView: View {
         isLoading = true
         errorMessage = nil
         
-        // Reutilizando NewsService para obtener múltiples artículos si tienes endpoint
-        // Aquí es solo un ejemplo fijo, reemplaza por el tuyo
         NewsService.shared.obtenerNoticia(idNoticia: 2343332) { result in
             switch result {
             case .success(let noticia):

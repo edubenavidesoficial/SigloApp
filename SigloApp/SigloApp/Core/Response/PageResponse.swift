@@ -42,11 +42,6 @@ struct SeccionPortada: Decodable {
     let notas: [Nota]?
 }
 
-struct Foto: Codable, Sendable {
-    let url_foto: String?
-    let pie_foto: String?
-}
-
 struct Nota: Decodable, Sendable {
     let id: Int
     let fecha: String
@@ -56,9 +51,25 @@ struct Nota: Decodable, Sendable {
     let localizador: String
     let balazo: String?
     let autor: String
-    let ciudad: String
+    let ciudad: String?
     let contenido: [String]
     let fotos: [Foto]
+}
+
+struct Foto: Codable, Sendable {
+    let url_foto: String?
+    let pie_foto: String?
+}
+
+extension Array where Element == Foto {
+    var primeraFotoValida: Foto? {
+        first { foto in
+            if let url = foto.url_foto, !url.isEmpty {
+                return true
+            }
+            return false
+        }
+    }
 }
 
 struct NewspaperResponse: Codable {

@@ -28,7 +28,7 @@ class ArticleActionHelper: ObservableObject {
             category: nota.localizador,
             title: nota.titulo,
             author: nota.autor,
-            location: nota.ciudad,
+            location: nota.ciudad ?? "",
             time: nota.fecha_formato ?? "",
             imageName: "ejemplo",
             description: nota.fotos.description

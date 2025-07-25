@@ -19,7 +19,7 @@ struct NewsDetailView: View {
                     Spacer()
                 } else if let noticia = noticia {
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
+                        VStack(alignment: .leading, spacing: 15) {
                             // Categoría y Título
                             VStack(alignment: .leading, spacing: 8) {
 
@@ -36,7 +36,8 @@ struct NewsDetailView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
-                            .padding(.top, 30)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 35)
 
                             // Datos del autor y fecha
                             HStack(spacing: 3) {
@@ -51,11 +52,11 @@ struct NewsDetailView: View {
                                 }
 
                                 Spacer()
-
-                                Label("+99", systemImage: "text.bubble")
+                                Label("+", systemImage: "text.bubble")
                                     .font(.caption)
                                     .foregroundColor(.black)
                             }
+                            .padding(.horizontal, 16)
 
                             // Imagen con pie de foto
                             VStack(spacing: 2) {
@@ -82,6 +83,7 @@ struct NewsDetailView: View {
                                         }
                                     }
                                 }
+                                .padding(.horizontal, 16)
 
                                 // Si quieres mostrar solo la primera foto con su pie de foto:
                                 if let firstPhoto = noticia.fotos.first,
@@ -116,15 +118,15 @@ struct NewsDetailView: View {
                                     }
                                 }
                             }
-                            Spacer()
-                            // Autor
-                            Text(noticia.autor ?? "")
+                             Text(noticia.autor)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
+                                .padding(.horizontal, 16)
 
                             // Contenido
                             HTMLWebView(htmlContent: formatContenido(noticia.contenido))
                                 .frame(minHeight: 600)
+                                .padding(.horizontal, 5)
                             NewsSectionsModel(
                                 relacionadas: noticia.relacionadas?.compactMap { $0 } ?? [],
                                 mas_notas: noticia.masNotas ?? [],
@@ -143,7 +145,6 @@ struct NewsDetailView: View {
                 }
             }
 
-            // ✅ Top bar seguro con iOS 17
             CustomTopBar {
                 presentationMode.wrappedValue.dismiss()
             }
@@ -151,7 +152,7 @@ struct NewsDetailView: View {
             .background(.white)
             .shadow(radius: 4)
             .safeAreaInset(edge: .top) {
-                Color.clear.frame(height: 0) // ocupa espacio pero no dibuja nada
+                Color.clear.frame(height: 0)
             }
         }
         .navigationBarBackButtonHidden(true)
