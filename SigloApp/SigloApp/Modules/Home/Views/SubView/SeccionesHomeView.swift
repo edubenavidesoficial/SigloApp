@@ -526,7 +526,7 @@ struct SigloDataView: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(.gray)
-                                .font(.system(size: 18))  // <-- más grande
+                                .font(.system(size: 18))
                                 .padding(.trailing, 10)
                         }
                     }
@@ -554,7 +554,7 @@ struct SigloDataView: View {
                     fecha: nota.fecha_formato
                 )
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 14)
             .padding(.vertical, 8)
         }
     }

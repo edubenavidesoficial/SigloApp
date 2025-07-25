@@ -5,8 +5,8 @@ struct NewsResponse: Decodable {
     let payload: NewsArticle
 }
 
-struct NewsArticle: Decodable {
-    let id: Int
+struct NewsArticle: Decodable, Identifiable {
+    var id = UUID() // Generado localmente
     let sid: Int
     let fecha: String
     let fechamod: String
@@ -34,9 +34,23 @@ struct NewsArticle: Decodable {
     let explicita: Bool?
     let relacionadas: [Nota?]?
     let masNotas: [Nota]?
+
+    private enum CodingKeys: String, CodingKey {
+        case sid, fecha, fechamod, fecha_formato, titulo, localizador, balazo, autor,
+             ciudad, contenido, contenidoHTML, seccion, fotos, nombre, gid, galeria,
+             plantilla, votacion, video, youtube, facebook, filemanager, tags, acceso,
+             explicita, relacionadas, masNotas
+    }
 }
 
-struct NewsPhoto: Decodable {
+struct NewsPhoto: Codable, Identifiable {
+    var id = UUID() // para usar en ForEach sin error
     let url_foto: String?
     let pie_foto: String?
+    
+    private enum CodingKeys: String, CodingKey {
+        case url_foto, pie_foto
+    }
 }
+
+

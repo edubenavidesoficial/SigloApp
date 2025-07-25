@@ -22,7 +22,6 @@ struct NewsDetailView: View {
                         VStack(alignment: .leading, spacing: 15) {
                             // Categoría y Título
                             VStack(alignment: .leading, spacing: 8) {
-
                                 Text(noticia.localizador)
                                     .font(.caption)
                                     .foregroundColor(.red)
@@ -52,89 +51,65 @@ struct NewsDetailView: View {
                                 }
 
                                 Spacer()
+
                                 Label("+", systemImage: "text.bubble")
                                     .font(.caption)
                                     .foregroundColor(.black)
                             }
                             .padding(.horizontal, 16)
 
-                            // Imagen con pie de foto
                             VStack(spacing: 2) {
-                                ForEach(noticia.fotos.compactMap { $0.url_foto }, id: \.self) { urlString in
-                                    if let url = URL(string: urlString) {
-                                        AsyncImage(url: url) { phase in
-                                            switch phase {
-                                            case .empty:
-                                                ProgressView()
-                                                    .frame(height: 250)
-                                            case .success(let image):
-                                                image
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .cornerRadius(8)
-                                            case .failure:
-                                                Image(systemName: "photo")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .foregroundColor(.gray)
-                                            @unknown default:
-                                                EmptyView()
+                                ForEach(noticia.fotos) { foto in
+                                    if let urlString = foto.url_foto,
+                                       let url = URL(string: urlString) {
+                                        VStack {
+                                            AsyncImage(url: url) { phase in
+                                                switch phase {
+                                                case .empty:
+                                                    ProgressView()
+                                                        .frame(height: 250)
+                                                case .success(let image):
+                                                    image
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .cornerRadius(8)
+                                                case .failure:
+                                                    Image(systemName: "photo")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .foregroundColor(.gray)
+                                                @unknown default:
+                                                    EmptyView()
+                                                }
                                             }
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 16)
-
-                                // Si quieres mostrar solo la primera foto con su pie de foto:
-                                if let firstPhoto = noticia.fotos.first,
-                                   let urlString = firstPhoto.url_foto,
-                                   let url = URL(string: urlString) {
-                                    VStack {
-                                        AsyncImage(url: url) { phase in
-                                            switch phase {
-                                            case .empty:
-                                                ProgressView()
-                                                    .frame(height: 250)
-                                            case .success(let image):
-                                                image
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .cornerRadius(8)
-                                            case .failure:
-                                                Image(systemName: "photo")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
+                                            if let pie = foto.pie_foto, !pie.isEmpty {
+                                                Text(pie)
+                                                    .font(.caption)
                                                     .foregroundColor(.gray)
-                                            @unknown default:
-                                                EmptyView()
+                                                    .frame(maxWidth: .infinity, alignment: .trailing)
                                             }
-                                        }
-                                        if let pie = firstPhoto.pie_foto, !pie.isEmpty {
-                                            Text(pie)
-                                                .font(.caption)
-                                                .foregroundColor(.gray)
-                                                .frame(maxWidth: .infinity, alignment: .trailing)
                                         }
                                     }
                                 }
                             }
-                             Text(noticia.autor)
+                            .padding(.horizontal, 16)
+
+                            Text(noticia.autor)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                                 .padding(.horizontal, 16)
 
-                            // Contenido
+                            // Contenido HTML
                             HTMLWebView(htmlContent: formatContenido(noticia.contenido))
                                 .frame(minHeight: 600)
                                 .padding(.horizontal, 5)
+
+                            // Secciones relacionadas
                             NewsSectionsModel(
                                 relacionadas: noticia.relacionadas?.compactMap { $0 } ?? [],
                                 mas_notas: noticia.masNotas ?? [],
-
                                 articleViewModel: articleViewModel
-                                
                             )
-                            
                         }
                         .padding()
                     }

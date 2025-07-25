@@ -56,19 +56,13 @@ struct Nota: Decodable, Sendable {
     let fotos: [Foto]
 }
 
-struct Foto: Codable, Sendable {
+struct Foto: Codable, Identifiable {
+    var id = UUID() // para usar en ForEach sin error
     let url_foto: String?
     let pie_foto: String?
-}
-
-extension Array where Element == Foto {
-    var primeraFotoValida: Foto? {
-        first { foto in
-            if let url = foto.url_foto, !url.isEmpty {
-                return true
-            }
-            return false
-        }
+    
+    private enum CodingKeys: String, CodingKey {
+        case url_foto, pie_foto
     }
 }
 

@@ -45,8 +45,7 @@ struct SectionsView: View {
                                 .foregroundColor(.red)
                         }
 
-                        // Minuto a minuto
-                        NavigationLink(destination: Text("Minuto a minuto")) {
+                        NavigationLink(destination: CoversView()) {
                             Text("Minuto a minuto")
                                 .foregroundColor(.red)
                         }

@@ -116,7 +116,7 @@ struct ImpresoView: View {
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.red)
-                                .cornerRadius(8)
+                                .cornerRadius(1)
                         }
                     }
                     // Si está logueado pero no es suscriptor activo, mostrar su URL específica si existe
@@ -128,7 +128,7 @@ struct ImpresoView: View {
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.red)
-                                .cornerRadius(8)
+                                .cornerRadius(1)
                         }
                     }
 

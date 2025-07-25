@@ -8,7 +8,7 @@ struct NewsListView: View {
     var body: some View {
         NavigationStack {
             List(noticias, id: \.id) { noticia in
-                NavigationLink(destination: NewsDetailView(idNoticia: noticia.id)) {
+                NavigationLink(destination: NewsDetailView(idNoticia: noticia.sid)) {
                     Text(noticia.titulo)
                         .lineLimit(2)
                 }

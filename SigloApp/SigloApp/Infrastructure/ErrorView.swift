@@ -8,14 +8,10 @@ enum ErrorType {
     
     var title: String {
         switch self {
-        case .notFound:
-            return "404"
-        case .maintenance:
-            return "Servicio no disponible"
-        case .connection:
-            return "Error de conexión"
-        case .unexpected:
-            return "Ocurrió un error inesperado"
+        case .notFound: return "404"
+        case .maintenance: return "Servicio no disponible"
+        case .connection: return "Error de conexión"
+        case .unexpected: return "Ocurrió un error inesperado"
         }
     }
     
@@ -34,19 +30,15 @@ enum ErrorType {
     
     var icon: String {
         switch self {
-        case .notFound:
-            return "exclamationmark.triangle"
-        case .maintenance:
-            return "wrench.fill"
-        case .connection:
-            return "wifi.exclamationmark"
-        case .unexpected:
-            return "xmark.circle"
+        case .notFound: return "exclamationmark.triangle"
+        case .maintenance: return "wrench.fill"
+        case .connection: return "wifi.exclamationmark"
+        case .unexpected: return "xmark.circle"
         }
     }
     
     var buttonText: String {
-        return self == .connection ? "REGRESAR" : "REINTENTAR"
+        self == .connection ? "REGRESAR" : "REINTENTAR"
     }
 }
 
@@ -61,8 +53,6 @@ struct ErrorView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .frame(height: 540)
-                .padding(.top, 10)
             
             VStack {
                 Spacer()
@@ -75,7 +65,7 @@ struct ErrorView: View {
                 
                 // Título del error
                 Text(errorType.title)
-                    .font(.body)
+                    .font(.title2)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 50)
@@ -85,33 +75,31 @@ struct ErrorView: View {
                     .font(.body)
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 100)
+                    .padding(.horizontal, 30)
                 
                 Spacer()
                 
-                // Contenedor del botón con fondo rojo
+                // **Bloque del botón anclado al fondo**
                 VStack {
-                    Button(action: {
-                        onRetry?()
-                    }) {
+                    Button(action: { onRetry?() }) {
                         Text(errorType.buttonText)
                             .font(.headline)
+                            .frame(maxWidth: .infinity)
                             .padding()
-                            .frame(width: 300)
-                            .background(Color.white) // Botón blanco
+                            .background(Color.white)
                             .foregroundColor(.black)
-                            .padding(.top, 20)
                     }
                     .padding(.horizontal, 30)
+                    .padding(.top, 20)
                     .padding(.bottom, 20)
                 }
                 .frame(maxWidth: .infinity)
-                .background(Color.red) // Fondo rojo del botón
-                .ignoresSafeArea(edges: .bottom) // Que el rojo ocupe toda la parte inferior
+                .background(Color.red)
+                .ignoresSafeArea(edges: .bottom)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground).opacity(0.8)) // Fondo semitransparente
+            .background(Color(.systemBackground).opacity(0.8))
         }
-        .zIndex(999) // Para asegurarse de que está encima de todo
+        .zIndex(999)
     }
 }
