@@ -39,15 +39,16 @@ struct NoticiaView: View {
                         }
                         
                         Text(nota.titulo)
-                            .font(.headline)
+                            .font(.custom("NotoSerif-Bold", size: 22))
                             .foregroundColor(.white)
                             .shadow(radius: 2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         HStack {
                             Rectangle()
                                 .fill(Color.white)
                                 .frame(width: 4, height: 50)
                             Text(nota.titulo)
-                                .font(.subheadline)
+                                .font(.custom("NotoSerif", size: 15))
                                 .foregroundColor(.white.opacity(0.8))
                                 .shadow(radius: 1)
                         }

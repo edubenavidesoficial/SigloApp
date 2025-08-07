@@ -19,9 +19,7 @@ final class SectionMinutesViewModel: ObservableObject {
 
                 switch result {
                 case .success(let contenido):
-                    self.secciones = [contenido] // normalmente el contenido de la sección
-
-                    //print("Payload id recibido: ", idSeccion, contenido)
+                    self.secciones = [contenido]
 
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription

@@ -4,8 +4,7 @@ struct SectionsView: View {
     @StateObject private var viewModel = SectionListViewModel()
     @Environment(\.dismiss) var dismiss
 
-    var body: some View {
-        NavigationStack {
+    var body: some View {                                                                                                                        NavigationStack {
             ZStack(alignment: .leading) {
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
@@ -49,6 +48,7 @@ struct SectionsView: View {
                             Text("Minuto a minuto")
                                 .foregroundColor(.red)
                         }
+
 
                         // Secciones dinámicas (excluyendo suplementos)
                         ForEach(viewModel.secciones.filter { ![67, 32, 35, 219].contains($0.id) }, id: \.id) { seccion in

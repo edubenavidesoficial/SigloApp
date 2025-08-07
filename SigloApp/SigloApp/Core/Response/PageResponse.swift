@@ -36,13 +36,21 @@ struct PortadaResponse: Decodable {
     let payload: [String: SeccionPortada]
 }
 
+struct CoverResponse: Decodable {
+    let request_date: String
+    let response: String
+    let version: String?  
+    let payload: SeccionPortada
+}
+
+
 struct SeccionPortada: Decodable {
     let seccion: String?
-    let mostrar_titulo: Int
+    let mostrar_titulo: Int?
     let notas: [Nota]?
 }
 
-struct Nota: Decodable, Sendable {
+struct Nota: Decodable, Sendable, Identifiable {
     let id: Int
     let fecha: String
     let fechamod: String
