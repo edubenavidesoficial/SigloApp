@@ -45,10 +45,12 @@ struct CoverResponse: Decodable {
 
 
 struct SeccionPortada: Decodable {
+    let idSeccion: Int
     let seccion: String?
     let mostrar_titulo: Int?
     let notas: [Nota]?
 }
+
 
 struct Nota: Decodable, Sendable, Identifiable {
     let id: Int
