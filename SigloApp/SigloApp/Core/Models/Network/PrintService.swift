@@ -4,56 +4,41 @@ final class PrintService {
     static let shared = PrintService()
     private init() {}
 
-    func obtenerPortada(completion: @escaping (Result<[NewspaperPayload], Error>) -> Void) {
-        guard let url = URL(string: "\(API.baseURL)impreso/lista/1") else {
-            print("❌ URL inválida")
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
+    func obtenerPortada(pagina: Int = 1, completion: @escaping (Result<[NewspaperPayload], Error>) -> Void) {
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        Task {
+            do {
+                var token: String
+                if let storedToken = TokenService.shared.getStoredToken(),
+                   !TokenService.shared.isTokenExpired(storedToken) {
+                    token = storedToken
+                    print("✅ Usando token almacenado")
+                } else {
+                    // Obtenemos un token nuevo
+                    token = try await TokenService.shared.getToken(correoHash: "")
+                    print("✅ Nuevo token generado")
+                }
 
-        // Agregar token si está disponible
-        if let token = TokenService.shared.getStoredToken() {
-            print("✅ Token disponible: \(token)")
-            request.setValue("\(token)", forHTTPHeaderField: "Authorization")
-        } else {
-            print("⚠️ Token no disponible")
-        }
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("❌ Error en la solicitud: \(error.localizedDescription)")
-                    completion(.failure(error))
+                guard let url = URL(string: "\(API.baseURL)impreso/lista/\(pagina)") else {
+                    completion(.failure(NetworkError.invalidURL))
                     return
                 }
 
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    print("❌ Respuesta no válida")
+                var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+                let (data, response) = try await URLSession.shared.data(for: request)
+
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
                     completion(.failure(NetworkError.invalidResponse))
                     return
                 }
 
-                print("📡 Código de estado: \(httpResponse.statusCode)")
-
-                guard (200...299).contains(httpResponse.statusCode) else {
-                    let message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
-                    print("❌ Error HTTP: \(httpResponse.statusCode) - \(message)")
-                    completion(.failure(NetworkError.invalidResponse))
-                    return
-                }
-
-                guard let data = data else {
-                    print("❌ Datos vacíos")
-                    completion(.failure(NetworkError.emptyData))
-                    return
-                }
-
-                // DEBUG opcional
+                // DEBUG: mostrar parte del JSON recibido
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido:\n\(jsonString.prefix(500))...")
+                    print("📦 JSON recibido Print:\n\(jsonString.prefix(500))...")
                 }
 
                 do {
@@ -65,7 +50,10 @@ final class PrintService {
                     print("❌ Error al decodificar JSON: \(error)")
                     completion(.failure(error))
                 }
+
+            } catch {
+                completion(.failure(error))
             }
-        }.resume()
+        }
     }
 }

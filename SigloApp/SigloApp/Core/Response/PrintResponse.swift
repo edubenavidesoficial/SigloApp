@@ -1,8 +1,8 @@
-//
-//  PrintResponse.swift
-//  SigloApp
-//
-//  Created by Macbook Pro 17 i5R on 8/14/25.
-//
-
 import Foundation
+
+struct Cover: Codable {
+    let letra: String
+    let cover: String
+    let titulo: String
+    let pagina: Int
+}

@@ -87,6 +87,7 @@ struct NewspaperPayload: Codable, Identifiable {
     let date: String?
     let fecha: String?
     let portadas: [Portada]
+    let paginas: [String]
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -95,8 +96,10 @@ struct NewspaperPayload: Codable, Identifiable {
         case date
         case fecha
         case portadas
+        case paginas 
     }
 }
+
 
 struct Portada: Codable {
     var letra: String

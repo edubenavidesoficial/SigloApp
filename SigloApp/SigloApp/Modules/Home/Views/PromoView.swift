@@ -8,15 +8,15 @@ struct PromoView: View {
         VStack {
             Spacer()
 
-            Image(systemName: "arrow.2.circlepath.circle")
+            Image(systemName: "globe")
                 .resizable()
-                .frame(width: 80, height: 80)
+                .frame(width: 20, height: 20)
                 .rotationEffect(.degrees(isAnimating ? 360 : 0))
                 .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
                 .foregroundColor(.gray)
 
-            Text("Cargando...")
-                .font(.headline)
+            Text("5687735147948295/3338923985")
+                .font(.subheadline)
                 .padding()
 
             Spacer()

@@ -189,19 +189,10 @@ struct LoginView: View {
 
         Task {
             do {
-                // Llamas al servicio async para login, devuelve UserPayload
                 let userPayload = try await LoginService.login(username: username, password: password)
-                
-                // Guardas usuario en UserManager
                 userManager.user = userPayload
-                
-                // Guardas usuario serializado en UserDefaults
                 userManager.saveUserToDefaults()
-                
-                // Guardas el último usuario en AppStorage para mostrarlo luego si quieres
                 lastUsername = username
-                
-                // Cambias estado de login para que la app navegue a la siguiente pantalla
                 isLoggedIn = true
                 
                 alertMessage = "Inicio de sesión exitoso"

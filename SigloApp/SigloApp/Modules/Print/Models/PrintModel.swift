@@ -1,11 +1,14 @@
 import Foundation
 
 struct PrintModel: Identifiable, Hashable {
-    let id = UUID()
-    let title: String
-    let imageName: String
-    let date: String
+    var id = UUID()
+    var title: String
+    var imageName: String
+    var date: String
+    var paginas: [String] // <-- agregar aquí
 }
+
+
 
 struct ClassifiedsModel: Identifiable {
     var id: String

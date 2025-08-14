@@ -1,6 +1,5 @@
 import SwiftUI
 
-// ViewModel que maneja estado y datos
 class PrintViewModel: ObservableObject {
     @Published var isNewspaperLoaded = false
     @Published var isLoading: Bool = false
@@ -9,7 +8,6 @@ class PrintViewModel: ObservableObject {
     @Published var suplementos: [SuplementsModel] = []
     @Published var errorMessage: String?
     
-
     private let printService = PrintService.shared
 
     func fetchNewspaper() {
@@ -25,13 +23,22 @@ class PrintViewModel: ObservableObject {
 
                 switch result {
                 case .success(let payloads):
-                    self.hemeroteca = payloads.first?.portadas.map { portada in
+                    // Verificamos que haya al menos un payload
+                    guard let firstPayload = payloads.first else {
+                        self.isNewspaperLoaded = false
+                        return
+                    }
+
+                    // Mapear portadas a PrintModel
+                    self.hemeroteca = firstPayload.portadas.map { portada in
                         PrintModel(
                             title: portada.titulo,
                             imageName: portada.cover,
-                            date: payloads.first?.fecha ?? "Desconocido"
+                            date: firstPayload.fecha ?? "",
+                            paginas: firstPayload.paginas
                         )
-                    } ?? []
+                    }
+
                     self.isNewspaperLoaded = true
 
                 case .failure(let error):

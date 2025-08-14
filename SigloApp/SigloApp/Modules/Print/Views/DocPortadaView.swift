@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct DocPortadaView: View {
+    let fecha: String
+    let paginas: [String] 
+
     @State private var pdfData: Data?
     @State private var errorMessage: String?
-
-    let fecha    = "2002-12-31"
-    let edicion  = "31torg02"
 
     var body: some View {
         Group {
@@ -18,15 +18,20 @@ struct DocPortadaView: View {
             }
         }
         .onAppear(perform: loadPDF)
-        .navigationTitle("Portada")
+        .navigationTitle("Edición \(fecha)")
     }
 
     private func loadPDF() {
-        PrintDocService.shared.descargarPortada(fecha: fecha, edicion: edicion) { result in
-            switch result {
-            case .success(let data):
-                self.pdfData = data
-            case .failure(let error):
+        Task {
+            do {
+                var combinedPDF = Data()
+                for urlString in paginas {
+                    guard let url = URL(string: urlString) else { continue }
+                    let (data, _) = try await URLSession.shared.data(from: url)
+                    combinedPDF.append(data) // Esto concatena los PDFs; luego PDFViewUI puede abrirlos
+                }
+                self.pdfData = combinedPDF
+            } catch {
                 self.errorMessage = error.localizedDescription
             }
         }

@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import CryptoKit
 
-// MARK: - Modelo para decodificar la respuesta del token
 struct TokenResponse: Codable {
     let request_date: String
     let response: String
@@ -10,7 +9,6 @@ struct TokenResponse: Codable {
     let processing_time: String
 }
 
-// MARK: - Definición de errores personalizados
 enum TokenServiceError: Error {
     case invalidURL
     case noData
@@ -23,18 +21,45 @@ final class TokenService {
 
     private let tokenBaseURL = "\(API.baseURL)token/"
     private let userDefaultsTokenKey = "apiToken"
-    private let userDefaultsCorreoHashKey = "correoHash"  // Agregar clave para correoHash
+    private let userDefaultsCorreoHashKey = "correoHash"
 
     private init() {}
 
-    // Método para obtener el correo hash almacenado
+    // Obtener correo hash almacenado
     func getStoredCorreoHash() -> String? {
         return UserDefaults.standard.string(forKey: userDefaultsCorreoHashKey)
     }
 
-    // Generador de firma usando HMAC-SHA256 con clave secreta en base64
+    // Guardar token
+    public func saveToken(_ token: String) {
+        UserDefaults.standard.set(token, forKey: userDefaultsTokenKey)
+    }
+
+    // Obtener token guardado
+    func getStoredToken() -> String? {
+        return UserDefaults.standard.string(forKey: userDefaultsTokenKey)
+    }
+
+    // Verificar si el token JWT expiró
+    func isTokenExpired(_ token: String) -> Bool {
+        let parts = token.split(separator: ".")
+        guard parts.count > 1 else { return true }
+        
+        let payloadData = Data(base64Encoded: String(parts[1])
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+            .padding(toLength: ((parts[1].count+3)/4)*4, withPad: "=", startingAt: 0))
+        
+        guard let data = payloadData,
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let exp = json["exp"] as? TimeInterval else { return true }
+        
+        return Date().timeIntervalSince1970 > exp
+    }
+
+    // Generar firma HMAC-SHA256 con clave secreta en Base64
     private func generateSignature(correoHash: String, deviceID: String) -> String {
-        let secretKeyBase64 = "OOs9XwOSIVuP/Xb76M13GsShMGNHrowx2oOVMKGc/1o=" // ¡NO en la app para producción!
+        let secretKeyBase64 = "\(API.firmaSLL)"
         let message = "\(correoHash)|\(deviceID)"
         
         guard let keyData = Data(base64Encoded: secretKeyBase64) else {
@@ -46,15 +71,12 @@ final class TokenService {
         return Data(signature).base64EncodedString()
     }
 
+    // Solicitar token a la API
     @MainActor
     func getToken(correoHash: String) async throws -> String {
         let u = correoHash
         let d = UIDevice.current.identifierForVendor?.uuidString ?? "demo_id"
         let s = generateSignature(correoHash: u, deviceID: d)
-
-        print("🔐 Solicitando token (async)...")
-        print("➡️ URL base: \(tokenBaseURL)")
-        print("📨 Parámetros: u=\(u), d=\(d), s=\(s)")
 
         var components = URLComponents(string: tokenBaseURL)!
         components.queryItems = [
@@ -79,21 +101,9 @@ final class TokenService {
         do {
             let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
             self.saveToken(decoded.token)
-            print("✅ Token guardado: \(decoded.token)")
             return decoded.token
         } catch {
-            print("❌ Error parseando JSON: \(error)")
             throw TokenServiceError.decodingError(error)
         }
-    }
-
-    // Guardar token
-    public func saveToken(_ token: String) {
-        UserDefaults.standard.set(token, forKey: userDefaultsTokenKey)
-    }
-
-    // Obtener token guardado
-    func getStoredToken() -> String? {
-        return UserDefaults.standard.string(forKey: userDefaultsTokenKey)
     }
 }
