@@ -91,6 +91,7 @@
 		C0A08FDA2DE3D59600260DF3 /* SearchFrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A08FD92DE3D59600260DF3 /* SearchFrontView.swift */; };
 		C0A08FDC2DE3D78500260DF3 /* SearchFrontViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A08FDB2DE3D78500260DF3 /* SearchFrontViewModel.swift */; };
 		C0A7577E2E4E7409004AEDD2 /* PrintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7577D2E4E7408004AEDD2 /* PrintResponse.swift */; };
+		C0A757802E4E9CC1004AEDD2 /* GenericUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7577F2E4E9CC1004AEDD2 /* GenericUi.swift */; };
 		C0AA0D802DA08179005C23FD /* SuplementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D7F2DA08178005C23FD /* SuplementsView.swift */; };
 		C0AA0D822DA0820F005C23FD /* SuplementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D812DA0820F005C23FD /* SuplementsService.swift */; };
 		C0AA0D842DA08374005C23FD /* SuplementsCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA0D832DA08374005C23FD /* SuplementsCarouselView.swift */; };
@@ -280,6 +281,7 @@
 		C0A08FD92DE3D59600260DF3 /* SearchFrontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFrontView.swift; sourceTree = "<group>"; };
 		C0A08FDB2DE3D78500260DF3 /* SearchFrontViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFrontViewModel.swift; sourceTree = "<group>"; };
 		C0A7577D2E4E7408004AEDD2 /* PrintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintResponse.swift; sourceTree = "<group>"; };
+		C0A7577F2E4E9CC1004AEDD2 /* GenericUi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericUi.swift; sourceTree = "<group>"; };
 		C0AA0D7F2DA08178005C23FD /* SuplementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsView.swift; sourceTree = "<group>"; };
 		C0AA0D812DA0820F005C23FD /* SuplementsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsService.swift; sourceTree = "<group>"; };
 		C0AA0D832DA08374005C23FD /* SuplementsCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsCarouselView.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 		C01388492E1567090002CD33 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				C0A7577F2E4E9CC1004AEDD2 /* GenericUi.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -1164,6 +1167,7 @@
 				C0B3C71E2E15D74400C996FB /* ClassifiedsViewModel.swift in Sources */,
 				C0512F522D95E1A9008CD40D /* NoticiaView.swift in Sources */,
 				C0B3C74D2E18347100C996FB /* CommentPostService.swift in Sources */,
+				C0A757802E4E9CC1004AEDD2 /* GenericUi.swift in Sources */,
 				C0ECA2372D81B0F500CAB3A0 /* ProfileView.swift in Sources */,
 				C008A8F02DD62C6F00E74F88 /* DescargasView.swift in Sources */,
 				C0B3C7322E1707A200C996FB /* AdDetailView.swift in Sources */,

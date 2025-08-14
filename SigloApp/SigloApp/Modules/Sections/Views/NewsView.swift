@@ -145,7 +145,7 @@ struct SectionDestacadaView: View {
 }
 
 struct SectionImageView: View {
-    let foto: FotoNota?           // ✅ Coincide con .first de fotos
+    let foto: FotoNota?
     let size: CGSize
     let fecha: String?
     
