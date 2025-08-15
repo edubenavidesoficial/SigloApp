@@ -5,7 +5,8 @@ struct PrintModel: Identifiable, Hashable {
     var title: String
     var imageName: String
     var date: String
-    var paginas: [String] // <-- agregar aquí
+    var paginas: [String]
+   // var letra: String// <-- agregar aquí
 }
 
 

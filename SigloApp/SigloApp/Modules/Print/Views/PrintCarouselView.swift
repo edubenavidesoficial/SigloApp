@@ -83,7 +83,13 @@ struct PrintCarouselView: View {
 
         // NavigationLink principal para la vista de detalles
         NavigationLink(
-            destination: selectedArticle.map { PrintViewerView(article: $0) },
+            destination: Group {
+                if let article = selectedArticle {
+                    PrintViewerView(fecha: article.date, paginas: article.paginas)
+                } else {
+                    EmptyView()
+                }
+            },
             isActive: Binding(
                 get: { selectedArticle != nil },
                 set: { if !$0 { selectedArticle = nil } }
