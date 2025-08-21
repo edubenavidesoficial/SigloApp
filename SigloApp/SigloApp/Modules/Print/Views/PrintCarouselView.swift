@@ -1,5 +1,5 @@
-import PDFKit
 import SwiftUI
+import PDFKit
 
 struct PrintCarouselView: View {
     @ObservedObject var viewModel: PrintViewModel
@@ -31,8 +31,7 @@ struct PrintCarouselView: View {
                                         .frame(width: geo.size.width * 0.9,
                                                height: geo.size.height * 0.7)
                                         .cornerRadius(12)
-                                        .shadow(color: .black.opacity(0.4),
-                                                radius: 8, x: 0, y: 5)
+                                        .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5)
                                 } else if phase.error != nil {
                                     Image("LS")
                                         .resizable()
@@ -40,8 +39,7 @@ struct PrintCarouselView: View {
                                         .frame(width: geo.size.width * 0.9,
                                                height: geo.size.height * 0.7)
                                         .cornerRadius(12)
-                                        .shadow(color: .black.opacity(0.4),
-                                                radius: 8, x: 0, y: 5)
+                                        .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 5)
                                 } else {
                                     ProgressView()
                                         .progressViewStyle(CircularProgressViewStyle(tint: .gray))
@@ -50,16 +48,11 @@ struct PrintCarouselView: View {
                                 }
                             }
 
-                            // Fecha y botón de descarga
+                            // Botón de descarga
                             HStack {
-                                Text(formattedDate(from: article.date))
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-
                                 Spacer()
-
                                 Button(action: {
-                                    viewModel.descargarPDF(fecha: article.date, clave: article.title)
+                                    viewModel.descargarPDFs(from: article.paginas)
                                     showAlert = true
                                 }) {
                                     Image(systemName: "arrow.down.circle.fill")
@@ -82,15 +75,5 @@ struct PrintCarouselView: View {
         .alert("PDF guardado en tus descargas", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         }
-    }
-
-    func formattedDate(from dateString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        guard let date = formatter.date(from: dateString) else { return dateString }
-
-        formatter.locale = Locale(identifier: "es_ES")
-        formatter.dateFormat = "EEEE d 'de' MMMM 'del' yyyy"
-        return formatter.string(from: date).capitalized
     }
 }

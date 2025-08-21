@@ -6,11 +6,11 @@ class PrintViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedTab: TabTypetwo = .hemeroteca
     @Published var hemeroteca: [PrintModel] = []
-    @Published var suplementos: [SuplementsModel] = []
     @Published var errorMessage: String?
-    
+
     private let printService = PrintService.shared
 
+    // Obtener portadas
     func fetchNewspaper() {
         guard !isNewspaperLoaded && !isLoading else { return }
         isLoading = true
@@ -48,27 +48,29 @@ class PrintViewModel: ObservableObject {
 
     func printArticlesForCurrentTab() -> [PrintModel] {
         switch selectedTab {
-        case .hemeroteca:
-            return hemeroteca
-        default:
-            return []
+        case .hemeroteca: return hemeroteca
+        default: return []
         }
     }
 
-    // MARK: - Descargar PDF
-    func descargarPDF(fecha: String, clave: String) {
-        PrintService.shared.descargarPDF(fecha: fecha, clave: clave) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let localURL):
-                    print("📄 PDF guardado en: \(localURL.path)")
-                    if !(self?.downloads.contains(localURL) ?? false) {
-                        self?.downloads.append(localURL)
+    // Descargar todos los PDFs de una portada
+    func descargarPDFs(from paginas: [String]) {
+        for pdfPath in paginas {
+            PrintService.shared.descargarPDF(pdfPath: pdfPath) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let url):
+                        // ✅ Agregar al array de descargas si no existe
+                        if !(self?.downloads.contains(url) ?? false) {
+                            self?.downloads.append(url)
+                            print("✅ PDF agregado a descargas: \(url.lastPathComponent)")
+                        }
+                    case .failure(let error):
+                        print("❌ Error al descargar PDF \(pdfPath): \(error.localizedDescription)")
                     }
-                case .failure(let error):
-                    print("❌ Error al descargar: \(error.localizedDescription)")
                 }
             }
         }
     }
+
 }

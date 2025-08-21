@@ -14,7 +14,7 @@ struct DescargasView: View {
                         .foregroundColor(.red)
                         .padding()
 
-                    Text("Aún no tienes descargas")
+                    Text("Aún no tienes descargas..")
                         .font(.title3)
                         .foregroundColor(.gray)
 

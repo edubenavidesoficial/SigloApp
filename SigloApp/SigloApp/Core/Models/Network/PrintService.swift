@@ -8,17 +8,18 @@ final class PrintService {
 
         Task {
             do {
+                // 1️⃣ Obtener token válido
                 var token: String
                 if let storedToken = TokenService.shared.getStoredToken(),
                    !TokenService.shared.isTokenExpired(storedToken) {
                     token = storedToken
                     print("✅ Usando token almacenado")
                 } else {
-                    // Obtenemos un token nuevo
                     token = try await TokenService.shared.getToken(correoHash: "")
                     print("✅ Nuevo token generado")
                 }
 
+                // 2️⃣ Construir URL
                 guard let url = URL(string: "\(API.baseURL)impreso/lista/\(pagina)") else {
                     completion(.failure(NetworkError.invalidURL))
                     return
@@ -28,6 +29,7 @@ final class PrintService {
                 request.httpMethod = "GET"
                 request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
+                // 3️⃣ Realizar request
                 let (data, response) = try await URLSession.shared.data(for: request)
 
                 guard let httpResponse = response as? HTTPURLResponse,
@@ -36,27 +38,19 @@ final class PrintService {
                     return
                 }
 
-                // DEBUG: mostrar parte del JSON recibido
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido Print:\n\(jsonString.prefix(500))...")
-                }
-
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let responseData = try decoder.decode(NewspaperResponse.self, from: data)
-                    completion(.success(responseData.payload))
-                } catch {
-                    print("❌ Error al decodificar JSON: \(error)")
-                    completion(.failure(error))
-                }
+                // 4️⃣ Decodificar JSON
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let responseData = try decoder.decode(NewspaperResponse.self, from: data)
+                completion(.success(responseData.payload))
 
             } catch {
                 completion(.failure(error))
             }
         }
     }
-    func descargarPDF(fecha: String, clave: String, completion: @escaping (Result<URL, Error>) -> Void) {
+
+    func descargarPDF(pdfPath: String, completion: @escaping (Result<URL, Error>) -> Void) {
         Task {
             do {
                 // 1️⃣ Obtener token válido
@@ -70,9 +64,9 @@ final class PrintService {
                     print("✅ Nuevo token generado")
                 }
 
-                // 2️⃣ Construir URL
-                let urlString = "\(API.baseURL)impreso/pdf/\(fecha)/\(clave)/\(token)"
-                guard let url = URL(string: urlString) else {
+                // 2️⃣ Construir URL final correctamente
+                let fullURLString = "\(pdfPath)/\(token)"
+                guard let url = URL(string: fullURLString) else {
                     completion(.failure(NetworkError.invalidURL))
                     return
                 }
@@ -81,20 +75,14 @@ final class PrintService {
                 // 3️⃣ Descargar archivo temporal
                 let (tempURL, response) = try await URLSession.shared.download(from: url)
 
-                // 4️⃣ Verificar status code y ajustar clave si tiene "/"
-                var claveParaURL = clave
-                if let firstPart = clave.split(separator: "/").first {
-                    claveParaURL = String(firstPart)
-                }
-
+                // 4️⃣ Verificar status code
                 if let httpResponse = response as? HTTPURLResponse {
                     print("🔹 Status code: \(httpResponse.statusCode)")
-
                     switch httpResponse.statusCode {
                     case 200...299:
-                        break // continuar normalmente
+                        break // todo bien
                     case 404:
-                        print("❌ PDF no encontrado en el servidor para fecha: \(fecha), clave: \(claveParaURL)")
+                        print("❌ PDF no encontrado en el servidor para URL: \(url.absoluteString)")
                         completion(.failure(NetworkError.notFound))
                         return
                     default:
@@ -106,13 +94,15 @@ final class PrintService {
                 // 5️⃣ Guardar PDF en Documents con nombre único
                 let fileManager = FileManager.default
                 let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                let uniqueFileName = "\(fecha)-\(clave)-\(UUID().uuidString).pdf"
+                
+                // Extraemos solo la última parte del pdfPath para el nombre
+                let clave = pdfPath.split(separator: "/").last ?? "document"
+                let uniqueFileName = "\(clave)-\(UUID().uuidString).pdf"
                 let destinationURL = documentsURL.appendingPathComponent(uniqueFileName)
 
                 try fileManager.moveItem(at: tempURL, to: destinationURL)
                 print("📄 PDF guardado en: \(destinationURL.path)")
 
-                // 6️⃣ Completar con éxito
                 completion(.success(destinationURL))
 
             } catch {
