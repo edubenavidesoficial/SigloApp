@@ -52,7 +52,15 @@ struct PrintCarouselView: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    viewModel.descargarPDFs(from: article.paginas)
+                                    // Generar un número aleatorio de 100 a 999
+                                    let randomNumber = Int.random(in: 100...999)
+                                    let nombreArchivo = "Hemeroteca_\(article.date)_\(randomNumber)"
+
+                                    viewModel.descargarPortadaCompleta(
+                                        paginas: article.paginas, // array de URLs de PDF
+                                        nombreArchivo: nombreArchivo
+                                    )
+
                                     showAlert = true
                                 }) {
                                     Image(systemName: "arrow.down.circle.fill")
@@ -60,6 +68,7 @@ struct PrintCarouselView: View {
                                         .font(.title3)
                                 }
                             }
+
                             .padding(.horizontal, 16)
 
                             Spacer()

@@ -1,4 +1,5 @@
 import SwiftUI
+import PDFKit
 
 class PrintViewModel: ObservableObject {
     @Published var downloads: [URL] = []
@@ -54,23 +55,47 @@ class PrintViewModel: ObservableObject {
     }
 
     // Descargar todos los PDFs de una portada
-    func descargarPDFs(from paginas: [String]) {
+    func descargarPortadaCompleta(paginas: [String], nombreArchivo: String) {
+        var pdfDocuments: [PDFDocument] = []
+        let group = DispatchGroup()
+
         for pdfPath in paginas {
-            PrintService.shared.descargarPDF(pdfPath: pdfPath) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let url):
-                        // ✅ Agregar al array de descargas si no existe
-                        if !(self?.downloads.contains(url) ?? false) {
-                            self?.downloads.append(url)
-                            print("✅ PDF agregado a descargas: \(url.lastPathComponent)")
-                        }
-                    case .failure(let error):
-                        print("❌ Error al descargar PDF \(pdfPath): \(error.localizedDescription)")
+            group.enter()
+            PrintService.shared.descargarPDF(pdfPath: pdfPath) { result in
+                switch result {
+                case .success(let url):
+                    if let doc = PDFDocument(url: url) {
+                        pdfDocuments.append(doc)
+                    }
+                case .failure(let error):
+                    print("❌ Error al descargar PDF \(pdfPath): \(error.localizedDescription)")
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            let mergedPDF = PDFDocument()
+            var pageIndex = 0
+            for doc in pdfDocuments {
+                for i in 0..<doc.pageCount {
+                    if let page = doc.page(at: i) {
+                        mergedPDF.insert(page, at: pageIndex)
+                        pageIndex += 1
                     }
                 }
             }
+
+            let fileManager = FileManager.default
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let destinationURL = documentsURL.appendingPathComponent("\(nombreArchivo).pdf")
+
+            if mergedPDF.write(to: destinationURL) {
+                print("✅ PDF combinado guardado en: \(destinationURL.path)")
+                self.downloads.append(destinationURL)
+            } else {
+                print("❌ Error al guardar PDF combinado")
+            }
         }
     }
-
 }
