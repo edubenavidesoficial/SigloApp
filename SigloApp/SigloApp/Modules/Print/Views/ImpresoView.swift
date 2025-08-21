@@ -69,7 +69,7 @@ struct ImpresoView: View {
                                     case .suplementos:
                                         SuplementsView()
                                     case .descargas:
-                                        DescargasView()
+                                        DescargasView(viewModel: printVM)
                                     }
                                 }
                             }

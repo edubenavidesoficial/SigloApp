@@ -1,6 +1,7 @@
 import SwiftUI
 
 class PrintViewModel: ObservableObject {
+    @Published var downloads: [URL] = []
     @Published var isNewspaperLoaded = false
     @Published var isLoading: Bool = false
     @Published var selectedTab: TabTypetwo = .hemeroteca
@@ -12,7 +13,6 @@ class PrintViewModel: ObservableObject {
 
     func fetchNewspaper() {
         guard !isNewspaperLoaded && !isLoading else { return }
-
         isLoading = true
         errorMessage = nil
 
@@ -23,13 +23,11 @@ class PrintViewModel: ObservableObject {
 
                 switch result {
                 case .success(let payloads):
-                    // Verificamos que haya al menos un payload
                     guard let firstPayload = payloads.first else {
                         self.isNewspaperLoaded = false
                         return
                     }
 
-                    // Mapear portadas a PrintModel
                     self.hemeroteca = firstPayload.portadas.map { portada in
                         PrintModel(
                             title: portada.titulo,
@@ -38,7 +36,6 @@ class PrintViewModel: ObservableObject {
                             paginas: firstPayload.paginas
                         )
                     }
-
                     self.isNewspaperLoaded = true
 
                 case .failure(let error):
@@ -55,6 +52,23 @@ class PrintViewModel: ObservableObject {
             return hemeroteca
         default:
             return []
+        }
+    }
+
+    // MARK: - Descargar PDF
+    func descargarPDF(fecha: String, clave: String) {
+        PrintService.shared.descargarPDF(fecha: fecha, clave: clave) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let localURL):
+                    print("📄 PDF guardado en: \(localURL.path)")
+                    if !(self?.downloads.contains(localURL) ?? false) {
+                        self?.downloads.append(localURL)
+                    }
+                case .failure(let error):
+                    print("❌ Error al descargar: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }

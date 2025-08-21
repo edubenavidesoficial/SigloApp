@@ -56,4 +56,69 @@ final class PrintService {
             }
         }
     }
+    func descargarPDF(fecha: String, clave: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        Task {
+            do {
+                // 1️⃣ Obtener token válido
+                var token: String
+                if let storedToken = TokenService.shared.getStoredToken(),
+                   !TokenService.shared.isTokenExpired(storedToken) {
+                    token = storedToken
+                    print("✅ Usando token almacenado")
+                } else {
+                    token = try await TokenService.shared.getToken(correoHash: "")
+                    print("✅ Nuevo token generado")
+                }
+
+                // 2️⃣ Construir URL
+                let urlString = "\(API.baseURL)impreso/pdf/\(fecha)/\(clave)/\(token)"
+                guard let url = URL(string: urlString) else {
+                    completion(.failure(NetworkError.invalidURL))
+                    return
+                }
+                print("🔹 Descargando PDF desde URL: \(url.absoluteString)")
+
+                // 3️⃣ Descargar archivo temporal
+                let (tempURL, response) = try await URLSession.shared.download(from: url)
+
+                // 4️⃣ Verificar status code y ajustar clave si tiene "/"
+                var claveParaURL = clave
+                if let firstPart = clave.split(separator: "/").first {
+                    claveParaURL = String(firstPart)
+                }
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("🔹 Status code: \(httpResponse.statusCode)")
+
+                    switch httpResponse.statusCode {
+                    case 200...299:
+                        break // continuar normalmente
+                    case 404:
+                        print("❌ PDF no encontrado en el servidor para fecha: \(fecha), clave: \(claveParaURL)")
+                        completion(.failure(NetworkError.notFound))
+                        return
+                    default:
+                        completion(.failure(NetworkError.invalidResponse))
+                        return
+                    }
+                }
+
+                // 5️⃣ Guardar PDF en Documents con nombre único
+                let fileManager = FileManager.default
+                let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                let uniqueFileName = "\(fecha)-\(clave)-\(UUID().uuidString).pdf"
+                let destinationURL = documentsURL.appendingPathComponent(uniqueFileName)
+
+                try fileManager.moveItem(at: tempURL, to: destinationURL)
+                print("📄 PDF guardado en: \(destinationURL.path)")
+
+                // 6️⃣ Completar con éxito
+                completion(.success(destinationURL))
+
+            } catch {
+                print("❌ Error al descargar PDF: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
 }

@@ -135,7 +135,8 @@ enum NetworkError: Error {
     case decodingError(Error)
     case decodingFailed
     case invalidToken
-    case custom(String) 
+    case notFound  
+    case custom(String)
 }
 
 struct SuplementoResponse: Identifiable, Codable {
