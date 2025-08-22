@@ -9,54 +9,36 @@ enum TabType: String, CaseIterable {
 class ArticleViewModel: ObservableObject {
     @Published var selectedTab: TabType = .noticias
     @Published var savedArticles: [SavedArticle] = [] // Lista de artículos guardados
-    @Published var noticias: [SavedArticle] = [] // Lista de noticias, vacía al inicio
-
-    var sigloTV: [SavedArticle] = []
-    var clasificados: [SavedArticle] = [
-        SavedArticle(
-            category: "Empleo",
-            title: "Se solicita técnico",
-            author: "Clasificados",
-            location: "Saltillo",
-            time: "Hace 3h",
-            imageName: "ejemplo",
-            description: nil
-        )
-    ]
+    @Published var noticias: [SavedArticle] = [] // Lista de noticias
+    @Published var sigloTV: [SavedArticle] = [] // Lista Siglo TV
+    @Published var clasificados: [SavedArticle] = []
     
     func saveArticle(_ article: SavedArticle) {
         // Evitar duplicados en savedArticles
         if !savedArticles.contains(where: { $0.title == article.title }) {
-            // Agregar artículo a la lista de guardados
             savedArticles.append(article)
             
-            // Crear una nueva instancia de SavedArticle similar a 'notaGuardada'
-            let notaGuardada = SavedArticle(
-                category: "Sin datos ahora",
-                title: "\(article.title)",
-                author: "\(article.author)",
-                location: "\(article.location)",
-                time: "Hace 2h",
-                imageName: "\(article.imageName)",
-                description: "Resumen del video o contenido importante."
-            )
-            
-            // Actualizar noticias dinámicamente en el hilo principal
+            // Asignar artículo a la lista correcta según su categoría
             DispatchQueue.main.async {
-                self.noticias.append(notaGuardada) // Agregar el artículo modificado a noticias
-                print("Artículo guardado: \(notaGuardada.title)")
+                switch article.category {
+                case "SIGLO TV":
+                    self.sigloTV.append(article)
+                case "CLASIFICADOS":
+                    self.clasificados.append(article)
+                default:
+                    self.noticias.append(article)
+                }
+                
+                print("Artículo guardado: \(article.title)")
                 print("Total de noticias: \(self.noticias.count)")
+                print("Total de Siglo TV: \(self.sigloTV.count)")
+                print("Total de clasificados: \(self.clasificados.count)")
+                print("Total de artículos guardados: \(self.savedArticles.count)")
             }
-
-            // Debug para ver si se está actualizando noticias
-            print("Artículo guardado: \(article.title)")
-            print("Total de artículos guardados: \(savedArticles.count)")
-            print("Total de noticias actualizadas: \(noticias.count)")
         } else {
             print("El artículo ya está guardado.")
         }
     }
-
 
     // Método para obtener los artículos de la pestaña seleccionada
     func articlesForCurrentTab() -> [SavedArticle] {
@@ -65,8 +47,10 @@ class ArticleViewModel: ObservableObject {
             print("🟢 Devolviendo \(noticias.count) noticias")
             return noticias
         case .sigloTV:
+            print("🟢 Devolviendo \(sigloTV.count) Siglo TV")
             return sigloTV
         case .clasificados:
+            print("🟢 Devolviendo \(clasificados.count) clasificados")
             return clasificados
         }
     }

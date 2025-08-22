@@ -3,6 +3,7 @@ import PDFKit
 
 class PrintViewModel: ObservableObject {
     @Published var downloads: [URL] = []
+    @Published var portadaLocalImages: [String: UIImage] = [:] // ✅ Cambiado a UIImage
     @Published var isNewspaperLoaded = false
     @Published var isLoading: Bool = false
     @Published var selectedTab: TabTypetwo = .hemeroteca
@@ -54,8 +55,8 @@ class PrintViewModel: ObservableObject {
         }
     }
 
-    // Descargar todos los PDFs de una portada
-    func descargarPortadaCompleta(paginas: [String], nombreArchivo: String) {
+    // Descargar todos los PDFs de una portada y combinarlos
+    func descargarPortadaCompleta(paginas: [String], nombreArchivo: String, portadaImagen: UIImage?) {
         var pdfDocuments: [PDFDocument] = []
         let group = DispatchGroup()
 
@@ -93,6 +94,14 @@ class PrintViewModel: ObservableObject {
             if mergedPDF.write(to: destinationURL) {
                 print("✅ PDF combinado guardado en: \(destinationURL.path)")
                 self.downloads.append(destinationURL)
+
+                // Guardar portada de la primera página, si se pasó la imagen
+                if let portadaImagen = portadaImagen {
+                    self.portadaLocalImages[nombreArchivo] = portadaImagen
+                } else if let firstPage = mergedPDF.page(at: 0) {
+                    let thumbnail = firstPage.thumbnail(of: CGSize(width: 60, height: 80), for: .mediaBox)
+                    self.portadaLocalImages[nombreArchivo] = thumbnail
+                }
             } else {
                 print("❌ Error al guardar PDF combinado")
             }

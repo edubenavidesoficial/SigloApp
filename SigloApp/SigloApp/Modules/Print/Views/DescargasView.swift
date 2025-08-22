@@ -23,14 +23,24 @@ struct DescargasView: View {
                         .padding()
                 }
             } else {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 16)]) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: 16)], spacing: 16) {
                     ForEach(viewModel.downloads, id: \.self) { url in
                         NavigationLink(destination: PDFKitView(url: url)) {
                             VStack {
-                                Image(systemName: "doc.richtext.fill")
-                                    .resizable()
-                                    .frame(width: 60, height: 80)
-                                    .foregroundColor(.blue)
+                                // Usar la miniatura si existe, sino el icono por defecto
+                                if let thumbnail = viewModel.portadaLocalImages[url.lastPathComponent] {
+                                    Image(uiImage: thumbnail)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 60, height: 80)
+                                        .cornerRadius(6)
+                                } else {
+                                    Image(systemName: "doc.richtext.fill")
+                                        .resizable()
+                                        .frame(width: 60, height: 80)
+                                        .foregroundColor(.gray)
+                                }
+
                                 Text(url.lastPathComponent)
                                     .font(.caption)
                                     .lineLimit(1)

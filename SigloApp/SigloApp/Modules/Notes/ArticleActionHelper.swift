@@ -24,16 +24,20 @@ class ArticleActionHelper: ObservableObject {
     func guardarNota(_ nota: Nota) {
         print("Guardando nota: \(nota.titulo)")
 
+        // Tomar la primera foto disponible como imagen principal
+        let imagenURL = nota.fotos.first?.url_foto ?? "ejemplo"
+
         let savedArticle = SavedArticle(
             category: nota.localizador,
             title: nota.titulo,
             author: nota.autor,
             location: nota.ciudad ?? "",
             time: nota.fecha_formato ?? "",
-            imageName: "ejemplo",
-            description: nota.fotos.description
+            imageName: imagenURL, // aquí va la URL real
+            description: nota.fotos.map { $0.pie_foto ?? "" }.joined(separator: "\n")
         )
 
         articleViewModel.saveArticle(savedArticle)
+        articleViewModel.selectedTab = .noticias
     }
 }

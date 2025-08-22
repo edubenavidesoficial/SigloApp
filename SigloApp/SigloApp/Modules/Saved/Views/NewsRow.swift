@@ -7,12 +7,33 @@ struct NewsRow: View {
         HStack(alignment: .top, spacing: 12) {
             // Imagen con ícono de bookmark
             ZStack(alignment: .topTrailing) {
-                Image(article.imageName)
-                    .resizable()
-                    .scaledToFill()
+                if let url = URL(string: article.imageName) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            Color.gray.opacity(0.3)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure:
+                            Color.red // error al cargar
+                        @unknown default:
+                            Color.gray
+                        }
+                    }
                     .frame(width: 120, height: 80)
                     .clipped()
                     .cornerRadius(8)
+                } else {
+                    // fallback a imagen local
+                    Image("ejemplo")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 120, height: 80)
+                        .clipped()
+                        .cornerRadius(8)
+                }
 
                 Image(systemName: "bookmark.fill")
                     .foregroundColor(.black)

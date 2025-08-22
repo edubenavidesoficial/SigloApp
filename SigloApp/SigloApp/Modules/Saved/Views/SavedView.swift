@@ -5,21 +5,24 @@ struct SavedView: View {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
     @State private var selectedOption: MenuOption? = nil
-    
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
+                    // Header
                     HeaderView(
                         selectedOption: $selectedOption,
                         isMenuOpen: $isMenuOpen,
                         isLoggedIn: isLoggedIn
                     )
+                    
+                    // Si hay una opción de menú seleccionada
                     if let selected = selectedOption {
                         NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
-                    }
-                    else {
+                    } else {
+                        // Pestañas horizontales
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20) {
                                 ForEach(TabType.allCases, id: \.self) { tab in
@@ -49,17 +52,22 @@ struct SavedView: View {
                         
                         Divider()
                         
-                        // Mostrar los artículos según la pestaña seleccionada
-                        List(articleViewModel.articlesForCurrentTab(), id: \.title) { article in
-                            NewsRow(article: article)
+                        // Artículos según la pestaña seleccionada
+                        VStack(spacing: 8) {
+                            ForEach(articleViewModel.articlesForCurrentTab()) { article in
+                                NewsRow(article: article)
+                            }
                         }
+                        .padding(.horizontal)
                         .onAppear {
                             print("🟢 Noticias en SavedView: \(articleViewModel.noticias.map { $0.title })")
+                            print("🟢 Siglo TV: \(articleViewModel.sigloTV.map { $0.title })")
+                            print("🟢 Clasificados: \(articleViewModel.clasificados.map { $0.title })")
                         }
-                        .listStyle(PlainListStyle())
                     }
                 }
             }
+            .navigationBarHidden(true)
         }
     }
 }

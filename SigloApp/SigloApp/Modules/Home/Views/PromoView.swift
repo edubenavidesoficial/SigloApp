@@ -15,10 +15,9 @@ struct PromoView: View {
                 .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
                 .foregroundColor(.gray)
 
-            Text("5687735147948295/3338923985")
-                .font(.subheadline)
-                .padding()
-
+           // BannerAdView(adUnitID: "ca-app-pub-5687735147948295/3338923985")
+                .frame(width: 320, height: 50)
+            
             Spacer()
         }
         .onAppear {
