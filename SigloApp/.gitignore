@@ -1,0 +1,11 @@
+# Xcode
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.DS_Store
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
+# Archivos de build
+build/
+DerivedData/
+

@@ -2,7 +2,7 @@
 //  SigloAppTests.swift
 //  SigloAppTests
 //
-//  Created by Macbook Pro 17 i5R on 3/9/25.
+//  Created by Macbook Pro 24 on 3/9/25.
 //
 
 import XCTest

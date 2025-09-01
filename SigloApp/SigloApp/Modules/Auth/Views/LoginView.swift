@@ -1,4 +1,5 @@
 import SwiftUI
+import AuthenticationServices 
 
 struct LoginView: View {
     @MainActor
@@ -11,6 +12,7 @@ struct LoginView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = "Alerta!"
     @State private var isLoading: Bool = false
+    //@StateObject private var authService = AuthService.shared
 
     @FocusState private var focusedField: Field?
 
@@ -21,7 +23,6 @@ struct LoginView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
             ScrollView(.vertical, showsIndicators: false) {
                 HStack {
                     Image("logo")
@@ -112,24 +113,36 @@ struct LoginView: View {
 
                 Divider()
 
-                Button(action: {}) {
+                Button(action: {
+                    /*authService.generateNonce()
+                    authService.startSignInWithAppleFlow()*/
+                }) {
                     HStack {
                         Image(systemName: "apple.logo")
                         Text("Continuar con Apple")
+                            .fontWeight(.medium)
                     }
                     .foregroundColor(.black)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.clear)
+                    .background(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.black, lineWidth: 0.5)
                     )
                     .cornerRadius(10)
-                    .padding(.top, 20)
                 }
+                .padding(.top, 20)
 
-                Button(action: {}) {
+
+                // Botón de Google
+                Button(action: {
+                    if let rootVC = UIApplication.shared.connectedScenes
+                        .compactMap({ $0 as? UIWindowScene })
+                        .first?.windows.first?.rootViewController {
+                        //authService.signInWithGoogle(presenting: rootVC)
+                    }
+                }) {
                     HStack {
                         Image(systemName: "globe")
                         Text("Continuar con Google")
@@ -145,6 +158,7 @@ struct LoginView: View {
                     .cornerRadius(10)
                 }
                 .padding(.top, 10)
+
                 Text("Si continúas, aceptas nuestras Condiciones del Servicio y la Política de Privacidad.")
                     .font(.custom("FiraSansCondensed-Regular", size: 15))
                     .multilineTextAlignment(.center)
@@ -168,7 +182,7 @@ struct LoginView: View {
                     .padding(.bottom, 10)
             }
             .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true) 
+            .navigationBarBackButtonHidden(true)
             .padding()
         }
         .background(Color.white)
@@ -177,6 +191,7 @@ struct LoginView: View {
             Alert(title: Text("Login"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
+
     @MainActor
     func login() {
         guard !username.isEmpty, !password.isEmpty else {
@@ -194,7 +209,6 @@ struct LoginView: View {
                 userManager.saveUserToDefaults()
                 lastUsername = username
                 isLoggedIn = true
-                
                 alertMessage = "Inicio de sesión exitoso"
             } catch {
                 alertMessage = "Error: \(error.localizedDescription)"
@@ -204,5 +218,4 @@ struct LoginView: View {
             showAlert = true
         }
     }
-
 }

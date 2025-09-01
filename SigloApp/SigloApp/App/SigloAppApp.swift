@@ -1,7 +1,16 @@
 import SwiftUI
+//import FirebaseCore
+//import GoogleMobileAds
+//Cambios CocoaPods
 
 @main
 struct SigloAppApp: App {
+    
+   /* init() {
+        FirebaseApp.configure()
+        MobileAds.shared.start(completionHandler: nil)
+    }*/
+    
     @StateObject private var userManager = UserManager()
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .automatic

@@ -15,15 +15,16 @@ struct PromoView: View {
                 .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
                 .foregroundColor(.gray)
 
-           // BannerAdView(adUnitID: "ca-app-pub-5687735147948295/3338923985")
+            // Banner de Google Ads
+            //BannerAdView(adUnitID: "ca-app-pub-5687735147948295/3338923985")
                 .frame(width: 320, height: 50)
-            
+
             Spacer()
         }
         .onAppear {
             isAnimating = true
             Task {
-                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                try? await Task.sleep(nanoseconds: 4_000_000_000) // 4 segundos
                 navigateToHome = true
             }
         }
