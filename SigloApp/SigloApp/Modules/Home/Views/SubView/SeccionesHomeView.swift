@@ -1,4 +1,5 @@
 import SwiftUI
+import GoogleMobileAds
 
 struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
@@ -46,6 +47,9 @@ struct SeccionesHomeView: View {
                     .padding(.bottom)
                 }
                 
+                BannerAdView(adUnitID: "ca-app-pub-5687735147948295/1437013165")
+                    .frame(width: 360, height: 50)
+               
                 // Portada Soft
                 if let soft = viewModel.secciones.first(where: { $0.seccion == "Portada Soft" }) {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -58,6 +62,7 @@ struct SeccionesHomeView: View {
                     }
                     .padding(.bottom)
                 }
+                
                 
                 // Sección principal
               /*  if let errorMessage = viewModel.errorMessage {

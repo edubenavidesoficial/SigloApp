@@ -11,8 +11,9 @@ struct PromoView: View {
             .ignoresSafeArea()
             .onAppear {
                 // Cargar y mostrar el interstitial ad
-                adManager.loadAd(withAdUnitID: "ca-app-pub-3940256099942544/4411468910") // ID de prueba oficial
-
+                adManager.loadAd(withAdUnitID: "ca-app-pub-5687735147948295/3338923985") // ID de oficial
+                //adManager.loadAd(withAdUnitID: "ca-app-pub-3940256099942544/4411468910") // ID de prueba
+                
                 // Opcional: navegar a Home después de 4 segundos
                 Task {
                     try? await Task.sleep(nanoseconds: 4_000_000_000)
