@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AB8BEBA5DF985347F02CB20 /* Pods_SigloApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2732DD5F2E2C7038DAE3933 /* Pods_SigloApp.framework */; };
+		AEEA99C896354FA67980EBF7 /* Pods_SigloAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB412D7DF1294C1B3E0C5CFF /* Pods_SigloAppTests.framework */; };
 		C0019E7D2DF0D14900EDF176 /* TabsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */; };
 		C0019E812DF389A200EDF176 /* SigloTv.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0019E802DF389A200EDF176 /* SigloTv.swift */; };
 		C008A8EC2DD5255D00E74F88 /* SuplementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */; };
@@ -160,6 +162,7 @@
 		C0F8E6922D9E2D600070DA62 /* PrintService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F8E6912D9E2D600070DA62 /* PrintService.swift */; };
 		C0F8E6942D9E2F3B0070DA62 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F8E6932D9E2F3B0070DA62 /* Constants.swift */; };
 		C0F8E6962D9E544D0070DA62 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F8E6952D9E544D0070DA62 /* ErrorView.swift */; };
+		D8D09697B24F46314183F2FF /* Pods_SigloApp_SigloAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B275417275CF34A62445D38D /* Pods_SigloApp_SigloAppUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +196,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		27C0413706B2DF367616952D /* Pods-SigloApp-SigloAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloApp-SigloAppUITests.release.xcconfig"; path = "Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		452A920FD9E27660989E5F6F /* Pods-SigloApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloApp.release.xcconfig"; path = "Target Support Files/Pods-SigloApp/Pods-SigloApp.release.xcconfig"; sourceTree = "<group>"; };
+		96DCBB9A4B5F0C9B8ADBCBF1 /* Pods-SigloAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloAppTests.debug.xcconfig"; path = "Target Support Files/Pods-SigloAppTests/Pods-SigloAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A8101EFE21A7C8D0611A7B54 /* Pods-SigloApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloApp.debug.xcconfig"; path = "Target Support Files/Pods-SigloApp/Pods-SigloApp.debug.xcconfig"; sourceTree = "<group>"; };
+		B275417275CF34A62445D38D /* Pods_SigloApp_SigloAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SigloApp_SigloAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB412D7DF1294C1B3E0C5CFF /* Pods_SigloAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SigloAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0019E7C2DF0D14900EDF176 /* TabsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsHeaderView.swift; sourceTree = "<group>"; };
 		C0019E802DF389A200EDF176 /* SigloTv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigloTv.swift; sourceTree = "<group>"; };
 		C008A8EB2DD5255D00E74F88 /* SuplementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsModel.swift; sourceTree = "<group>"; };
@@ -350,6 +359,9 @@
 		C0F8E6912D9E2D600070DA62 /* PrintService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintService.swift; sourceTree = "<group>"; };
 		C0F8E6932D9E2F3B0070DA62 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C0F8E6952D9E544D0070DA62 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		C1CBD03B11F0160A9C094119 /* Pods-SigloApp-SigloAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloApp-SigloAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D2732DD5F2E2C7038DAE3933 /* Pods_SigloApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SigloApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC4D0700AB9888FD014F7D85 /* Pods-SigloAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SigloAppTests.release.xcconfig"; path = "Target Support Files/Pods-SigloAppTests/Pods-SigloAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +369,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AB8BEBA5DF985347F02CB20 /* Pods_SigloApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +377,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEEA99C896354FA67980EBF7 /* Pods_SigloAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,12 +385,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8D09697B24F46314183F2FF /* Pods_SigloApp_SigloAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B964342C74277E4AD392F13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D2732DD5F2E2C7038DAE3933 /* Pods_SigloApp.framework */,
+				B275417275CF34A62445D38D /* Pods_SigloApp_SigloAppUITests.framework */,
+				BB412D7DF1294C1B3E0C5CFF /* Pods_SigloAppTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C0019E7B2DF0D12D00EDF176 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -501,6 +526,8 @@
 				C05094DC2D7E87D000938043 /* SigloAppTests */,
 				C05094E62D7E87D000938043 /* SigloAppUITests */,
 				C05094C52D7E87CB00938043 /* Products */,
+				C5F4F42E5028A672C497A206 /* Pods */,
+				6B964342C74277E4AD392F13 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -988,6 +1015,20 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		C5F4F42E5028A672C497A206 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A8101EFE21A7C8D0611A7B54 /* Pods-SigloApp.debug.xcconfig */,
+				452A920FD9E27660989E5F6F /* Pods-SigloApp.release.xcconfig */,
+				C1CBD03B11F0160A9C094119 /* Pods-SigloApp-SigloAppUITests.debug.xcconfig */,
+				27C0413706B2DF367616952D /* Pods-SigloApp-SigloAppUITests.release.xcconfig */,
+				96DCBB9A4B5F0C9B8ADBCBF1 /* Pods-SigloAppTests.debug.xcconfig */,
+				FC4D0700AB9888FD014F7D85 /* Pods-SigloAppTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -995,6 +1036,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C05094ED2D7E87D000938043 /* Build configuration list for PBXNativeTarget "SigloApp" */;
 			buildPhases = (
+				4DE9398159DCFC8F1B672CBF /* [CP] Check Pods Manifest.lock */,
 				C05094C02D7E87CB00938043 /* Sources */,
 				C05094C12D7E87CB00938043 /* Frameworks */,
 				C05094C22D7E87CB00938043 /* Resources */,
@@ -1005,8 +1047,6 @@
 			dependencies = (
 			);
 			name = SigloApp;
-			packageProductDependencies = (
-			);
 			productName = SigloApp;
 			productReference = C05094C42D7E87CB00938043 /* SigloApp.app */;
 			productType = "com.apple.product-type.application";
@@ -1015,6 +1055,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C05094F02D7E87D000938043 /* Build configuration list for PBXNativeTarget "SigloAppTests" */;
 			buildPhases = (
+				4ED1E2DBFD14DA1C231973C1 /* [CP] Check Pods Manifest.lock */,
 				C05094D52D7E87D000938043 /* Sources */,
 				C05094D62D7E87D000938043 /* Frameworks */,
 				C05094D72D7E87D000938043 /* Resources */,
@@ -1033,6 +1074,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C05094F32D7E87D000938043 /* Build configuration list for PBXNativeTarget "SigloAppUITests" */;
 			buildPhases = (
+				E4ABBA9E0B5C1A0A47E005FB /* [CP] Check Pods Manifest.lock */,
 				C05094DF2D7E87D000938043 /* Sources */,
 				C05094E02D7E87D000938043 /* Frameworks */,
 				C05094E12D7E87D000938043 /* Resources */,
@@ -1079,8 +1121,6 @@
 				Base,
 			);
 			mainGroup = C05094BB2D7E87CA00938043;
-			packageReferences = (
-			);
 			productRefGroup = C05094C52D7E87CB00938043 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1117,6 +1157,75 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4DE9398159DCFC8F1B672CBF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SigloApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4ED1E2DBFD14DA1C231973C1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SigloAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4ABBA9E0B5C1A0A47E005FB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SigloApp-SigloAppUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C05094C02D7E87CB00938043 /* Sources */ = {
@@ -1429,6 +1538,7 @@
 		};
 		C05094EE2D7E87D000938043 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8101EFE21A7C8D0611A7B54 /* Pods-SigloApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1468,6 +1578,7 @@
 		};
 		C05094EF2D7E87D000938043 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 452A920FD9E27660989E5F6F /* Pods-SigloApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1505,6 +1616,7 @@
 		};
 		C05094F12D7E87D000938043 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96DCBB9A4B5F0C9B8ADBCBF1 /* Pods-SigloAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1525,6 +1637,7 @@
 		};
 		C05094F22D7E87D000938043 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC4D0700AB9888FD014F7D85 /* Pods-SigloAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1545,6 +1658,7 @@
 		};
 		C05094F42D7E87D000938043 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1CBD03B11F0160A9C094119 /* Pods-SigloApp-SigloAppUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1563,6 +1677,7 @@
 		};
 		C05094F52D7E87D000938043 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27C0413706B2DF367616952D /* Pods-SigloApp-SigloAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
