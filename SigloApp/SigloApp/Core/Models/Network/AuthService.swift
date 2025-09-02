@@ -13,7 +13,7 @@ final class AuthService: NSObject, ObservableObject {
     static let shared = AuthService()
     
     @Published var user: User? // Usuario de Firebase
-    @Published var currentNonce: String? // ✅ Ahora accesible desde LoginView
+    @Published var currentNonce: String? //
     
     private let db = Firestore.firestore()
     
