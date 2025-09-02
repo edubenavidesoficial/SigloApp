@@ -1,32 +1,59 @@
 import SwiftUI
+import GoogleMobileAds
 
 struct PromoView: View {
     @Binding var navigateToHome: Bool
-    @State private var isAnimating = false
+    @StateObject private var adManager = InterstitialAdManager()
 
     var body: some View {
-        VStack {
-            Spacer()
+        // Vista vacía que ocupa toda la pantalla
+        Color.clear
+            .ignoresSafeArea()
+            .onAppear {
+                // Cargar y mostrar el interstitial ad
+                adManager.loadAd(withAdUnitID: "ca-app-pub-3940256099942544/4411468910") // ID de prueba oficial
 
-            Image(systemName: "globe")
-                .resizable()
-                .frame(width: 20, height: 20)
-                .rotationEffect(.degrees(isAnimating ? 360 : 0))
-                .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
-                .foregroundColor(.gray)
+                // Opcional: navegar a Home después de 4 segundos
+                Task {
+                    try? await Task.sleep(nanoseconds: 4_000_000_000)
+                    navigateToHome = true
+                }
+            }
+    }
+}
 
-            // Banner de Google Ads
-            //BannerAdView(adUnitID: "ca-app-pub-5687735147948295/3338923985")
-                .frame(width: 320, height: 50)
+// MARK: - Interstitial Ad Manager
+class InterstitialAdManager: NSObject, FullScreenContentDelegate, ObservableObject {
+    var interstitial: InterstitialAd?
 
-            Spacer()
-        }
-        .onAppear {
-            isAnimating = true
-            Task {
-                try? await Task.sleep(nanoseconds: 4_000_000_000) // 4 segundos
-                navigateToHome = true
+    func loadAd(withAdUnitID adUnitID: String) {
+        let request = Request()
+        InterstitialAd.load(with: adUnitID, request: request) { ad, error in
+            if let error = error {
+                print("Failed to load interstitial ad: \(error)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+
+            // Mostrar el ad inmediatamente si está listo
+            DispatchQueue.main.async {
+                if let root = UIApplication.shared.connectedScenes
+                    .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+                    .first?.rootViewController {
+                    self.showAd(from: root)
+                }
             }
         }
+    }
+
+    func showAd(from root: UIViewController) {
+        if let ad = interstitial {
+            ad.present(from: root)
+        }
+    }
+
+    func adDidDismissFullScreenContent(_ ad: Any) {
+        print("Interstitial ad dismissed")
     }
 }

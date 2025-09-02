@@ -1,10 +1,16 @@
 import SwiftUI
 //import FirebaseCore
-//import GoogleMobileAds
+import GoogleMobileAds
 //Cambios CocoaPods
 
 @main
 struct SigloAppApp: App {
+    
+    init() {
+        MobileAds.shared.start { status in
+            print("AdMob SDK initialized: \(status.adapterStatusesByClassName)")
+        }
+    }
     
    /* init() {
         FirebaseApp.configure()
