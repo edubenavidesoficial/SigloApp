@@ -57,6 +57,8 @@
 		C0512F622D976E78008CD40D /* SeccionsNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0512F612D976E78008CD40D /* SeccionsNotes.swift */; };
 		C05852C12DEA41E0009ABA57 /* SuplementsDocViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05852C02DEA41E0009ABA57 /* SuplementsDocViewModel.swift */; };
 		C0602B752D812239009D53DC /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0602B742D812239009D53DC /* HeaderView.swift */; };
+		C073F8582E67681E002F837D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C073F8572E676817002F837D /* AuthService.swift */; };
+		C073F85A2E677619002F837D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C073F8592E677619002F837D /* GoogleService-Info.plist */; };
 		C075CC8A2D83E16600B95F69 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075CC892D83E16600B95F69 /* HomeViewModel.swift */; };
 		C075CC8E2D83E2C300B95F69 /* TabsHomeLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075CC8D2D83E2C300B95F69 /* TabsHomeLayoutView.swift */; };
 		C075CC942D83E7C400B95F69 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075CC932D83E7C400B95F69 /* LoginView.swift */; };
@@ -257,6 +259,8 @@
 		C0512F612D976E78008CD40D /* SeccionsNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeccionsNotes.swift; sourceTree = "<group>"; };
 		C05852C02DEA41E0009ABA57 /* SuplementsDocViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsDocViewModel.swift; sourceTree = "<group>"; };
 		C0602B742D812239009D53DC /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		C073F8572E676817002F837D /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		C073F8592E677619002F837D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C075CC892D83E16600B95F69 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		C075CC8D2D83E2C300B95F69 /* TabsHomeLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsHomeLayoutView.swift; sourceTree = "<group>"; };
 		C075CC932D83E7C400B95F69 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -787,6 +791,7 @@
 			isa = PBXGroup;
 			children = (
 				C05094C72D7E87CB00938043 /* SigloAppApp.swift */,
+				C073F8592E677619002F837D /* GoogleService-Info.plist */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -851,6 +856,7 @@
 		C0ABDB3B2D80636C00ABFA77 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C073F8572E676817002F837D /* AuthService.swift */,
 				C0ABDB3C2D80638E00ABFA77 /* CoverService.swift */,
 				C0C05A402D84AE7100D363F1 /* LoginService.swift */,
 				C08067C42D8DDF8900B17D41 /* TokenService.swift */,
@@ -1052,6 +1058,7 @@
 				C05094C22D7E87CB00938043 /* Resources */,
 				C0EE2EFE2D8F0BAA009119D3 /* Embed Frameworks */,
 				C138234ACF1BFE0FFCF5DE00 /* [CP] Copy Pods Resources */,
+				9481B01E01568A82A3875B85 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1090,6 +1097,7 @@
 				C05094E02D7E87D000938043 /* Frameworks */,
 				C05094E12D7E87D000938043 /* Resources */,
 				A9CDDD947CA3BC375AA539C2 /* [CP] Copy Pods Resources */,
+				AAD3F236F6664DA063E24953 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1151,6 +1159,7 @@
 			files = (
 				C05094CF2D7E87CF00938043 /* Preview Assets.xcassets in Resources */,
 				C05094CC2D7E87CF00938043 /* Assets.xcassets in Resources */,
+				C073F85A2E677619002F837D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,6 +1202,27 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9481B01E01568A82A3875B85 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SigloApp/Pods-SigloApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SigloApp/Pods-SigloApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SigloApp/Pods-SigloApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A9CDDD947CA3BC375AA539C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1212,6 +1242,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AAD3F236F6664DA063E24953 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SigloApp-SigloAppUITests/Pods-SigloApp-SigloAppUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C138234ACF1BFE0FFCF5DE00 /* [CP] Copy Pods Resources */ = {
@@ -1409,6 +1460,7 @@
 				C09C50212DE7D54C00B2EFFD /* DocSuplementsView.swift in Sources */,
 				C09C50172DE7BDA400B2EFFD /* PrintDocService.swift in Sources */,
 				C0512F502D95CFC4008CD40D /* CompletView.swift in Sources */,
+				C073F8582E67681E002F837D /* AuthService.swift in Sources */,
 				C0A08FDA2DE3D59600260DF3 /* SearchFrontView.swift in Sources */,
 				C019250D2E0359E2000ABEFF /* SectionDetailView.swift in Sources */,
 				C02318D72DFB8A2A00C22006 /* LoginResponse.swift in Sources */,

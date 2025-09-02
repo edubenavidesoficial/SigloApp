@@ -1,21 +1,17 @@
 import SwiftUI
-//import FirebaseCore
+import FirebaseCore
 import GoogleMobileAds
 //Cambios CocoaPods
 
 @main
 struct SigloAppApp: App {
-    
+   
     init() {
+        FirebaseApp.configure()
         MobileAds.shared.start { status in
             print("AdMob SDK initialized: \(status.adapterStatusesByClassName)")
         }
     }
-    
-   /* init() {
-        FirebaseApp.configure()
-        MobileAds.shared.start(completionHandler: nil)
-    }*/
     
     @StateObject private var userManager = UserManager()
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false

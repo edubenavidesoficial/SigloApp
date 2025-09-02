@@ -12,7 +12,7 @@ struct LoginView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = "Alerta!"
     @State private var isLoading: Bool = false
-    //@StateObject private var authService = AuthService.shared
+    @StateObject private var authService = AuthService.shared
 
     @FocusState private var focusedField: Field?
 
@@ -114,8 +114,8 @@ struct LoginView: View {
                 Divider()
 
                 Button(action: {
-                    /*authService.generateNonce()
-                    authService.startSignInWithAppleFlow()*/
+                    AuthService.shared.generateNonce()
+                    AuthService.shared.startSignInWithAppleFlow()
                 }) {
                     HStack {
                         Image(systemName: "apple.logo")
@@ -140,7 +140,7 @@ struct LoginView: View {
                     if let rootVC = UIApplication.shared.connectedScenes
                         .compactMap({ $0 as? UIWindowScene })
                         .first?.windows.first?.rootViewController {
-                        //authService.signInWithGoogle(presenting: rootVC)
+                        AuthService.shared.signInWithGoogle(presenting: rootVC)
                     }
                 }) {
                     HStack {
