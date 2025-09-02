@@ -1,0 +1,31 @@
+# Xcode
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.DS_Store
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
+# Archivos de build
+build/
+DerivedData/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Xcode
+*.xcuserstate
+*.xcworkspace/xcuserdata
+*.xcworkspace/xcshareddata
+*.xcuserdatad
+*.xccheckout
+*.xcodeproj/xcuserdata
+*.xcodeproj/xcshareddata
+.DS_Store
+
+# Swift Package Manager
+Package.resolved
+
+# DerivedData
+DerivedData/
+
