@@ -99,6 +99,7 @@ struct ImpresoView: View {
             }
 
             // Panel inferior para NO suscriptores
+            /*
             let estado = subVM.suscripcion?.suscripcionDigital.estado?.lowercased() ?? ""
             let isSubscriber = subVM.suscripcion?.suscriptor == true && estado == "activa"
 
@@ -120,7 +121,7 @@ struct ImpresoView: View {
                         }
                     }
                     // Si está logueado pero no es suscriptor activo, mostrar su URL específica si existe
-                    else if estado != "activa" {
+                   else if estado != "activa" {
                         if let urlString = subVM.suscripcion?.urlSuscribirse,
                            let url = URL(string: urlString) {
                             Link("SUSCRÍBETE", destination: url)
@@ -136,6 +137,7 @@ struct ImpresoView: View {
                         // Navegar a login o refrescar estado
                     }
                     .underline()
+                    
                 }
                 .padding()
                 .background(.ultraThinMaterial)
@@ -143,7 +145,7 @@ struct ImpresoView: View {
                 .padding()
                 .transition(.move(edge: .bottom))
                 .animation(.easeInOut, value: isLoggedIn)
-            }
+            }*/
         }
     }
 }

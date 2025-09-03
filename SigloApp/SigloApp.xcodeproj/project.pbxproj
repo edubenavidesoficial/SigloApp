@@ -261,6 +261,7 @@
 		C0602B742D812239009D53DC /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		C073F8572E676817002F837D /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		C073F8592E677619002F837D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C073F85B2E68EB29002F837D /* SigloApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SigloApp.entitlements; sourceTree = "<group>"; };
 		C075CC892D83E16600B95F69 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		C075CC8D2D83E2C300B95F69 /* TabsHomeLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsHomeLayoutView.swift; sourceTree = "<group>"; };
 		C075CC932D83E7C400B95F69 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -550,6 +551,7 @@
 		C05094C62D7E87CB00938043 /* SigloApp */ = {
 			isa = PBXGroup;
 			children = (
+				C073F85B2E68EB29002F837D /* SigloApp.entitlements */,
 				C00A43B02E22AC0E00760778 /* Info.plist */,
 				C0ABDB452D80647F00ABFA77 /* Infrastructure */,
 				C0ABDB402D80640800ABFA77 /* Presentation */,
@@ -1649,6 +1651,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SigloApp/SigloApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202505034;
@@ -1690,6 +1693,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SigloApp/SigloApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202505034;
 				DEVELOPMENT_ASSET_PATHS = "\"SigloApp/Preview Content\"";

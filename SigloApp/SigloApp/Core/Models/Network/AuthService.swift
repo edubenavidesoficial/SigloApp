@@ -2,7 +2,7 @@ import Foundation
 import AuthenticationServices
 import FirebaseAuth
 import FirebaseCore
-import FirebaseFirestore
+// import FirebaseFirestore   // 🔴 Comentar Firestore para deshabilitarlo
 import GoogleSignIn
 import UIKit
 import SwiftUI
@@ -15,7 +15,7 @@ final class AuthService: NSObject, ObservableObject {
     @Published var user: User? // Usuario de Firebase
     @Published var currentNonce: String? //
     
-    private let db = Firestore.firestore()
+    // private let db = Firestore.firestore() // 🔴 Comentado para no usar Firestore
     
     private override init() {
         super.init()
@@ -42,7 +42,8 @@ final class AuthService: NSObject, ObservableObject {
                 } else if let authResult = authResult {
                     self?.user = authResult.user
                     print("✅ Usuario logueado con Google: \(authResult.user.email ?? "")")
-                    self?.saveUserData(user: authResult.user, provider: "Google")
+                    
+                    // self?.saveUserData(user: authResult.user, provider: "Google") // 🔴 Comentado
                     Task {
                         await self?.loginWithElsigloAPI(provider: "g", user: authResult.user, providerID: user.userID ?? "")
                     }
@@ -106,8 +107,9 @@ final class AuthService: NSObject, ObservableObject {
         return hashed.map { String(format: "%02x", $0) }.joined()
     }
     
-    // MARK: - Firestore
+    // MARK: - Firestore (Desactivado temporalmente)
     
+    /*
     private func saveUserData(user: User, provider: String) {
         let userRef = db.collection("users").document(user.uid)
         let data: [String: Any] = [
@@ -126,6 +128,7 @@ final class AuthService: NSObject, ObservableObject {
             }
         }
     }
+    */
     
     // MARK: - API El Siglo
     
@@ -176,7 +179,8 @@ extension AuthService: ASAuthorizationControllerDelegate, ASAuthorizationControl
             } else if let result = result {
                 self?.user = result.user
                 print("✅ Usuario logueado con Apple: \(result.user.email ?? "")")
-                self?.saveUserData(user: result.user, provider: "Apple")
+                
+                // self?.saveUserData(user: result.user, provider: "Apple") // 🔴 Comentado
                 Task {
                     await self?.loginWithElsigloAPI(provider: "a", user: result.user, providerID: appleIDCredential.user)
                 }
