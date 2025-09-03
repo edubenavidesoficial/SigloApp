@@ -4,8 +4,10 @@ struct SectionsView: View {
     @StateObject private var viewModel = SectionListViewModel()
     @Environment(\.dismiss) var dismiss
 
-    var body: some View {                                                                                                                        NavigationStack {
+    var body: some View {
+        NavigationStack {
             ZStack(alignment: .leading) {
+                // Fondo semi-transparente
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
@@ -36,26 +38,30 @@ struct SectionsView: View {
                     // Lista de secciones
                     List {
                         // Portada
-                        NavigationLink(destination:
-                            HomeView()
-                                .navigationBarBackButtonHidden(true)
-                        ) {
+                        NavigationLink(destination: HomeView()
+                                        .navigationBarBackButtonHidden(true)) {
                             Text("Portada")
                                 .foregroundColor(.red)
                         }
+                        .buttonStyle(PlainButtonStyle())
+                        .listRowBackground(Color.white)
 
+                        // Minuto a minuto
                         NavigationLink(destination: CoversView()) {
                             Text("Minuto a minuto")
                                 .foregroundColor(.red)
                         }
+                        .buttonStyle(PlainButtonStyle())
+                        .listRowBackground(Color.white)
 
-
-                        // Secciones dinámicas (excluyendo suplementos)
+                        // Secciones dinámicas
                         ForEach(viewModel.secciones.filter { ![67, 32, 35, 219].contains($0.id) }, id: \.id) { seccion in
                             NavigationLink(destination: SectionDetailView(payload: seccion)) {
                                 Text(seccion.nombre)
                                     .foregroundColor(seccion.nombre == "Siglo TV" ? .red : .black)
                             }
+                            .buttonStyle(PlainButtonStyle())
+                            .listRowBackground(Color.white)
                         }
 
                         // Suplementos
@@ -63,57 +69,33 @@ struct SectionsView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.gray)
                         ) {
-                            // Extraemos manualmente los suplementos según su ID
                             ForEach(viewModel.secciones.filter { [67, 32, 35, 219].contains($0.id) }, id: \.id) { suplemento in
                                 NavigationLink(destination: SectionDetailView(payload: suplemento)) {
                                     Text(suplemento.nombre)
+                                        .foregroundColor(.black)
                                 }
+                                .buttonStyle(PlainButtonStyle())
+                                .listRowBackground(Color.white)
                             }
                         }
 
-                        // Anuncios (sección de encabezado)
+                        // Anuncios
                         Section(header: Text("ANUNCIOS")
                             .font(.system(size: 16))
                             .foregroundColor(.gray)
                         ) {
-                            // Clasificados
-                            NavigationLink(destination:
-                                    ClassifiedsView()
-                                    .navigationBarBackButtonHidden(true)
-                            ) {
-                                Text("Clasificados")
-                                    .foregroundColor(.black)
-                            }
-
-                            // Desplegados
-                            NavigationLink(destination:
-                                            ClassifiedsView()
-                                            .navigationBarBackButtonHidden(true)
-                            ) {
-                                Text("Desplegados")
-                                    .foregroundColor(.black)
-                            }
-
-                            // Esquelas
-                            NavigationLink(destination:
-                                            ClassifiedsView()
-                                            .navigationBarBackButtonHidden(true)
-                            ) {
-                                Text("Esquelas")
-                                    .foregroundColor(.black)
-                            }
-
-                            // Felicitaciones
-                            NavigationLink(destination:
-                                            ClassifiedsView()
-                                            .navigationBarBackButtonHidden(true)
-                            ) {
-                                Text("Felicitaciones")
-                                    .foregroundColor(.black)
+                            let anuncios = ["Clasificados", "Desplegados", "Esquelas", "Felicitaciones"]
+                            ForEach(anuncios, id: \.self) { anuncio in
+                                NavigationLink(destination: ClassifiedsView()
+                                                .navigationBarBackButtonHidden(true)) {
+                                    Text(anuncio)
+                                        .foregroundColor(.black)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .listRowBackground(Color.white)
                             }
                         }
                     }
-
                     .listStyle(.plain)
                     .onAppear {
                         viewModel.fetchSecciones()
@@ -126,22 +108,22 @@ struct SectionsView: View {
                         }
                     }
 
-                    VStack(spacing: 4) { // Reduces el espacio entre botones
+                    // Botones “Anúnciate” y “Suscríbete”
+                    VStack(spacing: 8) {
                         actionButton(title: "Anúnciate") {
                             if let url = URL(string: "https://www.elsiglodetorreon.com.mx/login/") {
                                 UIApplication.shared.open(url)
                             }
                         }
-                        .buttonStyle(.borderedProminent)
-                        
+
                         actionButton(title: "Suscríbete") {
                             if let url = URL(string: "https://www.elsiglodetorreon.com.mx/suscripcion/") {
                                 UIApplication.shared.open(url)
                             }
                         }
-                        .buttonStyle(.borderedProminent)
                     }
-                    .padding(.bottom, 2)
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity)
                 }
                 .frame(maxWidth: 290)
                 .padding()
@@ -157,10 +139,11 @@ struct SectionsView: View {
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 .background(Color.red)
                 .cornerRadius(1)
         }
+        .buttonStyle(PlainButtonStyle())
         .frame(width: 285)
     }
 }

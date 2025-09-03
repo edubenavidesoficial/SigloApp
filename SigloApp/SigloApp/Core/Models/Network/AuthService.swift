@@ -2,18 +2,19 @@ import Foundation
 import AuthenticationServices
 import FirebaseAuth
 import FirebaseCore
-// import FirebaseFirestore   // 🔴 Comentar Firestore para deshabilitarlo
+// import FirebaseFirestore // 🔴 Comentado para no usar Firestore
 import GoogleSignIn
 import UIKit
 import SwiftUI
 import CryptoKit
 
+@MainActor
 final class AuthService: NSObject, ObservableObject {
     
     static let shared = AuthService()
     
     @Published var user: User? // Usuario de Firebase
-    @Published var currentNonce: String? //
+    @Published var currentNonce: String?
     
     // private let db = Firestore.firestore() // 🔴 Comentado para no usar Firestore
     
@@ -24,6 +25,12 @@ final class AuthService: NSObject, ObservableObject {
     // MARK: - Google Sign-In
     
     func signInWithGoogle(presenting: UIViewController) {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            print("❌ Google Sign-In: No se encontró clientID de Firebase")
+            return
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.signIn(withPresenting: presenting) { [weak self] result, error in
             if let error = error {
                 print("❌ Error Google Sign-In: \(error.localizedDescription)")
@@ -40,12 +47,18 @@ final class AuthService: NSObject, ObservableObject {
                 if let error = error {
                     print("❌ Firebase login error (Google): \(error.localizedDescription)")
                 } else if let authResult = authResult {
-                    self?.user = authResult.user
+                    Task { @MainActor in
+                        self?.user = authResult.user
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn") // ✅ Marca como logueado
+                    }
                     print("✅ Usuario logueado con Google: \(authResult.user.email ?? "")")
                     
-                    // self?.saveUserData(user: authResult.user, provider: "Google") // 🔴 Comentado
                     Task {
-                        await self?.loginWithElsigloAPI(provider: "g", user: authResult.user, providerID: user.userID ?? "")
+                        await self?.loginWithElsigloAPI(
+                            provider: "g",
+                            user: authResult.user,
+                            providerID: user.userID ?? ""
+                        )
                     }
                 }
             }
@@ -75,7 +88,8 @@ final class AuthService: NSObject, ObservableObject {
     }
     
     private func randomNonceString(length: Int = 32) -> String {
-        let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        let charset: [Character] =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
         var result = ""
         var remainingLength = length
 
@@ -108,7 +122,6 @@ final class AuthService: NSObject, ObservableObject {
     }
     
     // MARK: - Firestore (Desactivado temporalmente)
-    
     /*
     private func saveUserData(user: User, provider: String) {
         let userRef = db.collection("users").document(user.uid)
@@ -136,7 +149,7 @@ final class AuthService: NSObject, ObservableObject {
         guard let email = user.email else { return }
         let correoHash = md5(email.lowercased())
         let idHash = md5(providerID)
-        let urlString = "https://www.elsiglodetorreon.com.mx/api/app/v1/login/\(provider)/\(correoHash)/\(idHash)"
+        let urlString = "\(API.baseURL)login/\(provider)/\(correoHash)/\(idHash)"
         
         guard let url = URL(string: urlString) else { return }
         
@@ -165,30 +178,42 @@ extension AuthService: ASAuthorizationControllerDelegate, ASAuthorizationControl
         UIApplication.shared.windows.first { $0.isKeyWindow } ?? ASPresentationAnchor()
     }
     
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func authorizationController(controller: ASAuthorizationController,
+                                 didCompleteWithAuthorization authorization: ASAuthorization) {
         guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
               let identityToken = appleIDCredential.identityToken,
               let tokenString = String(data: identityToken, encoding: .utf8),
               let nonce = currentNonce else { return }
 
-        let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
+        let credential = OAuthProvider.credential(
+            withProviderID: "apple.com",
+            idToken: tokenString,
+            rawNonce: nonce
+        )
 
         Auth.auth().signIn(with: credential) { [weak self] result, error in
             if let error = error {
                 print("❌ Firebase login error (Apple): \(error.localizedDescription)")
             } else if let result = result {
-                self?.user = result.user
+                Task { @MainActor in
+                    self?.user = result.user
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn") // ✅ Marca como logueado
+                }
                 print("✅ Usuario logueado con Apple: \(result.user.email ?? "")")
                 
-                // self?.saveUserData(user: result.user, provider: "Apple") // 🔴 Comentado
                 Task {
-                    await self?.loginWithElsigloAPI(provider: "a", user: result.user, providerID: appleIDCredential.user)
+                    await self?.loginWithElsigloAPI(
+                        provider: "a",
+                        user: result.user,
+                        providerID: appleIDCredential.user
+                    )
                 }
             }
         }
     }
     
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    func authorizationController(controller: ASAuthorizationController,
+                                 didCompleteWithError error: Error) {
         print("❌ Apple Sign-In failed: \(error.localizedDescription)")
     }
 }

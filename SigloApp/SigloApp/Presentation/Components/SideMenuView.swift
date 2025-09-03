@@ -77,9 +77,11 @@ struct SideMenuView: View {
                 .foregroundColor(.white)
                 .frame(width: 200, height: 40)
                 .background(Color.red)
-                .padding(.bottom, 5)
+                .cornerRadius(8)
         }
+        .buttonStyle(PlainButtonStyle())
     }
+
     // Función para crear cada elemento del menú
     func menuItem(option: MenuOption) -> some View {
         Button(action: {
