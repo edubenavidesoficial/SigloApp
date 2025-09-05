@@ -1,8 +1,14 @@
 import Combine
 import Foundation
 
-class UserManager: ObservableObject {
+final class UserManager: ObservableObject {
+    static let shared = UserManager()   // 👈 Singleton accesible en toda la app
+    
     @Published var user: UserPayload? = nil
+
+    private init() {   // 👈 Constructor privado
+        loadUserFromDefaults()
+    }
 
     func saveUserToDefaults() {
         if let user = user {
@@ -16,9 +22,15 @@ class UserManager: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: "currentUser"),
            let user = try? JSONDecoder().decode(UserPayload.self, from: data) {
             self.user = user
-            print("Usuario cargado: \(user)")
+            print("✅ Usuario cargado: \(user)")
         } else {
-            print("No hay usuario guardado en UserDefaults")
+            print("⚠️ No hay usuario guardado en UserDefaults")
         }
+    }
+
+    func clearUser() {
+        UserDefaults.standard.removeObject(forKey: "currentUser")
+        self.user = nil
+        print("👤 Usuario eliminado de UserDefaults")
     }
 }

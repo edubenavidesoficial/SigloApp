@@ -1,7 +1,8 @@
 import SwiftUI
+import FirebaseMessaging
 
 struct ProfileView: View {
-    @State private var pushNotificationsEnabled = true
+    @AppStorage("pushNotificationsEnabled") private var pushNotificationsEnabled = true
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var showRatingSheet = false
     @State private var rating: Int = 0
@@ -39,11 +40,23 @@ struct ProfileView: View {
                             VStack(alignment: .leading, spacing: 16) {
                                 SectionHeader(title: "PREFERENCIAS")
                                 
-                                ToggleRow(
-                                    title: "Notificaciones Push",
-                                    description: "Configura si quieres recibir alerta de El Siglo de Torreón",
-                                    isOn: $pushNotificationsEnabled
-                                )
+                                Toggle("Notificaciones Push", isOn: $pushNotificationsEnabled)
+                                    .onChange(of: pushNotificationsEnabled) { newValue in
+                                        Task {
+                                            // Obtener token FCM actual
+                                            if let fcmToken = Messaging.messaging().fcmToken,
+                                               let authToken = TokenService.shared.getStoredToken() {
+                                                let base64Token = fcmToken.data(using: .utf8)?.base64EncodedString() ?? ""
+                                                await PushToggleService.setPush(
+                                                    enabled: newValue,
+                                                    tokenBase64: base64Token,
+                                                    authToken: authToken
+                                                )
+                                            } else {
+                                                print("❌ No hay FCM token o authToken disponible")
+                                            }
+                                        }
+                                    }
                                 NavigationRow(title: "Apariencia", destination: ThemeView())
                                 NavigationRow(title: "Menú superior", destination: MenuTopView())
                                 NavigationRow(title: "Tamano de letra", destination: FontSizeView())

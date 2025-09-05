@@ -1,5 +1,6 @@
 import SwiftUI
-import AuthenticationServices 
+import FirebaseMessaging
+import AuthenticationServices
 
 struct LoginView: View {
     @MainActor
@@ -204,12 +205,33 @@ struct LoginView: View {
 
         Task {
             do {
+                // 1️⃣ Login con API
                 let userPayload = try await LoginService.login(username: username, password: password)
+                
+                // 2️⃣ Guardar usuario
                 userManager.user = userPayload
                 userManager.saveUserToDefaults()
                 lastUsername = username
                 isLoggedIn = true
                 alertMessage = "Inicio de sesión exitoso"
+
+                // 3️⃣ Registrar dispositivo en backend
+                if let fcmToken = Messaging.messaging().fcmToken,
+                   let authToken = TokenService.shared.getStoredToken() {
+                    let base64Token = fcmToken.data(using: .utf8)?.base64EncodedString() ?? ""
+                    let userId = userManager.user?.id ?? 0
+                    
+                    Task {
+                        await PushService.registerDevice(
+                            deviceType: 1, // iOS
+                            userId: userId,
+                            tokenBase64: base64Token,
+                            authToken: authToken
+                        )
+                        print("✅ Dispositivo registrado con userId: \(userId)")
+                    }
+                }
+
             } catch {
                 alertMessage = "Error: \(error.localizedDescription)"
             }

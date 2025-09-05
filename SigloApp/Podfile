@@ -10,6 +10,8 @@ target 'SigloApp' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
+  # Firebase Messaging (push)
+  pod 'Firebase/Messaging'
 
   # Google Sign-In
   pod 'GoogleSignIn'

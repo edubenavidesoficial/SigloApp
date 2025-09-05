@@ -6,6 +6,9 @@ import GoogleMobileAds
 @main
 struct SigloAppApp: App {
    
+    // Conectar el AppDelegate
+       @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     init() {
         FirebaseApp.configure()
         MobileAds.shared.start { status in
@@ -13,7 +16,7 @@ struct SigloAppApp: App {
         }
     }
     
-    @StateObject private var userManager = UserManager()
+    @StateObject private var userManager = UserManager.shared
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .automatic
 

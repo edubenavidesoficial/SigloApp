@@ -99,7 +99,6 @@ struct ImpresoView: View {
             }
 
             // Panel inferior para NO suscriptores
-            /*
             let estado = subVM.suscripcion?.suscripcionDigital.estado?.lowercased() ?? ""
             let isSubscriber = subVM.suscripcion?.suscriptor == true && estado == "activa"
 
@@ -145,7 +144,7 @@ struct ImpresoView: View {
                 .padding()
                 .transition(.move(edge: .bottom))
                 .animation(.easeInOut, value: isLoggedIn)
-            }*/
+            }
         }
     }
 }
