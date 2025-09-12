@@ -60,6 +60,7 @@
 		C0577A3B2E6B85710031D731 /* PushToggleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0577A3A2E6B85710031D731 /* PushToggleService.swift */; };
 		C05852C12DEA41E0009ABA57 /* SuplementsDocViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05852C02DEA41E0009ABA57 /* SuplementsDocViewModel.swift */; };
 		C0602B752D812239009D53DC /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0602B742D812239009D53DC /* HeaderView.swift */; };
+		C06226F12E73772E0036AF5C /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06226F02E73772B0036AF5C /* UI.swift */; };
 		C073F8582E67681E002F837D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C073F8572E676817002F837D /* AuthService.swift */; };
 		C073F85A2E677619002F837D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C073F8592E677619002F837D /* GoogleService-Info.plist */; };
 		C075CC8A2D83E16600B95F69 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075CC892D83E16600B95F69 /* HomeViewModel.swift */; };
@@ -265,6 +266,7 @@
 		C0577A3A2E6B85710031D731 /* PushToggleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToggleService.swift; sourceTree = "<group>"; };
 		C05852C02DEA41E0009ABA57 /* SuplementsDocViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuplementsDocViewModel.swift; sourceTree = "<group>"; };
 		C0602B742D812239009D53DC /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		C06226F02E73772B0036AF5C /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		C073F8572E676817002F837D /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		C073F8592E677619002F837D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C073F85B2E68EB29002F837D /* SigloApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SigloApp.entitlements; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 		C01388492E1567090002CD33 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				C06226F02E73772B0036AF5C /* UI.swift */,
 				C0A7577F2E4E9CC1004AEDD2 /* GenericUi.swift */,
 				C0A757812E4E9F0D004AEDD2 /* GenericVideoUi.swift */,
 				C0E7B2AA2E57ECD3007AAF15 /* UI.swift */,
@@ -1433,6 +1436,7 @@
 				C02318D52DFB815000C22006 /* UserManager.swift in Sources */,
 				C0833DFC2DBC3C57009C784C /* fixView.swift in Sources */,
 				C0A08FDC2DE3D78500260DF3 /* SearchFrontViewModel.swift in Sources */,
+				C06226F12E73772E0036AF5C /* UI.swift in Sources */,
 				C01388482E1411710002CD33 /* CustomTopBar.swift in Sources */,
 				C075CCB12D84564300B95F69 /* ArticleRow.swift in Sources */,
 				C0D28BEF2E32C48D00D14D6F /* NewsSectionsModel.swift in Sources */,

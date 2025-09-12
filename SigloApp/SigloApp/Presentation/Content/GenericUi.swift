@@ -36,7 +36,7 @@ struct NotaRow: View {
                         .foregroundColor(.primary)
                         .lineLimit(2)
                     
-                    Text(nota.autor)
+                    Text(nota.autor ?? "")
                         .font(.caption)
                         .foregroundColor(.gray)
                     
@@ -85,7 +85,7 @@ struct NotaDestacadaView: View {
                     .foregroundColor(.black)
                     .multilineTextAlignment(.leading)
                 
-                Text(nota.autor)
+                Text(nota.autor ?? "")
                     .font(.caption)
                     .foregroundColor(.red)
             }
@@ -174,10 +174,10 @@ struct NotaCarruselCard: View {
                             .multilineTextAlignment(.leading)
                         
                         HStack(spacing: 6) {
-                            Text(nota.autor.uppercased())
+                            Text((nota.autor ?? "").uppercased())
                                 .font(.caption)
                                 .foregroundColor(.white)
-                            
+
                             // Aumentamos tamaño del ícono con Label
                             Label {
                                 Text(nota.fecha_formato ?? "")
@@ -433,7 +433,7 @@ var body: some View {
                     .foregroundColor(.primary)
                     .lineLimit(2)
                 
-                Text(nota.autor)
+                Text(nota.autor ?? "")
                     .font(.caption)
                     .foregroundColor(.gray)
                 
@@ -473,7 +473,7 @@ struct NewsBigImageRow: View {
                     .font(.custom("FiraSansCondensed-Regular", size: 20))
                     .foregroundColor(.primary)
                     .lineLimit(2)
-                Text(nota.autor)
+                Text(nota.autor ?? "")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -532,7 +532,7 @@ struct NewsSmallHorizontalRow: View {
             
             // Footer
             HStack {
-                Text(nota.autor)
+                Text(nota.autor ?? "")
                     .font(.caption)
                     .bold()
                     .foregroundColor(.brown)
@@ -593,7 +593,7 @@ struct NewsRelaRow: View {
                         .foregroundColor(.primary)
                         .lineLimit(2)
                     
-                    Text(nota.autor)
+                    Text(nota.autor ?? "")
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
@@ -641,7 +641,7 @@ struct NewsMasRow: View {
                         .foregroundColor(.primary)
                         .lineLimit(2)
                     
-                    Text(nota.autor)
+                    Text(nota.autor ?? "")
                         .font(.caption)
                         .foregroundColor(.gray)
                 }

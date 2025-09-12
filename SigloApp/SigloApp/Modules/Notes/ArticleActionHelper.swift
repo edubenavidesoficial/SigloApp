@@ -30,7 +30,7 @@ class ArticleActionHelper: ObservableObject {
         let savedArticle = SavedArticle(
             category: nota.localizador,
             title: nota.titulo,
-            author: nota.autor,
+            author: nota.autor ?? "",
             location: nota.ciudad ?? "",
             time: nota.fecha_formato ?? "",
             imageName: imagenURL, // aquí va la URL real

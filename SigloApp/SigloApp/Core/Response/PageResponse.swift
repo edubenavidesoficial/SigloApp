@@ -60,7 +60,7 @@ struct Nota: Decodable, Sendable, Identifiable {
     let titulo: String
     let localizador: String
     let balazo: String?
-    let autor: String
+    let autor: String?
     let ciudad: String?
     let contenido: [String]
     let fotos: [Foto]
