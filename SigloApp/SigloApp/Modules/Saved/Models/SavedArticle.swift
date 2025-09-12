@@ -1,6 +1,6 @@
 import Foundation
 
-struct SavedArticle: Identifiable {
+struct SavedArticle: Identifiable, Codable {
     var id = UUID()
     var category: String
     var title: String
