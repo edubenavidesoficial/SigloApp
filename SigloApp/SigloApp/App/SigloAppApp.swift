@@ -55,6 +55,7 @@ struct SigloAppApp: App {
                 }
             }
             .environmentObject(userManager)
+            .environmentObject(articleViewModel)
             .onAppear {
                 userManager.loadUserFromDefaults()
 

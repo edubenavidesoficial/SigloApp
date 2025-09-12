@@ -2,9 +2,10 @@ import SwiftUI
 
 struct NoticiaView: View {
     let nota: Nota
+    @EnvironmentObject var articleViewModel: ArticleViewModel  // <-- Inyectamos aquí
 
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             ZStack(alignment: .bottomLeading) {
                 if let foto = nota.fotos.first {
                     GeometryReader { geometry in

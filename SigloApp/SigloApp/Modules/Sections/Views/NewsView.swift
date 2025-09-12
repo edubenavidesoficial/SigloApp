@@ -68,11 +68,14 @@ struct NewsView: View {
     }
 }
 
+import SwiftUI
+
 struct SectionDestacadaView: View {
     let nota: Noticia
+    @EnvironmentObject var articleViewModel: ArticleViewModel  // <-- Inyectamos aquí
 
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             VStack(alignment: .leading, spacing: 8) {
                 sectionImage
                 locatorLine
@@ -109,7 +112,7 @@ struct SectionDestacadaView: View {
         Text(nota.titulo)
             .font(.headline)
             .foregroundColor(.black)
-            .multilineTextAlignment(.leading)  // fuerza alineación multilinea a la izquierda
+            .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -119,7 +122,7 @@ struct SectionDestacadaView: View {
             .foregroundColor(.black)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true) // que haga wrapping
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     var authorAndDate: some View {
@@ -143,6 +146,7 @@ struct SectionDestacadaView: View {
         }
     }
 }
+
 
 struct SectionImageView: View {
     let foto: FotoNota?

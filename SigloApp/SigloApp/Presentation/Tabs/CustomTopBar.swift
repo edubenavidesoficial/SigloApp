@@ -2,9 +2,12 @@ import SwiftUI
 
 struct CustomTopBar: View {
     let onBack: () -> Void
+    var nota: Nota
+    @ObservedObject var articleActionHelper: ArticleActionHelper
 
     var body: some View {
         HStack {
+            // Botón de volver
             Button(action: {
                 onBack()
             }) {
@@ -20,16 +23,24 @@ struct CustomTopBar: View {
 
             Spacer()
 
+            // Botones de acción
             HStack(spacing: 24) {
                 Button(action: {}) {
                     Image(systemName: "headphones")
                         .foregroundColor(.white)
                 }
-                Button(action: {}) {
+                // Compartir
+                Button(action: {
+                    articleActionHelper.compartirNota(nota)
+                }) {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundColor(.white)
                 }
-                Button(action: {}) {
+
+                // Guardar
+                Button(action: {
+                    articleActionHelper.guardarNota(nota)
+                }) {
                     Image(systemName: "bookmark")
                         .foregroundColor(.white)
                 }

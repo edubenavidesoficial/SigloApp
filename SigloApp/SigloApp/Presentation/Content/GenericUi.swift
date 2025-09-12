@@ -4,9 +4,10 @@ struct NotaRow: View {
     let nota: Nota
     let seccion: String
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
@@ -58,9 +59,10 @@ struct NotaRow: View {
 
 struct NotaDestacadaView: View {
     let nota: Nota
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             VStack(alignment: .leading, spacing: 8) {
                 NotaImageView(
                     foto: nota.fotos.first,
@@ -143,9 +145,10 @@ struct NotaImageView: View {
 
 struct NotaCarruselCard: View {
     let nota: Nota
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             VStack(alignment: .leading, spacing: 2) {
                 ZStack(alignment: .bottomLeading) {
                     NotaImageView(
@@ -203,9 +206,10 @@ struct NotaCarruselCard: View {
 struct SoftCarruselCard: View {
     let nota: Nota
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             VStack(alignment: .leading, spacing: 8) {
                 // Imagen arriba
                 NotaImageView(
@@ -292,6 +296,7 @@ struct SoftCarruselCard: View {
 struct TVCarruselCard: View {
     let nota: Nota
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -303,7 +308,7 @@ struct TVCarruselCard: View {
                 .lineLimit(3)
                 .padding(.horizontal, 12)
             
-            NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+            NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
                 VStack(alignment: .leading, spacing: 8) {
                     // Imagen arriba
                     NotaImageView(
@@ -388,12 +393,15 @@ struct TVCarruselCard: View {
 }
 
 struct SigloDataView: View {
-let nota: Nota
-let seccion: String
-let articleActionHelper: ArticleActionHelper
+    let nota: Nota
+    let seccion: String
+    let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
 
 var body: some View {
-    NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+    NavigationLink(
+        destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)
+    ) {
         HStack(alignment: .top, spacing: 12) {
             
             // --- Contenido textual de la nota ---
@@ -437,18 +445,19 @@ var body: some View {
                     .font(.caption)
                     .foregroundColor(.gray)
                 
-                Text(seccion)
+                // Sección de la nota (usa localizador si no tienes otra variable)
+                Text(nota.localizador)
                     .foregroundColor(.red)
                     .font(.caption)
             }
             
             Spacer()
             
-            // Imagen pequeña lateral de la nota
+            // Imagen lateral de la nota
             NotaImageView(
                 foto: nota.fotos.first,
                 size: CGSize(width: 100, height: 100),
-                fecha: nota.fecha_formato
+                fecha: nota.fecha_formato ?? ""
             )
         }
         .padding(.horizontal, 14)
@@ -460,9 +469,10 @@ var body: some View {
 struct NewsBigImageRow: View {
     let nota: Nota
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             VStack(alignment: .leading, spacing: 8) {
                 NotaImageView(
                     foto: nota.fotos.first,
@@ -565,9 +575,10 @@ struct NewsSmallHorizontalRow: View {
 struct NewsRelaRow: View {
     let nota: Nota
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
@@ -613,9 +624,10 @@ struct NewsRelaRow: View {
 struct NewsMasRow: View {
     let nota: Nota
     let articleActionHelper: ArticleActionHelper
+    @EnvironmentObject var articleViewModel: ArticleViewModel
     
     var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id)) {
+        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {

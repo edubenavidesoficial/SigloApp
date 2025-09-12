@@ -32,7 +32,7 @@ struct UserErrorResponse: Codable {
 struct PortadaResponse: Decodable {
     let request_date: String
     let response: String
-    let version: String
+    let version: String?
     let payload: [String: SeccionPortada]
 }
 
