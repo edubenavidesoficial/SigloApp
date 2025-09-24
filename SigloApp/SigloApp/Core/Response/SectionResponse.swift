@@ -65,6 +65,19 @@ struct SectionPayload: Decodable, Identifiable {
     }
 }
 
+extension SectionPayload {
+    // Init manual para usarlo en vistas sin decodificación
+    init(sectionId: Int, nombre: String) {
+        self.sectionId = sectionId
+        self.nombre = nombre
+        self.ordenar = nil
+        self.tipo = nil
+        self.logo = nil
+        self.notas = nil
+        self.videos = nil
+    }
+}
+
 // FotoGaleria
 struct FotoGaleria: Decodable {
     let id: Int

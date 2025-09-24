@@ -2,16 +2,23 @@ import SwiftUI
 import GoogleMobileAds
 
 struct SeccionesHomeView: View {
+    let payload: SectionPayload
+    
     @ObservedObject var viewModel: HomeViewModel
     @ObservedObject var articleViewModel: ArticleViewModel
     @StateObject var articleActionHelper: ArticleActionHelper
     
-    init(viewModel: HomeViewModel, articleViewModel: ArticleViewModel) {
+    init(
+        viewModel: HomeViewModel,
+        articleViewModel: ArticleViewModel,
+        payload: SectionPayload = SectionPayload(sectionId: 903, nombre: "SigloTv") // valor por defecto
+    ) {
         self.viewModel = viewModel
         self.articleViewModel = articleViewModel
+        self.payload = payload
         _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleViewModel))
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -74,36 +81,20 @@ struct SeccionesHomeView: View {
                     .frame(width: 360, height: 50)
 
                 // MARK: - Sección SigloTv
-                let videos = viewModel.videos
-
-                if viewModel.isLoading {
-                    ProgressView("Cargando videos...")
-                        .padding()
-                } else if videos.isEmpty {
-                    Text("No hay videos disponibles")
-                        .padding()
-                } else {
-                    // Mostrar videos
-                    if let primerVideo = videos.first {
-                        VideoView(video: primerVideo, allVideos: videos)
-                    }
-
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(videos, id: \.id) { video in
-                                VideoCard(video: video)
-                            }
+                if payload.sectionId == 903 {
+                    if !viewModel.videos.isEmpty {
+                        ForEach(viewModel.videos, id: \.id) { video in
+                            VideoView(video: video, allVideos: viewModel.videos)
                         }
-                        .padding(.horizontal)
-                    }
-
-                    if videos.count > 6 {
-                        let videosSeleccionados = Array(videos.dropFirst(6).prefix(4))
-                        ForEach(videosSeleccionados, id: \.id) { video in
-                            VideoView(video: video, allVideos: videos)
-                        }
+                    } else if viewModel.isLoading {
+                        ProgressView("Cargando videos...")
+                            .padding()
+                    } else {
+                        Text("No hay videos disponibles")
+                            .padding()
                     }
                 }
+
 
                 // MARK: - Siglo Data
                 if let data = viewModel.secciones.first(where: { $0.seccion == "Siglo Data" }),
