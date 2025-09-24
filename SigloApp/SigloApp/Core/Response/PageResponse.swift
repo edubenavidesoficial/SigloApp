@@ -458,3 +458,14 @@ struct SuscripcionImpresa: Codable {
     let estado: String?       // <-- opcional
     let extras: [String]
 }
+
+
+protocol NoticiaProtocolo: Identifiable {
+    var id: Int { get }
+    var titulo: String { get }
+    var fecha: String { get }
+    var autor: String? { get }
+}
+
+extension Noticia: NoticiaProtocolo {}
+extension Nota: NoticiaProtocolo {}

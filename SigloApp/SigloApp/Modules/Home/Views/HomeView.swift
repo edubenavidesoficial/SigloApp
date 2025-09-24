@@ -17,71 +17,50 @@ struct HomeView: View {
                     NotesView(title: selected.title, selectedOption: $selectedOption)
                         .transition(.move(edge: .trailing))
                 } else {
-                    VStack(spacing: 0) {
-                        ScrollView {
-                            VStack(spacing: 0) {
-                                HeaderView(
-                                    selectedOption: $selectedOption,
-                                    isMenuOpen: $isMenuOpen,
-                                    isLoggedIn: isLoggedIn
-                                )
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            HeaderView(
+                                selectedOption: $selectedOption,
+                                isMenuOpen: $isMenuOpen,
+                                isLoggedIn: isLoggedIn
+                            )
 
-                                if viewModel.isLoading && viewModel.secciones.isEmpty {
-                                } else if let errorMessage = viewModel.errorMessage {
-                                    ErrorView(errorType: getErrorType(from: errorMessage)) {
-                                        viewModel.cargarPortada()
-                                    }
-                                } else {
-                                    //Carrusel no se usa actualemte
-                                    /*ForEach(viewModel.secciones.filter { $0.seccion == "Portada" }, id: \.seccion) { seccion in
-                                        let notas = seccion.notas ?? []
-                                        TabView {
-                                            ForEach(notas, id: \.id) { nota in
-                                                NoticiaView(nota: nota)
-                                            }
-                                        }
-                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                                        .frame(height: 450)
-                                    }*/
-                                    // Primera nota
-                                    if let seccion = viewModel.secciones.first(where: { $0.seccion == "Portada" }),
-                                       let nota = seccion.notas?.first {
-
-                                        // Creamos el helper con el label correcto
-                                        let helper = ArticleActionHelper(articleViewModel: articleViewModel)
-                                        
-                                        NoticiaView(nota: nota, articleActionHelper: helper)
-                                            .environmentObject(articleViewModel)
-                                            .frame(height: 520)
-                                            .padding(.top, -10)
-                                    }
-                                    else {
-                                        Text("No hay noticias disponibles")
-                                            .foregroundColor(.gray)
-                                            .padding()
-                                    }
-
-                                    SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
-                                    
-                                    if viewModel.isLoading {
-                                        ProgressView("Cargando más...")
-                                            .padding()
-                                    }
-
-                                    GeometryReader { geometry in
-                                        Color.clear
-                                            .onAppear {
-                                                let screenHeight = UIScreen.main.bounds.height
-                                                if geometry.frame(in: .global).maxY < screenHeight + 100 {
-                                                    viewModel.cargarPortada()
-                                                }
-                                            }
-                                    }
-                                    .frame(height: 50)
-                                }
+                            // MARK: Noticias - Primera nota de Portada
+                            if let seccion = viewModel.secciones.first(where: { $0.seccion == "Portada" }),
+                               let nota = seccion.notas?.first {
+                                let helper = ArticleActionHelper(articleViewModel: articleViewModel)
+                                NoticiaView(nota: nota, articleActionHelper: helper)
+                                    .environmentObject(articleViewModel)
+                                    .frame(height: 520)
+                                    .padding(.top, -10)
+                            } else {
+                                Text("No hay noticias disponibles")
+                                    .foregroundColor(.gray)
+                                    .padding()
                             }
-                            .offset(y: 2)
+
+                            // MARK: Otras secciones
+                            SeccionesHomeView(viewModel: viewModel, articleViewModel: articleViewModel)
+
+                            // MARK: Carga adicional
+                            if viewModel.isLoading {
+                                ProgressView("Cargando más...")
+                                    .padding()
+                            }
+
+                            // Trigger scroll para cargar más
+                            GeometryReader { geometry in
+                                Color.clear
+                                    .onAppear {
+                                        let screenHeight = UIScreen.main.bounds.height
+                                        if geometry.frame(in: .global).maxY < screenHeight + 100 {
+                                            viewModel.cargarPortada()
+                                        }
+                                    }
+                            }
+                            .frame(height: 50)
                         }
+                        .offset(y: 2)
                     }
                 }
             }
@@ -111,6 +90,7 @@ struct HomeView: View {
         }
     }
     
+    // MARK: Función para mapear mensaje a tipo de error
     private func getErrorType(from message: String) -> ErrorType {
         if message.contains("404") {
             return .notFound

@@ -1,25 +1,32 @@
 import SwiftUI
 
 struct ErrorSectionView: View {
-    var message: String
-    var reloadAction: () -> Void
-
+    let message: String
+    var reloadAction: (() -> Void)? = nil
+    
     var body: some View {
-        ErrorView(errorType: getErrorType(from: message)) {
-            reloadAction()
+        VStack(spacing: 12) {
+            Text(message)
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            
+            if let reload = reloadAction {
+                Button(action: reload) {
+                    Text("Reintentar")
+                        .fontWeight(.bold)
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(1)
+                }
+            }
         }
-    }
-
-    private func getErrorType(from message: String) -> ErrorType {
-        if message.contains("404") { return .notFound }
-        else if message.contains("mantenimiento") { return .maintenance }
-        else if message.contains("conexión") { return .connection }
-        else { return .unexpected }
+        .padding()
     }
 }
 
 struct VideoSectionView: View {
-    var videos: [SectionVideo] // ⚡ aquí estaba el error, no es Video
+    var videos: [SectionVideo] 
 
     var body: some View {
         VStack(spacing: 16) {
@@ -45,6 +52,7 @@ struct VideoSectionView: View {
         }
     }
 }
+
 
 struct NewsSectionView: View {
     var noticias: [Noticia] // Tu modelo real

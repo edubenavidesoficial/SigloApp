@@ -53,7 +53,7 @@ final class VideoService {
                 }
 
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido:\n\(jsonString.prefix(500))...")
+                    print("📦 JSON recibido video:\n\(jsonString.prefix(500))...")
                 }
 
                 do {

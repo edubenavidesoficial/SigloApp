@@ -106,6 +106,35 @@ struct Noticia: Decodable, Identifiable {
     let acceso: Int
 }
 
+extension Noticia {
+    init(from nota: Nota) {
+        self.id = nota.id
+        self.sid = 0
+        self.fecha = nota.fecha
+        self.fechamod = nota.fechamod
+        self.fechaFormato = nota.fecha_formato
+        self.titulo = nota.titulo
+        self.localizador = nota.localizador
+        self.balazo = nota.balazo
+        self.autor = nota.autor
+        self.ciudad = nota.ciudad
+        self.contenido = nota.contenido
+        self.contenidoHTML = nil
+        self.seccion = ""
+        self.fotos = nota.fotos.map { FotoNota(urlFoto: $0.url_foto ?? "", pieFoto: $0.pie_foto) }
+        self.nombre = ""
+        self.gid = nil
+        self.galeria = nil
+        self.plantilla = nil
+        self.votacion = nil
+        self.video = nil
+        self.youtube = nil
+        self.facebook = nil
+        self.filemanager = nil
+        self.acceso = 0
+    }
+}
+
 // FotoNota
 struct FotoNota: Decodable {
     let urlFoto: String
