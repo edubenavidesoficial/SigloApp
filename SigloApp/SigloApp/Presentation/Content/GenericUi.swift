@@ -28,7 +28,10 @@ struct NotaRow: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 10)
+                                .padding(10)
+                                .background(Color.white.opacity(0.3))
+                                .clipShape(Circle())
+                                .font(.system(size: 24))
                         }
                     }
                     
@@ -251,9 +254,10 @@ struct SoftCarruselCard: View {
                     } label: {
                         Image(systemName: "ellipsis")
                             .foregroundColor(.gray)
-                            .padding(.trailing, 10)
-                            .frame(width: 6)
-                            .font(.system(size: 30))
+                            .padding(10)
+                            .background(Color.white.opacity(0.3))
+                            .clipShape(Circle())
+                            .font(.system(size: 24))
                     }
                 }
                 .padding(.horizontal, 12)
@@ -350,9 +354,10 @@ struct TVCarruselCard: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 10)
-                                .frame(width: 6)
-                                .font(.system(size: 30))
+                                .padding(10)
+                                .background(Color.white.opacity(0.3))
+                                .clipShape(Circle())
+                                .font(.system(size: 24))
                         }
                     }
                     .padding(.horizontal, 12)
@@ -432,7 +437,10 @@ var body: some View {
                         Image(systemName: "ellipsis")
                             .foregroundColor(.gray)
                             .font(.system(size: 18))
-                            .padding(.trailing, 10)
+                            .padding(10)
+                            .background(Color.white.opacity(0.3))
+                            .clipShape(Circle())
+                            .font(.system(size: 24))
                     }
                 }
                 
@@ -520,6 +528,10 @@ struct NewsSmallHorizontalRow: View {
                 } label: {
                     Image(systemName: "ellipsis")
                         .foregroundColor(.gray)
+                        .padding(10)
+                        .background(Color.white.opacity(0.3))
+                        .clipShape(Circle())
+                        .font(.system(size: 24))
                 }
             }
             .padding([.horizontal, .top])
@@ -595,7 +607,10 @@ struct NewsRelaRow: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 10)
+                                .padding(10)
+                                .background(Color.white.opacity(0.3))
+                                .clipShape(Circle())
+                                .font(.system(size: 24))
                         }
                     }
                     
@@ -644,7 +659,10 @@ struct NewsMasRow: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 10)
+                                .padding(10)
+                                .background(Color.white.opacity(0.3))
+                                .clipShape(Circle())
+                                .font(.system(size: 24))
                         }
                     }
                     

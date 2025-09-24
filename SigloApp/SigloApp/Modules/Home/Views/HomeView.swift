@@ -44,13 +44,18 @@ struct HomeView: View {
                                         .frame(height: 450)
                                     }*/
                                     // Primera nota
-                                    
                                     if let seccion = viewModel.secciones.first(where: { $0.seccion == "Portada" }),
                                        let nota = seccion.notas?.first {
-                                        NoticiaView(nota: nota)
-                                            .frame(height: 450)
+
+                                        // Creamos el helper con el label correcto
+                                        let helper = ArticleActionHelper(articleViewModel: articleViewModel)
+                                        
+                                        NoticiaView(nota: nota, articleActionHelper: helper)
+                                            .environmentObject(articleViewModel)
+                                            .frame(height: 520)
                                             .padding(.top, -10)
-                                    } else {
+                                    }
+                                    else {
                                         Text("No hay noticias disponibles")
                                             .foregroundColor(.gray)
                                             .padding()

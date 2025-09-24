@@ -4,20 +4,19 @@ struct NotesView: View {
     var title: String
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var articleViewModel: ArticleViewModel
-    @StateObject private var articleActionHelper: ArticleActionHelper
+    private let articleActionHelper: ArticleActionHelper 
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @State private var isMenuOpen: Bool = false
     @Binding var selectedOption: MenuOption?
     @State private var token: String? = nil
 
-    // 👇 Inicializador personalizado para inyectar correctamente dependencias
     init(title: String, selectedOption: Binding<MenuOption?>) {
         self.title = title
         self._selectedOption = selectedOption
 
         let articleVM = ArticleViewModel()
         _articleViewModel = StateObject(wrappedValue: articleVM)
-        _articleActionHelper = StateObject(wrappedValue: ArticleActionHelper(articleViewModel: articleVM))
+        self.articleActionHelper = ArticleActionHelper(articleViewModel: articleVM)
     }
 
     var body: some View {
@@ -43,19 +42,22 @@ struct NotesView: View {
                                 let notas = seccion.notas ?? []
                                 TabView {
                                     ForEach(notas, id: \.id) { nota in
-                                        NoticiaView(nota: nota)
+                                        NoticiaView(
+                                            nota: nota,
+                                            articleActionHelper: articleActionHelper
+                                        )
+                                        .environmentObject(articleViewModel)  // importante
                                     }
                                 }
                                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                                 .frame(height: 450)
                             }
 
-                            let sectionTitle = "\(title)"
                             SeccionsNotesView(
                                 viewModel: viewModel,
                                 articleViewModel: articleViewModel,
                                 articleActionHelper: articleActionHelper,
-                                title: sectionTitle
+                                title: title
                             )
                         }
                     }
