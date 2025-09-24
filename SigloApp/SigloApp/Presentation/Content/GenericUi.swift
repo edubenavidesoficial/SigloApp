@@ -146,64 +146,7 @@ struct NotaImageView: View {
 }
 
 
-struct NotaCarruselCard: View {
-    let nota: Nota
-    @EnvironmentObject var articleViewModel: ArticleViewModel
-    
-    var body: some View {
-        NavigationLink(destination: NewsDetailView(idNoticia: nota.id, articleViewModel: articleViewModel)) {
-            VStack(alignment: .leading, spacing: 2) {
-                ZStack(alignment: .bottomLeading) {
-                    NotaImageView(
-                        foto: nota.fotos.first,
-                        size: CGSize(width: 280, height: 360),
-                        fecha: nil
-                    )
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 4) {
-                            Rectangle()
-                                .fill(Color.white)
-                                .frame(width: 4, height: 14)
-                            
-                            Text(nota.localizador)
-                                .font(.caption)
-                                .foregroundColor(.white)
-                                .shadow(radius: 2)
-                        }
-                        
-                        Text(nota.titulo)
-                            .font(.subheadline) // Tamaño más grande que .caption
-                            .fontWeight(.bold)  // Negrilla
-                            .foregroundColor(.white)
-                            .shadow(radius: 2)
-                            .multilineTextAlignment(.leading)
-                        
-                        HStack(spacing: 6) {
-                            Text((nota.autor ?? "").uppercased())
-                                .font(.caption)
-                                .foregroundColor(.white)
 
-                            // Aumentamos tamaño del ícono con Label
-                            Label {
-                                Text(nota.fecha_formato ?? "")
-                                    .font(.caption)
-                                    .foregroundColor(.white)
-                            } icon: {
-                                Image(systemName: "clock")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 12))
-                            }
-                        }
-                    }
-                    .padding(15)
-                }
-                .frame(width: 300, height: 400)
-            }
-        }
-        .frame(width: 300)
-    }
-}
 
 
 struct SoftCarruselCard: View {

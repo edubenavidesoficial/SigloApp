@@ -33,7 +33,8 @@ struct SeccionesHomeView: View {
                    let notaRandom = sinSeccion.notas?.shuffled().first {
                     NotaDestacadaView(nota: notaRandom)
                 }
-                
+                BannerAdView(adUnitID: "ca-app-pub-5687735147948295/8617784591")
+                    .frame(width: 360, height: 50)
                 // Foquitos
                 if let foquitos = viewModel.secciones.first(where: { $0.seccion == "Foquitos" }) {
                     ScrollView(.horizontal, showsIndicators: false) {
