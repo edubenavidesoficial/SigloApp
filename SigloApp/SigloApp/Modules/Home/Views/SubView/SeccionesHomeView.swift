@@ -7,6 +7,7 @@ struct SeccionesHomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @ObservedObject var articleViewModel: ArticleViewModel
     @StateObject var articleActionHelper: ArticleActionHelper
+    @StateObject private var viewModelTv = SectionDetailViewModel()
     
     init(
         viewModel: HomeViewModel,
@@ -82,11 +83,31 @@ struct SeccionesHomeView: View {
 
                 // MARK: - Sección SigloTv
                 if payload.sectionId == 903 {
-                    if !viewModel.videos.isEmpty {
-                        ForEach(viewModel.videos, id: \.id) { video in
-                            VideoView(video: video, allVideos: viewModel.videos)
+                    if let videos = viewModelTv.videos, !videos.isEmpty {
+                        // Mostrar primer video destacado
+                        if let primerVideo = videos.first {
+                            VideoView(video: primerVideo, allVideos: videos)
                         }
-                    } else if viewModel.isLoading {
+                        
+                        // Carrusel horizontal con todos los videos
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(videos, id: \.id) { video in
+                                    VideoCard(video: video)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        // Mostrar videos del 7º al 10º
+                        if videos.count > 6 {
+                            let videosSeleccionados = Array(videos.dropFirst(6).prefix(4))
+                            ForEach(videosSeleccionados, id: \.id) { video in
+                                VideoView(video: video, allVideos: videos)
+                            }
+                        }
+                        
+                    } else if viewModelTv.isLoading {
                         ProgressView("Cargando videos...")
                             .padding()
                     } else {
@@ -112,6 +133,11 @@ struct SeccionesHomeView: View {
                         .foregroundColor(.gray)
                         .padding()
                 }
+            }
+        }
+        .onAppear {
+            if payload.sectionId == 903 {
+                viewModelTv.cargarPortada(idSeccion: 903)
             }
         }
         .sheet(isPresented: $articleActionHelper.showShareSheet) {
