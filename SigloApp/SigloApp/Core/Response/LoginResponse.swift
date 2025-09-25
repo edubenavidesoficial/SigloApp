@@ -39,9 +39,9 @@ struct UserPayload: Codable {
         nombre_largo = try container.decode(String.self, forKey: .nombre_largo)
         nombre_corto = try container.decode(String.self, forKey: .nombre_corto)
         nombre_iniciales = try container.decode(String.self, forKey: .nombre_iniciales)
-        let activoString = try container.decode(String.self, forKey: .activo)
-        activo = (activoString.lowercased() == "true")
+        activo = try container.decode(Bool.self, forKey: .activo) 
     }
+
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -53,7 +53,7 @@ struct UserPayload: Codable {
         try container.encode(nombre_largo, forKey: .nombre_largo)
         try container.encode(nombre_corto, forKey: .nombre_corto)
         try container.encode(nombre_iniciales, forKey: .nombre_iniciales)
-        try container.encode(activo ? "true" : "false", forKey: .activo)
+        try container.encode(activo, forKey: .activo)
     }
 }
 

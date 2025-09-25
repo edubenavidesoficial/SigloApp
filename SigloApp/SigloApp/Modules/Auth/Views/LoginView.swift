@@ -114,6 +114,7 @@ struct LoginView: View {
 
                 Divider()
 
+                // Botón de Apple Sign-In
                 Button(action: {
                     AuthService.shared.generateNonce()
                     AuthService.shared.startSignInWithAppleFlow()
@@ -135,14 +136,9 @@ struct LoginView: View {
                 }
                 .padding(.top, 20)
 
-
-                // Botón de Google
+                // Botón de Google Sign-In
                 Button(action: {
-                    if let rootVC = UIApplication.shared.connectedScenes
-                        .compactMap({ $0 as? UIWindowScene })
-                        .first?.windows.first?.rootViewController {
-                        AuthService.shared.signInWithGoogle(presenting: rootVC)
-                    }
+                    AuthService.shared.signInWithGoogle()
                 }) {
                     HStack {
                         Image(systemName: "globe")
@@ -158,7 +154,7 @@ struct LoginView: View {
                     )
                     .cornerRadius(10)
                 }
-                .padding(.top, 10)
+                 .padding(.top, 10)
 
                 Text("Si continúas, aceptas nuestras Condiciones del Servicio y la Política de Privacidad.")
                     .font(.custom("FiraSansCondensed-Regular", size: 15))

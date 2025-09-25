@@ -82,18 +82,22 @@ struct SeccionesHomeView: View {
                     .frame(width: 360, height: 50)
 
                 // MARK: - Sección SigloTv
+                HStack {
+                    Text("SIGLO TV")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.primary)
+                        .padding(.leading, 10) // Espacio pequeño a la izquierda
+                    Spacer() // Empuja el texto hacia la izquierda
+                }
                 if payload.sectionId == 903 {
                     if let videos = viewModelTv.videos, !videos.isEmpty {
-                        // Mostrar primer video destacado
-                        if let primerVideo = videos.first {
-                            VideoView(video: primerVideo, allVideos: videos)
-                        }
-                        
+                       
                         // Carrusel horizontal con todos los videos
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 ForEach(videos, id: \.id) { video in
-                                    VideoCard(video: video)
+                                    VideoCardHome(video: video, allVideos: videos, articleActionHelper: articleActionHelper)
                                 }
                             }
                             .padding(.horizontal)
@@ -103,7 +107,7 @@ struct SeccionesHomeView: View {
                         if videos.count > 6 {
                             let videosSeleccionados = Array(videos.dropFirst(6).prefix(4))
                             ForEach(videosSeleccionados, id: \.id) { video in
-                                VideoView(video: video, allVideos: videos)
+                                VideoViewHome(video: video, allVideos: videos, articleActionHelper: articleActionHelper)
                             }
                         }
                         
@@ -118,6 +122,15 @@ struct SeccionesHomeView: View {
 
 
                 // MARK: - Siglo Data
+                HStack {
+                    Text("TORREON")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.primary)
+                        .padding(.leading, 10) // Espacio pequeño a la izquierda
+                    Spacer() // Empuja el texto hacia la izquierda
+                }
+
                 if let data = viewModel.secciones.first(where: { $0.seccion == "Siglo Data" }),
                    let notas = data.notas, !notas.isEmpty {
                     if let nota = notas.randomElement() {

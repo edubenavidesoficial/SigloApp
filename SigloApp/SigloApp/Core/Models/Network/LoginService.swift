@@ -29,7 +29,6 @@ final class LoginService {
             TokenService.shared.saveToken(token)
             print("✅ Token recibido y guardado desde TokenService")
         }
-
         return try await loginWithToken(correoHash: correoHash, passwordHash: passwordHash, token: token)
     }
 

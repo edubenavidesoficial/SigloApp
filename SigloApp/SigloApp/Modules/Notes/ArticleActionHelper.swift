@@ -46,4 +46,12 @@ class ArticleActionHelper: ObservableObject {
         articleViewModel.saveArticle(savedArticle)
         articleViewModel.selectedTab = .noticias
     }
+    
+    func compartirVideo(_ video: SectionVideo) {
+        // lógica para compartir un video
+    }
+
+    func guardarVideo(_ video: SectionVideo) {
+        // lógica para guardar un video
+    }
 }
