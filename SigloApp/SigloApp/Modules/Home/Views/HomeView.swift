@@ -68,28 +68,32 @@ struct HomeView: View {
             .navigationBarBackButtonHidden(true)
             .onAppear {
                 if !didLoad {
-                    viewModel.cargarPortada()
-                    didLoad = true
-                }
-            }
-            .task {
-                if !didLoad {
-                    do {
-                        let correoHash = TokenService.shared.getStoredCorreoHash() ?? ""
-                        let generatedToken = try await TokenService.shared.getToken(correoHash: correoHash)
-                        print("✅ Token generado: \(generatedToken)")
-                        token = generatedToken
-                        viewModel.cargarPortada()
-                        didLoad = true
-                    } catch {
-                        print("❌ Error al generar token: \(error.localizedDescription)")
-                        showTokenError = true
+                    Task {
+                        await loadTokenAndData()
                     }
                 }
             }
         }
     }
     
+    // MARK: - Función para obtener token y cargar datos
+    @MainActor
+    private func loadTokenAndData() async {
+        do {
+            // Obtener token válido automáticamente (renueva si expiró)
+            let generatedToken = try await TokenService.shared.getValidToken()
+            print("✅ Token generado: \(generatedToken)")
+            token = generatedToken
+            
+            // Cargar portada y otras secciones
+            viewModel.cargarPortada()
+            didLoad = true
+        } catch {
+            print("❌ Error al generar token: \(error.localizedDescription)")
+            showTokenError = true
+        }
+    }
+
     // MARK: Función para mapear mensaje a tipo de error
     private func getErrorType(from message: String) -> ErrorType {
         if message.contains("404") {

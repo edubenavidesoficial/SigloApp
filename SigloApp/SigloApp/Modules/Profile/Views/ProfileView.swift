@@ -18,11 +18,11 @@ struct ProfileView: View {
                         isMenuOpen: $isMenuOpen,
                         isLoggedIn: isLoggedIn
                     )
+                    
                     if let selected = selectedOption {
                         NotesView(title: selected.title, selectedOption: $selectedOption)
                             .transition(.move(edge: .trailing))
-                    }
-                    else {
+                    } else {
                         VStack(alignment: .leading, spacing: 30) {
                             
                             // Sección: Cuenta
@@ -43,20 +43,18 @@ struct ProfileView: View {
                                 Toggle("Notificaciones Push", isOn: $pushNotificationsEnabled)
                                     .onChange(of: pushNotificationsEnabled) { newValue in
                                         Task {
-                                            // Obtener token FCM actual
-                                            if let fcmToken = Messaging.messaging().fcmToken,
-                                               let authToken = TokenService.shared.getStoredToken() {
+                                            if let fcmToken = Messaging.messaging().fcmToken {
                                                 let base64Token = fcmToken.data(using: .utf8)?.base64EncodedString() ?? ""
                                                 await PushToggleService.setPush(
                                                     enabled: newValue,
-                                                    tokenBase64: base64Token,
-                                                    authToken: authToken
+                                                    tokenBase64: base64Token
                                                 )
                                             } else {
-                                                print("❌ No hay FCM token o authToken disponible")
+                                                print("❌ No hay FCM token disponible")
                                             }
                                         }
                                     }
+                                
                                 NavigationRow(title: "Apariencia", destination: ThemeView())
                                 NavigationRow(title: "Menú superior", destination: MenuTopView())
                                 NavigationRow(title: "Tamano de letra", destination: FontSizeView())
@@ -89,15 +87,12 @@ struct ProfileView: View {
                                         .navigationTitle("Califica nuestra APP")
                                         .navigationBarTitleDisplayMode(.inline)
                                 )
-
                             }
-
                             .sheet(isPresented: $showRatingSheet) {
                                 VStack(spacing: 20) {
                                     Text("Califica nuestra APP")
                                         .font(.headline)
 
-                                    // Mostrar estrellas
                                     HStack {
                                         ForEach(1...5, id: \.self) { index in
                                             Image(systemName: index <= rating ? "star.fill" : "star")
@@ -117,7 +112,6 @@ struct ProfileView: View {
                                         .foregroundColor(.red)
 
                                         Button("Enviar") {
-                                            // Aquí podrías enviar la calificación al servidor
                                             print("Rating enviado: \(rating) estrellas")
                                             showRatingSheet = false
                                         }
@@ -127,8 +121,7 @@ struct ProfileView: View {
                                 .padding()
                             }
 
-                            
-                            // Redes sociales.
+                            // Redes sociales
                             HStack(spacing: 20) {
                                 Image("logo.youtube").resizable().frame(width: 20, height: 20)
                                 Image("logo.facebook").resizable().frame(width: 20, height: 18)
@@ -142,7 +135,7 @@ struct ProfileView: View {
                             
                             Text("CÍA. EDITORA DE LA LAGUNA S.A. DE C.V.")
                                 .font(.caption2)
-                                .foregroundColor(.secondary) // Cambia de color con el tema
+                                .foregroundColor(.secondary)
                                 .frame(maxWidth: .infinity)
                                 .multilineTextAlignment(.center)
                                 .padding(.bottom, 10)
@@ -155,7 +148,7 @@ struct ProfileView: View {
                 }
                 .navigationBarHidden(true)
             }
-            .background(Color(.systemBackground)) // Fondo que cambia según el tema
+            .background(Color(.systemBackground))
         }
     }
 }

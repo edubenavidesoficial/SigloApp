@@ -12,84 +12,61 @@ final class PortadaService {
     static let shared = PortadaService()
     private init() {}
 
-    func obtenerPortada(completion: @escaping (Result<[SeccionPortada], Error>) -> Void) {
+    @MainActor
+    func obtenerPortada() async -> Result<[SeccionPortada], Error> {
         guard let url = URL(string: "\(API.baseURL)portada/") else {
             print("❌ URL inválida")
-            completion(.failure(PortadaServiceError.invalidURL))
-            return
+            return .failure(PortadaServiceError.invalidURL)
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        do {
+            // Creamos la request usando BaseService
+            let base = BaseService()
+            let request = try await base.authorizedRequest(url: url, method: "GET")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
 
-        // Agregar token si está disponible
-        if let token = TokenService.shared.getStoredToken() {
-            print("✅ Token disponible: \(token)")
-            request.setValue("\(token)", forHTTPHeaderField: "Authorization")
-        } else {
-            print("⚠️ Token no disponible")
-        }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ Respuesta no válida")
+                return .failure(PortadaServiceError.invalidResponse)
+            }
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("❌ Error en la solicitud: \(error.localizedDescription)")
-                    completion(.failure(error))
-                    return
-                }
+            print("📡 Código de estado: \(httpResponse.statusCode)")
 
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    print("❌ Respuesta no válida")
-                    completion(.failure(PortadaServiceError.invalidResponse))
-                    return
-                }
+            guard (200...299).contains(httpResponse.statusCode) else {
+                let message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
+                print("❌ Error HTTP: \(httpResponse.statusCode) - \(message)")
+                return .failure(PortadaServiceError.invalidResponse)
+            }
 
-                print("📡 Código de estado: \(httpResponse.statusCode)")
+            // No es necesario hacer guard let data, porque ya no es opcional
+            // DEBUG opcional
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("📦 JSON recibido Portada:\n\(jsonString.prefix(1000000))...")
+            }
 
-                guard (200...299).contains(httpResponse.statusCode) else {
-                    let message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
-                    print("❌ Error HTTP: \(httpResponse.statusCode) - \(message)")
-                    completion(.failure(PortadaServiceError.invalidResponse))
-                    return
-                }
+            // Decodificamos la respuesta completa
+            let decoder = JSONDecoder()
+            let decodedResponse = try decoder.decode(PortadaResponse.self, from: data)
 
-                guard let data = data else {
-                    print("❌ Datos vacíos")
-                    completion(.failure(PortadaServiceError.emptyData))
-                    return
-                }
+            // Iteramos sobre las secciones y verificamos si contienen 'notas'
+            var seccionesConNotas: [SeccionPortada] = []
 
-                // DEBUG opcional
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON recibido Portada:\n\(jsonString.prefix(1000000))...")
-                }
-
-                do {
-                    // Decodificamos la respuesta completa
-                    let decoder = JSONDecoder()
-                    let decodedResponse = try decoder.decode(PortadaResponse.self, from: data)
-
-                    // Iteramos sobre las secciones y verificamos si contienen 'notas'
-                    var seccionesConNotas: [SeccionPortada] = []
-
-                    for (key, seccion) in decodedResponse.payload {
-                        if let notas = seccion.notas {
-                            print("Sección \(key): \(String(describing: seccion.seccion))")
-                            for _ in notas {}
-                            seccionesConNotas.append(seccion)
-                        } else {
-                            print("Sección \(key) no contiene 'notas'")
-                        }
-                    }
-
-                    // Llamamos a completion con las secciones que contienen notas
-                    completion(.success(seccionesConNotas))
-
-                } catch {
-                    print("❌ Error al parsear JSON: \(error)")
-                    completion(.failure(PortadaServiceError.decodingError(error)))
+            for (key, seccion) in decodedResponse.payload {
+                if let notas = seccion.notas {
+                    print("Sección \(key): \(String(describing: seccion.seccion))")
+                    for _ in notas {}
+                    seccionesConNotas.append(seccion)
+                } else {
+                    print("Sección \(key) no contiene 'notas'")
                 }
             }
-        }.resume()
+
+            return .success(seccionesConNotas)
+
+        } catch {
+            print("❌ Error PortadaService: \(error)")
+            return .failure(error)
+        }
     }
 }

@@ -2,20 +2,6 @@ import Foundation
 import UIKit
 import CryptoKit
 
-struct TokenResponse: Codable {
-    let request_date: String
-    let response: String
-    let token: String
-    let processing_time: String
-}
-
-enum TokenServiceError: Error {
-    case invalidURL
-    case noData
-    case decodingError(Error)
-    case networkError(Error)
-}
-
 final class TokenService {
     static let shared = TokenService()
 

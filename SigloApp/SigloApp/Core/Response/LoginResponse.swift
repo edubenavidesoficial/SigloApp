@@ -97,3 +97,18 @@ struct UserDetailPayload: Codable, Equatable {
         case admin
     }
 }
+
+struct TokenResponse: Codable {
+    let request_date: String
+    let response: String
+    let token: String
+    let processing_time: String
+}
+
+enum TokenServiceError: Error {
+    case invalidURL
+    case noData
+    case decodingError(Error)
+    case networkError(Error)
+    case missingCredentials
+}
