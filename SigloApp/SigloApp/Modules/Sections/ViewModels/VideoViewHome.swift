@@ -21,7 +21,7 @@ struct VideoViewHome: View {
                     } placeholder: {
                         Color.gray.opacity(0.3)
                     }
-                    .frame(width: 120, height: 160) 
+                    .frame(width: 120, height: 165) 
                     .clipped()
                     .cornerRadius(8)
 

@@ -2,42 +2,26 @@ import Foundation
 
 struct PushService {
     
-    static func registerDevice(deviceType: Int, userId: Int, tokenBase64: String, authToken: String) {
-        
-        // Construir URL
-        let urlString = "\(API.baseURL)push/\(deviceType)/\(userId)/\(tokenBase64)"
-        guard let url = URL(string: urlString) else {
-            print("❌ URL inválida de push")
-            return
+    @MainActor
+    static func registerDevice(deviceType: Int, userId: Int, tokenBase64: String) async {
+        do {
+            let url = URL(string: "\(API.baseURL)push/\(deviceType)/\(userId)/\(tokenBase64)")!
+            
+            // Usamos la clase BaseService sin heredarla
+            let base = BaseService()
+            let request = try await base.authorizedRequest(url: url, method: "POST")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Registro de Push: \(httpResponse.statusCode)")
+            }
+            
+            if let json = try? JSONSerialization.jsonObject(with: data) {
+                print("✅ Respuesta: \(json)")
+            }
+        } catch {
+            print("❌ Error en registro de push: \(error.localizedDescription)")
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        // Aquí usas el token que guardaste en TokenService
-        request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-        
-        // Llamada a la API
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if let error = error {
-                print("❌ Error en la petición: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data else {
-                print("❌ Respuesta vacía")
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                print("Respuesta de registro Push: \(json)")
-            } else {
-                print("No se pudo parsear Push JSON")
-            }
-        }
-        
-        task.resume()
     }
 }
-

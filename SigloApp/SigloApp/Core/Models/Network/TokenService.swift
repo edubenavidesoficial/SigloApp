@@ -107,3 +107,33 @@ final class TokenService {
         }
     }
 }
+
+extension TokenService {
+    
+    /// Retorna un token válido, renovándolo si ya expiró
+    @MainActor
+    func getValidToken() async throws -> String {
+        if let storedToken = getStoredToken() {
+            if isTokenExpired(storedToken) {
+                print("⚠️ Token expirado. Renovando...")
+                guard let correoHash = getStoredCorreoHash() else {
+                    throw TokenServiceError.invalidURL
+                }
+                let newToken = try await getToken(correoHash: correoHash)
+                print("✅ Token renovado correctamente")
+                return newToken
+            } else {
+                return storedToken
+            }
+        } else {
+            // No hay token guardado → solicitar uno nuevo
+            print("ℹ️ No hay token almacenado. Solicitando nuevo...")
+            guard let correoHash = getStoredCorreoHash() else {
+                throw TokenServiceError.invalidURL
+            }
+            let newToken = try await getToken(correoHash: correoHash)
+            print("✅ Token inicial obtenido correctamente")
+            return newToken
+        }
+    }
+}

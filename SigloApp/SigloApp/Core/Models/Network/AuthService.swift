@@ -27,7 +27,9 @@ final class AuthService: NSObject, ObservableObject {
             return
         }
         
-        let config = GIDConfiguration(clientID: clientID)
+        // Nota: 'config' ya no es necesario guardarlo si no se usa
+        _ = GIDConfiguration(clientID: clientID)
+        
         GIDSignIn.sharedInstance.signIn(withPresenting: rootVC) { [weak self] result, error in
             if let error = error {
                 print("❌ Google Sign-In error: \(error.localizedDescription)")
@@ -113,7 +115,6 @@ final class AuthService: NSObject, ObservableObject {
                 print("📡 API El Siglo: \(httpResponse.statusCode)")
             }
             print("📩 Respuesta API El Siglo: \(String(decoding: data, as: UTF8.self))")
-            // Aquí podrías decodificar a tu UserPayload si deseas usarlo
         } catch {
             print("❌ Error API El Siglo: \(error.localizedDescription)")
         }
@@ -127,6 +128,7 @@ final class AuthService: NSObject, ObservableObject {
 
 // MARK: - Apple Sign-In Delegates
 extension AuthService: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
@@ -139,14 +141,16 @@ extension AuthService: ASAuthorizationControllerDelegate, ASAuthorizationControl
               let nonce = currentNonce else { return }
         
         let credential = OAuthProvider.credential(
-            withProviderID: "apple.com",
+            providerID: .apple,     // 🔹 AuthProviderID actualizado
             idToken: tokenString,
-            rawNonce: nonce
+            rawNonce: nonce,
+            accessToken: nil
         )
         
         Auth.auth().signIn(with: credential) { [weak self] result, error in
-            if let error = error { print("❌ Firebase login (Apple): \(error.localizedDescription)") }
-            else if let result = result {
+            if let error = error {
+                print("❌ Firebase login (Apple): \(error.localizedDescription)")
+            } else if let result = result {
                 Task { @MainActor in
                     self?.user = result.user
                     UserDefaults.standard.set(true, forKey: "isLoggedIn")

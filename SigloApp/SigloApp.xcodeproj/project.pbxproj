@@ -31,6 +31,7 @@
 		C02318D52DFB815000C22006 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02318D42DFB815000C22006 /* UserManager.swift */; };
 		C02318D72DFB8A2A00C22006 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02318D62DFB8A2A00C22006 /* LoginResponse.swift */; };
 		C0273E292E0D82100090FBE8 /* UserSubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0273E282E0D82100090FBE8 /* UserSubscriptionViewModel.swift */; };
+		C02AC6282EA149EA008A511E /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02AC6272EA149E0008A511E /* BaseService.swift */; };
 		C03250D32E10507C00A4C149 /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250D22E10507C00A4C149 /* NewsService.swift */; };
 		C03250D52E1050AB00A4C149 /* NewsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250D42E1050AB00A4C149 /* NewsResponse.swift */; };
 		C03250D92E1051ED00A4C149 /* NewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03250D82E1051ED00A4C149 /* NewsListView.swift */; };
@@ -236,6 +237,7 @@
 		C02318D42DFB815000C22006 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		C02318D62DFB8A2A00C22006 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		C0273E282E0D82100090FBE8 /* UserSubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionViewModel.swift; sourceTree = "<group>"; };
+		C02AC6272EA149E0008A511E /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
 		C03250D22E10507C00A4C149 /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
 		C03250D42E1050AB00A4C149 /* NewsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsResponse.swift; sourceTree = "<group>"; };
 		C03250D82E1051ED00A4C149 /* NewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListView.swift; sourceTree = "<group>"; };
@@ -874,6 +876,7 @@
 		C0ABDB3B2D80636C00ABFA77 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C02AC6272EA149E0008A511E /* BaseService.swift */,
 				C0577A3A2E6B85710031D731 /* PushToggleService.swift */,
 				C0577A372E6B7E660031D731 /* PushService.swift */,
 				C073F8572E676817002F837D /* AuthService.swift */,
@@ -1480,6 +1483,7 @@
 				C00A6B452E67584200F86799 /* BannerAds.swift in Sources */,
 				C0B3C7432E18307900C996FB /* GalleryService.swift in Sources */,
 				C0B3C73B2E182C4600C996FB /* SearchTrendService.swift in Sources */,
+				C02AC6282EA149EA008A511E /* BaseService.swift in Sources */,
 				C0ADC1592DDE9BAB00BBE470 /* PrintViewerView.swift in Sources */,
 				C0833DFF2DBC3FB5009C784C /* WebWiew.swift in Sources */,
 				C09C50212DE7D54C00B2EFFD /* DocSuplementsView.swift in Sources */,
